@@ -1,0 +1,57 @@
+html {
+  background-color: black;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                       supported by Chrome, Edge, Opera and Firefox*/
+}
+
+main {
+  min-height: 90vh;
+  // padding: 1.2rem;
+  // border: 1px solid red;
+  font-size: 0.813rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.pop {
+  cursor: pointer;
+}
+
+.pop:active {
+  animation: pop 0.1s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(0.9, 0.9);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@import "header/";
+
+@import "components/options/options";
+@import "components/card/card";
+@import "product/product";
+
+@import "homepage/homepage";
+
+@import "media";

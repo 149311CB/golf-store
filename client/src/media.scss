@@ -1,0 +1,28 @@
+@media screen and (max-width: 1218px) {
+  .left {
+    .container {
+      padding-right: 3.3rem;
+      padding-top: 4.5rem;
+      padding-left: 0.6rem;
+    }
+  }
+  .right {
+    .container {
+      padding-left: 3.3rem;
+      padding-right: 0.6rem;
+    }
+  }
+}
+
+@media screen and (max-width: 1034px) {
+  .center {
+    .preview-list {
+      padding-top: 1.2rem;
+    }
+  }
+  .left {
+    position: absolute;
+    top: 100%;
+    min-width: 660px;
+  }
+}

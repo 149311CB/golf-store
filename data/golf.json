@@ -1,0 +1,132 @@
+[
+  {
+    "name": "SIM2 Driver",
+    "longName": "NEW 2021 TaylorMade SIM2 MAX Driver",
+    "price": "529.99",
+    "stock": "10",
+    "loft": [
+      "9",
+      "10.05"
+    ],
+    "shaft": [
+      {
+        "name": "Mitsubishi Tensei AV Raw Blue 60 Graphite",
+        "image": "https://lh3.googleusercontent.com/Iq-uoHlbdTveZjSHjLd9XJjIN_IpYp6bqr9IIRtkE7iSSThYr2hmxoEvsu8C7EErdpYDrb44Xl3myhEQpBQzx_muDb-pwhoCdiFvqZPrXdYcVWfDMY5VmpYwh49tMinyg47kRphM=s34-p-k"
+      },
+      {
+        "name": "Project X HZRDUS Smoke RDX Black 70 Graphite",
+        "image": "https://lh3.googleusercontent.com/zie3113I9GPsbHIclc66JP4jF5t1OzhEhnVxislw0yqj3L1PbfXmCOQN7OlxNC7CSZy127eWUDxmI8f0cLFjhgAOeTlakjlWsoGTNrGWRQXDJTaY_gLz_MbyH7wzh2tZclWL2Swt=s32-p-k"
+      }
+    ],
+    "flex": [
+      "Regular",
+      "Stiff",
+      "X-stiff"
+    ],
+    "sku": "SKU # DW-JJI63",
+    "description": "First we reshaped the driver, then we reconstructed it. Completely rebuilding the driver from the ground up to give you both forgiveness and distance.",
+    "images": [
+      "https://i.ebayimg.com/images/g/gaMAAOSw4cBgZxd8/s-l640.jpg",
+      "\thttps://i.ebayimg.com/images/g/q7sAAOSw3RlgLGKf/s-l640.jpg",
+      "https://i.ebayimg.com/images/g/QyYAAOSw7fJgLFJw/s-l640.jpg",
+      "https://i.ebayimg.com/images/g/tZ4AAOSwyVBgLFJz/s-l640.jpg",
+      "https://i.ebayimg.com/images/g/7VsAAOSwFE1gLFJy/s-l640.jpg",
+      "https://i.ebayimg.com/images/g/je0AAOSw3e9gLFJ3/s-l640.jpg"
+    ]
+  },
+  {
+    "name": "SIM2 Max OS",
+    "price": "799.99",
+    "stock": "5",
+    "longName": "NEW TaylorMade SIM2 Max OS Irons 2021 Choose Shaft, Flex, Set & Dexterity",
+    "loft": [],
+    "shaft": [
+      {
+        "name": "Fujikura Ventus Blue Graphite",
+        "image": "https://cdn11.bigcommerce.com/s-l8ce6/images/stencil/1280x1280/products/55412/132627/apiwz3v80__89347.1592313495.jpg"
+      },
+      {
+        "name": "KBS Max 85 MT",
+        "image": "https://kbsgolfshafts.com/wp-content/uploads/2020/01/kbs_max_80.jpg"
+      }
+    ],
+    "flex": [
+      "Regular",
+      "Stiff"
+    ],
+    "sku": "SKU # DW-TA170",
+    "description": "Engineered to help you hit better shots more often with the all-new Cap Back™ Design. SIM2 Max OS is the longest and most stable iron in the TaylorMade family, delivering incredible distance and forgiveness.",
+    "images": [
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA170_zoom_D.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA170_zoom_D2.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA170_zoom_D3.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA170_zoom_D4.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA170_zoom_D5.jpg"
+    ]
+  },
+  {
+    "name": "P790 Irons",
+    "price": "1299.99",
+    "stock": "3",
+    "longName": "",
+    "loft": [
+      "19",
+      "21"
+    ],
+    "shaft": [
+      {
+        "name": "True Temper Dynamic Gold VSS",
+        "image": "https://www.truetempersports.com/en-us/golf/media/wysiwyg/dynamic-gold-105.jpg"
+      },
+      {
+        "name": "Mitsubishi MMT",
+        "image": "https://www.golfworks.com/images/xl/mr0090.jpg"
+      }
+    ],
+    "flex": [
+      "Regular",
+      "Stiff"
+    ],
+    "sku": "SKU # DW-TA228",
+    "description": "An iron is more than metal. It's the result of countless hours of research, testing and player feedback. From concept to delivery, every step is taken with one goal in mind. Delivering results when you need them the most. The new P•790, where our metal meets your mettle. Experience them yourself and discover the player they'll push you to become.",
+    "images": [
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA228_zoom_D.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA228_zoom_D2.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA228_zoom_D3.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA228_zoom_D4.jpg"
+    ]
+  },
+  {
+    "name": "M4 Irons",
+    "price": "599.99",
+    "stock": "8",
+    "longName": "M4 21 5-AW M-4 iron set irons 2021",
+    "loft": [
+      "21.5",
+      "25"
+    ],
+    "shaft": [
+      {
+        "name": "Fujikura Atmos Red",
+        "image": "https://www.golfworks.com/images/xl/fk0094.jpg"
+      },
+      {
+        "name": "KBS Max 80",
+        "image": "https://www.golfworks.com/images/xl/fs0052.jpg"
+      }
+    ],
+    "flex": [
+      "Regular",
+      "Stiff"
+    ],
+    "sku": "SKU # DW-TA219",
+    "description": "Engineered to take you farther and straighter… right down the center of the fairway.",
+    "images": [
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA219_zoom_D.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA219_zoom_D2.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA219_zoom_D3.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA219_zoom_D4.jpg",
+      "https://www.taylormadegolf.com/on/demandware.static/-/Sites-tmag-master-catalog/en_US/v1628842299193/zoom/TA219_zoom_D5.jpg"
+    ]
+  }
+]
