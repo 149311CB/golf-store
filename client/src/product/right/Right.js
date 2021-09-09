@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import OptionGroup from "../../components/options/OptionGroup";
-import Option from "../../components/options/Option";
+import { Option, OptionGroup } from "@149311cb/black";
 
 const Right = ({ golf }) => {
   const [hand, setHand] = useState(golf.hand ? golf.hand : []);

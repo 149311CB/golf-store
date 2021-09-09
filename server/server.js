@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 
 import golfRoutes from "./routes/golfRoutes.js";
+import paymentRoutes from "./routes/paymentRroutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/golfs", golfRoutes);
+app.use("/api/payments", paymentRoutes);
 
 const PORT = process.env.PORT || 5000;
 
