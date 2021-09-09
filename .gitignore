@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/client/.idea
 
 # testing
 /coverage
@@ -11,6 +12,7 @@
 # production
 /build
 /client/build
+/server/node_modules
 /server/yarn-error.log
 /server/.env
 
