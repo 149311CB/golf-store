@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/client/node_modules
+/server/node_modules
 /.pnp
 .pnp.js
 /client/.idea
@@ -12,7 +14,6 @@
 # production
 /build
 /client/build
-/server/node_modules
 /server/yarn-error.log
 /server/.env
 
