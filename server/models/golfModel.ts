@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { golfInterface } from "../types/golfType";
 
-const golfSchema = mongoose.Schema({
+const golfSchema = new Schema<golfInterface>({
   name: {
     type: String,
     required: true,
@@ -28,6 +29,6 @@ const golfSchema = mongoose.Schema({
   },
 });
 
-const Golf = mongoose.model("Golf", golfSchema, "golf");
+const Golf = model<golfInterface>("Golf", golfSchema, "golf");
 
 export default Golf;
