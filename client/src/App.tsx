@@ -11,8 +11,8 @@ function App() {
       <Router>
         <main>
           {/* <Route path={"/"} component={Homepage} exact /> */}
-          {/* <Route path={"/"} component={Product} exact /> */}
-          <Route path={"/"} component={Checkout} exact />
+          <Route path={"/"} component={Product} exact />
+          {/* <Route path={"/"} component={Checkout} exact /> */}
           {/* <Product /> */}
         </main>
       </Router>

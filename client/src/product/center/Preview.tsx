@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 
-const Preview = React.memo(({ images, setBigImage }) => {
+interface Props {
+  images: string[];
+  setBigImage: Function;
+}
+
+const Preview: React.FC<Props> = React.memo((props) => {
+  const { images, setBigImage } = props;
+
   const changeActive = useCallback(
     (index) => {
       const previewList = document.querySelectorAll(`.neon`);

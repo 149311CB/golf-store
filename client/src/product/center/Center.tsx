@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Preview from "./Preview";
+import { golfInterface } from "../../types";
 
-const Center = ({ golf }) => {
+interface Props {
+  golf: golfInterface;
+}
+
+const Center: React.FC<Props> = (props) => {
+  const { golf } = props;
   const [bigImage, setBigImage] = useState(0);
   return (
     <div className={"center"}>

@@ -24,9 +24,9 @@ const Products = () => {
         <div>loading...</div>
       ) : (
         <div className={"product"}>
-          <Left golf={data[0]} reviews={reviews} />
-          <Center golf={data[0]} reviews={reviews} />
-          <Right golf={data[0]} reviews={reviews} />
+          <Left golf={data![0]} reviews={reviews} />
+          <Center golf={data![0]} />
+          <Right golf={data![0]} />
         </div>
       )}
     </>

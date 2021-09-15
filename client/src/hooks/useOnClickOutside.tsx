@@ -1,10 +1,11 @@
-const { useEffect, useRef } = require("react");
+import { MutableRefObject, useEffect, useRef } from "react";
 
 export const useOnClickOutside = () => {
-  const expandRef = useRef();
+  //@ts-ignore
+  const expandRef: MutableRefObject<HTMLDivElement> = useRef();
 
   useEffect(() => {
-    const handler = (e) => {
+    const handler = (e: any) => {
       if (!expandRef.current.contains(e.target)) {
         expandRef.current.classList.remove("expand");
       }

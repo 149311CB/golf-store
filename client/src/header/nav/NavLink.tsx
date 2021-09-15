@@ -1,6 +1,6 @@
 import React from "react";
 
-const NavLink = ({ children }) => {
+const NavLink: React.FC<React.ReactNode> = ({ children }) => {
   return <li className={"pop"}>{children}</li>;
 };
 

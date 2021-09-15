@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useFetch } from "../../hooks/useFetch";
-import { useCheckout } from "../../hooks/useCheckout";
 
 const cardStyle = {
   style: {
@@ -27,14 +26,14 @@ const CheckoutForm = () => {
 
   // TODO: These can be use globally
   const [proccessing, setProccessing] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const { data, loading, error: fetchError } = useFetch(products);
   //====================================================================
 
   useEffect(() => {
     if (loading || fetchError) return;
-    const { price } = data[0];
+    const { price } = data![0];
     // fetch stripe client secret using to proccess payment
     window
       .fetch("/api/payments/stripe", {
@@ -52,19 +51,19 @@ const CheckoutForm = () => {
       });
   }, [data, loading, fetchError]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setProccessing(true);
 
-    const paymentMethod = await stripe.createPaymentMethod({
+    const paymentMethod = await stripe!.createPaymentMethod({
       type: "card",
       //@ts-ignore
       card: elements.getElement(CardElement),
     });
 
     console.log(paymentMethod);
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: paymentMethod.paymentMethod.id,
+    const payload = await stripe!.confirmCardPayment(clientSecret, {
+      payment_method: paymentMethod.paymentMethod!.id,
     });
 
     // TODO: These can be use globally
@@ -72,7 +71,7 @@ const CheckoutForm = () => {
       setError(`payment failed ${payload.error.message}`);
       setProccessing(false);
     } else {
-      setError(null);
+      setError("");
       setProccessing(false);
       setSuccess(true);
       console.log(payload);

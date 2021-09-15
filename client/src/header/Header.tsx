@@ -12,7 +12,7 @@ const Header = () => {
       <div className={"logo"}>
         <Logo />
       </div>
-      <Navbar className={"noselect"}>
+      <Navbar>
         <NavLink>CLUBS</NavLink>
         <NavLink>GOLF</NavLink>
         <NavLink>BALLS APPAREL</NavLink>

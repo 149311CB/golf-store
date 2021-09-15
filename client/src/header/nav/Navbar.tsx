@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = ({ children }) => {
+const Navbar: React.FC<React.ReactNode> = ({ children }) => {
   return (
     <div className={"navbar"}>
       <ul>{children}</ul>

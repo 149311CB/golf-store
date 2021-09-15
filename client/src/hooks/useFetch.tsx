@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 
-export const useFetch = (url) => {
-  const [state, setState] = useState({
-    data: null,
-    loading: true,
-    error: null,
-  });
+interface Props {
+  data?: any;
+  loading?: boolean;
+  error?: any;
+}
+
+export const useFetch = (url: string) => {
+  const promiseValue: Props = { data: null, loading: true, error: null };
+  const [state, setState] = useState(promiseValue);
   useEffect(() => {
     // set loading to true
     setState((state) => ({ ...state, loading: true }));
