@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "dependencies": {
-    "@149311cb/black": "1.0.1",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.17.1",
     "@testing-library/jest-dom": "^5.11.4",
