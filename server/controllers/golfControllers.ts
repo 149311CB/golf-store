@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Golf from "../models/golfModel.js";
+import Golf from "../models/golfModel";
 
 // @descs   Fetch all golf
 // @route   GET /api/golf

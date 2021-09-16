@@ -1,5 +1,5 @@
 import express from "express";
-import { orderUsingStripe } from "../controllers/paymentControllers.js";
+import { orderUsingStripe } from "../controllers/paymentControllers";
 
 const router = express.Router();
 

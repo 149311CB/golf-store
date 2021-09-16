@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Review from "../models/reviewModel.js";
+import Review from "../models/reviewModel";
 
 // @descs Fetch all reviews of a product
 // @route GET /api/golf/:id/reviews

@@ -1,7 +1,5 @@
-import { Schema } from "mongoose";
-
 export interface reviewInterface {
-  golf: Schema.Types.ObjectId;
+  golf: string;
   user: string;
   rating: number;
   comment: string;
