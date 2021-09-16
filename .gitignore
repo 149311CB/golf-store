@@ -17,6 +17,7 @@
 /client/build
 /server/yarn-error.log
 /server/.env
+/server/dist
 
 # misc
 .DS_Store
