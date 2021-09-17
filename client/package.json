@@ -4,8 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "dependencies": {
-    "@honeybadger-io/js": "^3.2.4",
-    "@honeybadger-io/react": "^1.0.2",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.17.1",
     "@testing-library/jest-dom": "^5.11.4",
