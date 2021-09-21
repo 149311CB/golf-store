@@ -1,21 +1,19 @@
-.product{
+.product {
   // height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
   padding: 4.5rem 1.2rem 0rem 1.2rem;
-  background-color: black;
-  color: white;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
-.product > *{
+.product > * {
   width: 100%;
 }
 
+@import "left/left";
 
-@import 'left/left';
+@import "center/center";
 
-@import 'center/center';
-
-@import 'right/right';
-
+@import "right/right";

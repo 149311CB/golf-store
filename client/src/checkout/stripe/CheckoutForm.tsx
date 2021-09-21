@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useFetch } from "../../hooks/useFetch";
+import { CheckoutContext } from "../Checkout";
 
 const cardStyle = {
   style: {
@@ -17,43 +17,37 @@ const cardStyle = {
   },
 };
 
-const products = "https://golf-company.herokuapp.com/api/golfs/";
 const CheckoutForm = () => {
+  const { processing, handleProcessing, handleError, handleSuccess } =
+    useContext(CheckoutContext);
+
   const stripe = useStripe();
   const elements = useElements();
 
   const [clientSecret, setClientSecret] = useState("");
 
-  // TODO: These can be use globally
-  const [proccessing, setProccessing] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const { data, loading, error: fetchError } = useFetch(products);
-  //====================================================================
-
   useEffect(() => {
-    if (loading || fetchError) return;
-    const { price } = data![0];
-    // fetch stripe client secret using to proccess payment
+    // fetch stripe client secret using to process payment
     window
-      .fetch("/api/payments/stripe", {
-        method: "POST",
+      .fetch("/api/payments/stripe?id=6144e51d4e255dd305a1ab43", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ items: [{ price, amount: 3 }] }),
       })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        setClientSecret(data.clientSecret);
+        if (data.clientSecret) {
+          setClientSecret(data.clientSecret);
+        }
       });
-  }, [data, loading, fetchError]);
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setProccessing(true);
+    handleProcessing(true);
 
     const paymentMethod = await stripe!.createPaymentMethod({
       type: "card",
@@ -61,22 +55,22 @@ const CheckoutForm = () => {
       card: elements.getElement(CardElement),
     });
 
-    console.log(paymentMethod);
     const payload = await stripe!.confirmCardPayment(clientSecret, {
       payment_method: paymentMethod.paymentMethod!.id,
     });
 
-    // TODO: These can be use globally
     if (payload.error) {
-      setError(`payment failed ${payload.error.message}`);
-      setProccessing(false);
+      handleError(`payment failed ${payload.error.message}`);
     } else {
-      setError("");
-      setProccessing(false);
-      setSuccess(true);
-      console.log(payload);
+      // S5
+      handleSuccess({
+        cart: "6144e51d4e255dd305a1ab43",
+        state: "success",
+        paymentMethod: "stripe",
+        details: "4242",
+        paidAt: new Date(1632062268 * 1000),
+      });
     }
-    //===================================================================
   };
 
   return (
@@ -85,10 +79,8 @@ const CheckoutForm = () => {
       onSubmit={handleSubmit}
       style={{ color: "white" }}
     >
-      {success && <div>Payment success!</div>}
-      {error && <div>Payment failed! {error}</div>}
-      <CardElement id="card-element" options={cardStyle}></CardElement>
-      <button type="submit" disabled={!stripe || proccessing}>
+      <CardElement id="card-element" options={cardStyle} />
+      <button type="submit" disabled={!stripe || processing}>
         Pay
       </button>
     </form>

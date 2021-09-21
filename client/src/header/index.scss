@@ -1,18 +1,21 @@
 @use "sass:math";
 
 header {
-  background-color: #434343;
+  background-color: var(--standout);
   min-height: 10vh;
   padding: 1.2rem;
-  color: white;
+  color: var(--text);
   display: flex;
   justify-content: space-between;
   align-items: center;
   min-width: 730px;
+  border-bottom: 1px solid var(--border);
 
   .logo {
     width: 30%;
     cursor: pointer;
+    // color: var(--text);
+    filter: var(--filter);
   }
 
   .navbar {
@@ -65,7 +68,7 @@ header {
       background: transparent;
       border: none;
       outline: none;
-      color: white;
+      color: var(--text);
     }
 
     button {
@@ -74,7 +77,7 @@ header {
       border: 0;
       outline: 0;
       border-radius: 50%;
-      color: white;
+      color: var(--text);
       cursor: pointer;
       background: transparent;
     }

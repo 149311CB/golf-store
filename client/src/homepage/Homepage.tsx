@@ -1,13 +1,15 @@
-import React from "react";
-import { useFetch } from "../hooks/useFetch";
+import React, { useEffect } from "react";
+import { client } from "../utils/client";
 
-const products = "https://golf-company.herokuapp.com/api/golfs/";
 const Home = () => {
-  const { data, loading, error } = useFetch(products);
+  useEffect(() => {
+    const getGolf = async () => {
+      const data = await client.post("/api/carts/archived?id=123", {});
+      console.log(data);
+    };
+    getGolf();
+  });
 
-  if (error) {
-    return null;
-  }
   return <div>Hello world</div>;
 };
 

@@ -31,3 +31,20 @@ export interface reviewInterface {
   rating: number;
   comment: string;
 }
+
+export interface CheckoutInterface {
+  processing: boolean;
+  error: string;
+  success: boolean;
+  handleProcessing: (state: boolean) => void;
+  handleError: (error: string) => void;
+  handleSuccess: (order: OrderInterface) => void;
+}
+
+export interface OrderInterface {
+  cart: string;
+  state: string;
+  paymentMethod: string;
+  details: string;
+  paidAt: Date;
+}

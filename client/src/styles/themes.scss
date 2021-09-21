@@ -1,0 +1,86 @@
+* {
+  --accent-hue: 38%;
+
+  //Dark color scheme
+  --bg-dark: hsl(0, 0%, 9%);
+  --text-dark: hsl(0, 0%, 100%);
+  --text-dark-dim: hsl(0, 0%, 54%);
+  --focus-dark: hsl(0, 0%, 18%);
+  --accent-dark: hsl(199, 100%, var(--accent-hue));
+  --standout-dark: hsl(0, 0%, 26%);
+  --border-dark: hsl(0, 0%, 26%);
+  --filter-dark: 0;
+
+  // invert(100%) sepia(94%) saturate(24%) hue-rotate(330deg)
+  // brightness(105%) contrast(105%);
+
+  // light color scheme
+  --bg-light: hsl(0, 0%, 95%);
+  --text-light: hsl(0, 0%, 10%);
+  --text-light-dim: hsl(0, 0%, 20%);
+  --focus-light: hsl(0, 0%, 100%);
+  --accent-light: hsl(199, 100%, var(--accent-hue));
+  --standout-light: hsl(0, 0%, 95%);
+  --border-light: hsl(0, 0%, 85%);
+  --filter-light: invert(100%) sepia(0%) saturate(7500%) hue-rotate(147deg)
+    brightness(108%) contrast(104%);
+}
+
+//noinspection SassScssUnresolvedVariable
+:root {
+  color-scheme: light;
+
+  --bg: var(--bg-light);
+  --text: var(--text-light);
+  --text-dim: var(--text-light-dim);
+  --focus: var(--focus-light);
+  --accent: var(--accent-light);
+  --standout: var(--standout-light);
+  --border: var(--border-light);
+  --filter: var(--filter-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  //noinspection SassScssUnresolvedVariable
+  :root {
+    color-scheme: dark;
+
+    --bg: var(--bg-dark);
+    --text: var(--text-dark);
+    --text-dim: var(--text-dark-dim);
+    --focus: var(--focus-dark);
+    --accent: var(--accent-dark);
+    --standout: var(--standout-dark);
+    --border: var(--border-dark);
+    --filter: var(--filter-dark);
+  }
+}
+
+//noinspection SassScssUnresolvedVariable
+[color-scheme="dark"] {
+  color-scheme: dark;
+
+  --bg: var(--bg-dark);
+  --text: var(--text-dark);
+  --text-dim: var(--text-dark-dim);
+  --focus: var(--focus-dark);
+  --accent: var(--accent-dark);
+  --standout: var(--standout-dark);
+  --border: var(--border-dark);
+  --filter: var(--filter-dark);
+}
+
+//noinspection SassScssUnresolvedVariable
+[color-scheme="light"] {
+  color-scheme: light;
+
+  --bg: var(--bg-light);
+  --text: var(--text-light);
+  --text-dim: var(--text-light-dim);
+  --focus: var(--focus-light);
+  --accent: var(--accent-light);
+  --standout: var(--standout-light);
+  --border: var(--border-light);
+  --filter: var(--filter-light);
+}
+
