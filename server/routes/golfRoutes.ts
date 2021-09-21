@@ -1,6 +1,6 @@
 import express from "express";
-import { getAllGolf, getGolfById } from "../controllers/golfControllers";
-import { getAllProductReviewById } from "../controllers/reviewControllers";
+import {getAllGolf, getGolfById} from "../controllers/golfControllers";
+import {getAllProductReviewById} from "../controllers/reviewControllers";
 
 const router = express.Router();
 

@@ -1,8 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Stripe from "stripe";
-import { calculatePrice } from "../utils/paymentUtils";
 
-// @descs   Stripe endpoint
+// @desc   Stripe endpoint
 // @route   POST /api/payment/stripe
 // @access  Public
 const orderUsingStripe = asyncHandler(async (req, res) => {
@@ -12,14 +11,24 @@ const orderUsingStripe = asyncHandler(async (req, res) => {
   });
 
   const items = req.body;
-  const total = calculatePrice(items.items);
+  // const total = calculatePrice(items.items);
 
   const paymentIntent = await stripePaymentHandler.paymentIntents.create({
-    amount: total,
+    amount: items.total * 100,
     currency: "usd",
   });
 
   res.send({ clientSecret: paymentIntent.client_secret });
 });
 
-export { orderUsingStripe };
+const orderUsingPaypal = asyncHandler(async (req,res)=>{
+  const paypal_secret = process.env.PAYPAL_CLIENT_SECRET
+
+  const items = req.body
+
+  const amount = items.total
+
+  res.send({clientId:paypal_secret,amount:amount.toString()})
+})
+
+export { orderUsingStripe,orderUsingPaypal };

@@ -6,6 +6,18 @@ const golfSchema = new Schema<golfInterface>({
     type: String,
     required: true,
   },
+  longname: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  stock: {
+    type: Number,
+    require: true,
+  },
   loft: {
     type: Array,
     required: true,

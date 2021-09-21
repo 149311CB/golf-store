@@ -6,8 +6,8 @@ export interface shaft {
 export interface golfInterface {
   name: string;
   longName?: string;
-  price: string;
-  stock: string;
+  price: number;
+  stock: number;
   loft: Object[];
   shaft: shaft[];
   flex: Object[];
