@@ -1,14 +1,14 @@
 import React from "react";
 // import Rating from "../../components/Rating";
 // import { useSumReviews } from "../../hooks/useSumReviews";
-import { golfInterface, reviewInterface } from "../../types";
+import { productInterface, reviewInterface } from "../../types";
 
 interface Props {
-  golf: golfInterface;
+  data: productInterface;
   reviews: reviewInterface[] | null;
 }
-const Left: React.FC<Props> = (props) => {
-  const { golf, reviews } = props;
+const Left: React.FC<Props> = ({ data }) => {
+  const { golf } = data;
 
   // const reviewTotal = useSumReviews(golf._id, reviews);
 

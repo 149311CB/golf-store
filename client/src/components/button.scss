@@ -1,0 +1,14 @@
+.btn{
+  border: none;
+  padding: 0.7rem 1.5rem;
+  background: hsl(0, 0%, 18%);
+  color: white;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  @include transition();
+  @include box-shadow();
+  &:hover {
+      background: hsl(0, 0%, 20%);
+      @include box-shadow();
+  }
+}

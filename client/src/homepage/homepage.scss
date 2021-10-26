@@ -1,8 +1,10 @@
 .homepage {
+  background: var(--bg-dark);
   .image-container {
-    width: 100%;
+    width: 95%;
     height: 100%;
-    margin: 0 auto;
+    margin: 3rem auto;
+    border: 1px solid red;
     img {
       width: 100%;
       height: 100%;

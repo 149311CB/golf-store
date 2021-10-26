@@ -4,24 +4,44 @@ export interface reactChild {
   children: React.ReactNode;
 }
 
+export interface productInterface {
+  golf: golfInterface
+  variants:[ VariantInterface ]
+}
+
 export interface golfInterface {
   _id?: string;
+  images: string[];
   name: string;
   longName?: string;
   price: string;
-  stock: string;
-  loft: Object[];
-  shaft: shaft[];
-  flex: Object[];
-  hand: string;
   sku: string;
   description: string;
-  images: string[];
 }
 
-export interface shaft {
+export interface VariantInterface{
+  _id:string
+  hand:string
+  golf:string
+  loft:Loft
+  flex:Flex
+  shaft:Shaft
+}
+
+export interface Shaft {
+  _id:string
   name: string;
   image: string;
+}
+
+export interface Loft{
+  _id:string
+  type:number
+}
+
+export interface Flex{
+  _id:string
+  type:number
 }
 
 export interface reviewInterface {

@@ -1,0 +1,95 @@
+[
+    {
+        "_id": "614c8fb5e8b7580921b1e978",
+        "hand": [
+            {
+                "name": "left"
+            },
+            {
+                "name": "right"
+            }
+        ],
+        "images": [
+            "https://i.ebayimg.com/images/g/gaMAAOSw4cBgZxd8/s-l640.jpg",
+            "https://i.ebayimg.com/images/g/q7sAAOSw3RlgLGKf/s-l640.jpg",
+            "https://i.ebayimg.com/images/g/QyYAAOSw7fJgLFJw/s-l640.jpg",
+            "https://i.ebayimg.com/images/g/tZ4AAOSwyVBgLFJz/s-l640.jpg",
+            "https://i.ebayimg.com/images/g/7VsAAOSwFE1gLFJy/s-l640.jpg",
+            "https://i.ebayimg.com/images/g/je0AAOSw3e9gLFJ3/s-l640.jpg"
+        ],
+        "name": "SIM2 Driver",
+        "longname": "NEW 2021 TaylorMade SIM2 MAX Driver",
+        "price": 529,
+        "stock": 10,
+        "sku": "SKU # DW-JJI63",
+        "description": "First we reshaped the driver, then we reconstructed it. Completely rebuilding the driver from the ground up to give you both forgiveness and distance.",
+        "__v": 0,
+        "variants": [
+            {
+                "_id": "614c8fb5e8b7580921b1e97a",
+                "options": [
+                    {
+                        "_id": "614c8fb5e8b7580921b1e97b",
+                        "loft": {
+                            "_id": "614c8fb5e8b7580921b1e97c",
+                            "type": 9
+                        },
+                        "shaft": {
+                            "_id": "614c8fb5e8b7580921b1e97d",
+                            "name": "Mitsubishi Tensei AV Raw Blue 60 Graphite",
+                            "image": "https://lh3.googleusercontent.com/Iq-uoHlbdTveZjSHjLd9XJjIN_IpYp6bqr9IIRtkE7iSSThYr2hmxoEvsu8C7EErdpYDrb44Xl3myhEQpBQzx_muDb-pwhoCdiFvqZPrXdYcVWfDMY5VmpYwh49tMinyg47kRphM=s34-p-k"
+                        },
+                        "flex": {
+                            "_id": "614c8fb5e8b7580921b1e97e",
+                            "type": "Regular"
+                        },
+                        "stock": 3
+                    },
+                    {
+                        "_id": "614c8fb5e8b7580921b1e97f",
+                        "loft": {
+                            "_id": "614c8fb5e8b7580921b1e980",
+                            "type": 10
+                        },
+                        "shaft": {
+                            "_id": "614c8fb5e8b7580921b1e981",
+                            "name": "Project X HZRDUS Smoke RDX Black 70 Graphite",
+                            "image": "https://lh3.googleusercontent.com/zie3113I9GPsbHIclc66JP4jF5t1OzhEhnVxislw0yqj3L1PbfXmCOQN7OlxNC7CSZy127eWUDxmI8f0cLFjhgAOeTlakjlWsoGTNrGWRQXDJTaY_gLz_MbyH7wzh2tZclWL2Swt=s32-p-k"
+                        },
+                        "stock": 5
+                    },
+                    {
+                        "_id": "614c8fb5e8b7580921b1e982",
+                        "flex": {
+                            "_id": "614c8fb5e8b7580921b1e983",
+                            "type": "Stiff"
+                        },
+                        "stock": 2
+                    },
+                    {
+                        "_id": "614c8fb5e8b7580921b1e984",
+                        "flex": {
+                            "_id": "614c8fb5e8b7580921b1e985",
+                            "type": "X-stiff"
+                        },
+                        "stock": 2
+                    },
+                    {
+                        "_id": "614c8fb5e8b7580921b1e986",
+                        "loft": {
+                            "_id": "614c8fb5e8b7580921b1e987",
+                            "type": 9
+                        },
+                        "flex": {
+                            "_id": "614c8fb5e8b7580921b1e988",
+                            "type": "X-stiff"
+                        },
+                        "stock": 1
+                    }
+                ],
+                "golf": "614c8fb5e8b7580921b1e978",
+                "__v": 0
+            }
+        ]
+    }
+]

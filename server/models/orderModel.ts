@@ -1,12 +1,11 @@
 import {model, Schema} from "mongoose";
 import {orderInterface} from "../types/orderType";
-import Golf from "./golfModel";
 
 const orderSchema = new Schema<orderInterface>(
     {
         cart: {
             type: Schema.Types.ObjectId,
-            ref: Golf,
+            ref: "Golf",
             required: true,
         },
         state: {

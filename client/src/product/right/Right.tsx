@@ -1,68 +1,290 @@
-import React, { useState } from "react";
-import { golfInterface } from "../../types";
-import { Option, OptionGroup } from "black";
+import React, { useEffect, useState } from "react";
+import OptionGroup from "../../components/OptionGroup";
+import Option from "../../components/Option";
+import Button from "../../components/Button";
 
 interface Props {
-  golf: golfInterface;
+  data: any;
 }
-const Right: React.FC<Props> = ({ golf }) => {
-  const [hand, setHand] = useState(golf.hand ? golf.hand : "");
-  const [loft, setLoft] = useState(golf.loft ? golf.loft[0] : {});
-  const [flex, setFlex] = useState(golf.flex ? golf.flex[0] : {});
-  const [shaft, setShaft] = useState(golf.shaft ? golf.shaft[0] : {});
+
+const Right: React.FC<Props> = ({ data }) => {
+  const { golf, variants } = data;
+  const [activeVariants, setActiveVariants] = useState<any[]>([]);
+
+  const [identifier, setIdentifier] = useState("hand");
+
+  const [flexs, setFlexs] = useState<any>([]);
+  const [flex, setFlex] = useState();
+
+  const [lofts, setLofts] = useState<any[]>([]);
+  const [loft, setLoft] = useState<any[]>();
+
+  const [hands, setHands] = useState<any[]>([]);
+  const [hand, setHand] = useState<any>();
+
+  const [shafts, setShafts] = useState<any[]>([]);
+  const [shaft, setShaft] = useState<any>();
+
+  const inlineOptions = {
+    display: "inline-flex",
+    gap: "0.3rem",
+  };
+
+  const optionGroup = {
+    marginBottom: "0.6rem",
+  };
+
+  const checkIfExits = (value: any, arr: any[]) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (value._id === arr[i]._id) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkIfHandExits = (value: any, arr: any[]) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (value === arr[i].side) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const invertDisabled = (value: any, arr: any[]) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (value._id === arr[i]._id) {
+        arr[i].disabled = false;
+        break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (identifier !== "hand") return;
+    if (hands.length === 0) return;
+    const activeVariantArr: any = [];
+    variants.forEach((variant: any) => {
+      if (variant.hand === hand) {
+        activeVariantArr.push(variant._id);
+      }
+    });
+    setActiveVariants(activeVariantArr);
+  }, [hand, identifier]);
+
+  useEffect(() => {
+    if (identifier !== "flex") return;
+    if (flexs.length === 0) return;
+    const activeVariantArr: any = [];
+    variants.forEach((variant: any) => {
+      if (variant.flex._id === flex) {
+        activeVariantArr.push(variant._id);
+      }
+    });
+    setActiveVariants(activeVariantArr);
+  }, [flex, identifier]);
+
+  useEffect(() => {
+    if (identifier !== "loft") return;
+    if (lofts.length === 0) return;
+    const activeVariantArr: any = [];
+    variants.forEach((variant: any) => {
+      if (variant.loft._id === loft) {
+        // if(flex !== null && variant.flex._id === flex){
+        //   if(shaft !== null && variant.shaft._id === shaft){
+        //     if(variant.hand !== null && variant.hand === hand){
+        activeVariantArr.push(variant._id);
+        // }
+        // }
+        // }
+      }
+    });
+    setActiveVariants(activeVariantArr);
+  }, [loft, identifier]);
+
+  useEffect(() => {
+    if (identifier !== "shaft") return;
+    if (shafts.length === 0) return;
+    const activeVariantArr: any = [];
+    variants.forEach((variant: any) => {
+      if (variant.shaft._id === shaft) {
+        activeVariantArr.push(variant._id);
+      }
+    });
+    console.log(activeVariants);
+    setActiveVariants(activeVariantArr);
+  }, [shaft, identifier]);
+
+  useEffect(() => {
+    const flexsSet: any[] = [];
+    const loftsSet: any[] = [];
+    const shaftsSet: any[] = [];
+    const handsSet: any[] = [];
+    if (activeVariants.length === 0) return;
+    variants.forEach((variant: any) => {
+      if (!checkIfHandExits(variant.hand, handsSet)) {
+        if (activeVariants.includes(variant._id)) {
+          handsSet.push({ side: variant.hand, disabled: false });
+        } else {
+          handsSet.push({ side: variant.hand, disabled: true });
+        }
+      }
+
+      if (!checkIfExits(variant.flex, flexsSet)) {
+        if (activeVariants.includes(variant._id)) {
+          flexsSet.push({ ...variant.flex, disabled: false });
+        } else {
+          flexsSet.push({ ...variant.flex, disabled: true });
+        }
+      } else if (activeVariants.includes(variant._id)) {
+        invertDisabled(variant.flex, flexsSet);
+      }
+      if (!checkIfExits(variant.loft, loftsSet)) {
+        if (activeVariants.includes(variant._id)) {
+          loftsSet.push({ ...variant.loft, disabled: false });
+        } else {
+          loftsSet.push({ ...variant.loft, disabled: true });
+        }
+      } else if (activeVariants.includes(variant._id)) {
+        invertDisabled(variant.loft, loftsSet);
+      }
+      if (!checkIfExits(variant.shaft, shaftsSet)) {
+        if (activeVariants.includes(variant._id)) {
+          shaftsSet.push({ ...variant.shaft, disabled: false });
+        } else {
+          shaftsSet.push({ ...variant.shaft, disabled: true });
+        }
+      } else if (activeVariants.includes(variant._id)) {
+        invertDisabled(variant.shaft, shaftsSet);
+      }
+    });
+
+    setFlexs(flexsSet);
+    setLofts(loftsSet);
+    setShafts(shaftsSet);
+    setHands(
+      handsSet.sort((a, b) => {
+        return b.side < a.side ? -1 : 1;
+      })
+    );
+  }, [activeVariants]);
+
+  // Run on the first render
+  useEffect(() => {
+    const flexsSet: any[] = [];
+    const loftsSet: any[] = [];
+    const handsSet: any[] = [];
+    const shaftsSet: any[] = [];
+
+    variants.forEach((variant: any) => {
+      if (!checkIfExits(variant.flex, flexsSet)) {
+        flexsSet.push({ ...variant.flex, disabled: false });
+      }
+      if (!checkIfExits(variant.loft, loftsSet)) {
+        // if (variant.flex._id === flex) {
+        loftsSet.push({ ...variant.loft, disabled: false });
+        // } else {
+        // loftsSet.push({ ...variant.loft, disabled: true });
+        // }
+      }
+      shaftsSet.push({ ...variant.shaft, disabled: false });
+    });
+    handsSet.push({ side: "right", disabled: false });
+    handsSet.push({ side: "left", disabled: false });
+    setFlexs(flexsSet);
+    setLofts(loftsSet);
+    setShafts(shaftsSet);
+    setHands(handsSet);
+    setHand("right");
+  }, []);
 
   return (
     <div className={"right"}>
       <div className={"container"}>
-        <OptionGroup name={"Hand"}>
-          <Option optionalFunction={() => setHand("left")}>Left</Option>
-          <Option optionalFunction={() => setHand("right")}>Right</Option>
-        </OptionGroup>
-
-        <OptionGroup name={"Loft"}>
-          {golf.loft &&
-            golf.loft.map((l, index) => (
-              <Option key={`l-${index}`} optionalFunction={() => setLoft(l)}>
-                {l}°
-              </Option>
-            ))}
-        </OptionGroup>
-
-        <OptionGroup name={"Flex"}>
-          {golf.flex &&
-            golf.flex.map((f, index) => (
-              <Option key={`f-${index}`} optionalFunction={() => setFlex(f)}>
-                {f}
-              </Option>
-            ))}
-        </OptionGroup>
-
-        <OptionGroup name={"Shaft"} direction={"row"}>
-          {golf.shaft &&
-            golf.shaft.map((s, index) => (
-              <Option key={`s-${index}`} optionalFunction={() => setShaft(s)}>
-                <div className={"shaft"}>
-                  <div className={"image-container"}>
-                    <img src={s.image} alt={"shaft"} />
-                  </div>
-                  <div className={"name"}>{s.name}</div>
-                </div>
-              </Option>
-            ))}
-        </OptionGroup>
-        <OptionGroup direction={"row"}>
-          <Option>
-            <div
-              style={{
-                textAlign: "center",
-                padding: "0.3rem 0",
-                fontWeight: 700,
+        <OptionGroup style={{ ...inlineOptions, ...optionGroup }} name={"Hand"}>
+          {hands.map((hand: any) => (
+            <Option
+              visualDisabled={hand.disabled}
+              onClick={() => {
+                setIdentifier("hand");
+                setHand(hand.side);
               }}
             >
-              BUY NOW
-            </div>
-          </Option>
+              {hand.side}
+            </Option>
+          ))}
         </OptionGroup>
+        <OptionGroup
+          disableAutoSelect
+          style={{ ...inlineOptions, ...optionGroup }}
+          name={"Loft"}
+        >
+          {lofts.map((loft: any) => (
+            <Option
+              visualDisabled={loft.disabled}
+              onClick={() => {
+                setLoft(loft._id);
+                setIdentifier("loft");
+              }}
+            >
+              {loft.type}
+            </Option>
+          ))}
+        </OptionGroup>
+        <OptionGroup
+          disableAutoSelect
+          style={{ ...inlineOptions, ...optionGroup }}
+          name={"Flex"}
+        >
+          {flexs.map((flex: any) => (
+            <Option
+              visualDisabled={flex.disabled}
+              onClick={() => {
+                setFlex(flex._id);
+                setIdentifier("flex");
+              }}
+            >
+              {flex.type}
+            </Option>
+          ))}
+        </OptionGroup>
+        <OptionGroup
+          disableAutoSelect
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.3rem",
+            ...optionGroup,
+          }}
+          name={"Shaft"}
+        >
+          {shafts.map((shaft: any) => (
+            <Option
+              visualDisabled={shaft.disabled}
+              onClick={() => {
+                setShaft(shaft._id);
+                setIdentifier("shaft");
+              }}
+              style={inlineOptions}
+            >
+              <div className={"image-container"}>
+                <img src={shaft.image} alt={`shaft-img-${shaft._id}`} />
+              </div>
+              {shaft.name}
+            </Option>
+          ))}
+        </OptionGroup>
+        <Button
+          style={{
+            width: "100%",
+            padding: "1.2rem",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          BUY NOW
+        </Button>
       </div>
     </div>
   );

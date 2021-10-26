@@ -1,0 +1,48 @@
+$shadow-hue: 9.5%;
+$shadow-dark: hsl(0, 0%, $shadow-hue);
+$spread: 2px;
+
+@mixin box-shadow {
+  box-shadow: 0 1rem 0.5rem -0.5rem;
+  box-shadow: 0 2px $spread $shadow-dark, 0 -2px $spread $shadow-dark,
+    2px 0 $spread $shadow-dark, -2px 0 $spread $shadow-dark;
+}
+
+@mixin transition {
+  transition: box-shadow 150ms ease-out, background 200ms ease-out;
+}
+
+.option {
+  padding: 0.7rem 1.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  @include transition();
+  &:hover {
+      background: hsl(0, 0%, 18%);
+      @include box-shadow();
+  }
+  &.active {
+    background: hsl(0, 0%, 18%);
+    @include box-shadow();
+    &:hover {
+      background: hsl(0, 0%, 18%);
+      @include box-shadow();
+    }
+  }
+  &.v-disabled{
+    color: hsl(0, 0%, 50%);
+    background: hsl(0, 0%, 12%) !important;
+    &:hover{
+      background:hsl(0, 0%, 12%) !important; 
+      box-shadow: none !important;
+    }
+  }
+}
+
+.option-group-name{
+  margin-bottom: 0.3rem;
+}

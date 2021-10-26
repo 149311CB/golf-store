@@ -2,7 +2,7 @@
   --accent-hue: 38%;
 
   //Dark color scheme
-  --bg-dark: hsl(0, 0%, 9%);
+  --bg-dark: hsl(0, 0%, 18%);
   --text-dark: hsl(0, 0%, 100%);
   --text-dark-dim: hsl(0, 0%, 54%);
   --focus-dark: hsl(0, 0%, 18%);
@@ -11,10 +11,6 @@
   --border-dark: hsl(0, 0%, 26%);
   --filter-dark: 0;
 
-  // invert(100%) sepia(94%) saturate(24%) hue-rotate(330deg)
-  // brightness(105%) contrast(105%);
-
-  // light color scheme
   --bg-light: hsl(0, 0%, 95%);
   --text-light: hsl(0, 0%, 10%);
   --text-light-dim: hsl(0, 0%, 20%);
@@ -83,4 +79,3 @@
   --border: var(--border-light);
   --filter: var(--filter-light);
 }
-

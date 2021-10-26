@@ -3,7 +3,7 @@ import Center from "./center/Center";
 import Right from "./right/Right";
 import { useFetch } from "../hooks/useFetch";
 
-const products = "http://localhost:5000/api/golfs/";
+const products = "http://localhost:5000/api/golfs/614e1c69b264f70c58db3a44";
 const Products = () => {
   const { data, loading, error } = useFetch(products);
   const {
@@ -24,9 +24,9 @@ const Products = () => {
         <div>loading...</div>
       ) : (
         <div className={"product"}>
-          <Left golf={data![0]} reviews={reviews} />
-          <Center golf={data![0]} />
-          <Right golf={data![0]} />
+          <Left data={data} reviews={reviews} />
+          <Center data={data} />
+          <Right data={data} />
         </div>
       )}
     </>

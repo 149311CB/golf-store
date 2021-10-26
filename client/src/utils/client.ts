@@ -31,6 +31,7 @@ export async function client(
       return data;
     }
     throw new Error(response.statusText);
+    // return { status: response.status, statusText: response.statusText };
   } catch (err) {
     if (err instanceof Error) {
       return Promise.reject(err.message ? err.message : data);
