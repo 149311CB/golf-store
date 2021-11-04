@@ -1,0 +1,20 @@
+.btn {
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  box-sizing: border-box;
+  border-radius: 0.6rem;
+  border: none;
+  background: var(--bg);
+  box-shadow: var(--small-box-shadow);
+  @include transition();
+  &:active {
+    box-shadow: var(--small-inset-box-shadow);
+  }
+  &:hover {
+    background: var(--focus);
+  }
+
+  &.checkout-btn {
+    color: var(--text-standout);
+  }
+}

@@ -3,23 +3,40 @@
 
   //Dark color scheme
   --bg-dark: hsl(0, 0%, 18%);
+  --bg-dark-dim: hsl(0, 0%, 20%);
   --text-dark: hsl(0, 0%, 100%);
-  --text-dark-dim: hsl(0, 0%, 54%);
-  --focus-dark: hsl(0, 0%, 18%);
+  --text-dark-dim: hsl(0, 0%, 50%);
+  --text-dark-standout: hsl(228, 100%, 83%);
+  --focus-dark: hsl(0, 0%, 20%);
   --accent-dark: hsl(199, 100%, var(--accent-hue));
   --standout-dark: hsl(0, 0%, 26%);
-  --border-dark: hsl(0, 0%, 26%);
+  --border-dark: hsl(0, 0%, 25%);
   --filter-dark: 0;
+  --medium-box-shadow-dark: 4px 4px 12px hsl(0, 0%, 12%),
+    -4px -4px 10px hsl(0, 0%, 28%);
+  --medium-inset-box-shadow-dark: inset 4px 4px 12px hsl(0, 0%, 12%),
+    inset -4px -4px 10px hsl(0, 0%, 28%);
+  --small-box-shadow-dark: 3px 3px 6px hsla(0, 0%, 12%, 100%),
+    -3px -3px 6px hsla(0, 0%, 28%, 100%);
+  --small-inset-box-shadow-dark: inset 3px 3px 6px hsla(0, 0%, 12%, 100%),
+    inset -3px -3px 6px hsla(0, 0%, 28%, 100%);
 
-  --bg-light: hsl(0, 0%, 95%);
+  --bg-light: hsl(0, 0%, 90%);
+  --bg-light-dim: hsl(0, 0%, 85%);
   --text-light: hsl(0, 0%, 10%);
-  --text-light-dim: hsl(0, 0%, 20%);
-  --focus-light: hsl(0, 0%, 100%);
+  --text-light-dim: hsl(0, 0%, 50%);
+  --focus-light: hsl(0, 0%, 88%);
   --accent-light: hsl(199, 100%, var(--accent-hue));
   --standout-light: hsl(0, 0%, 95%);
   --border-light: hsl(0, 0%, 85%);
   --filter-light: invert(100%) sepia(0%) saturate(7500%) hue-rotate(147deg)
     brightness(108%) contrast(104%);
+  --medium-box-shadow-light: 5px 5px 14px #c9c9c9, -5px -5px 14px #ffffff;
+  --medium-inset-box-shadow-light: inset 5px 5px 14px #c9c9c9,
+    inset -5px -5px 14px #ffffff;
+  --small-box-shadow-light: 3px 3px 10px #c9c9c9, -3px -3px 10px #ffffff;
+  --small-inset-box-shadow-light: inset 3px 3px 10px #c9c9c9,
+    inset -3px -3px 10px #ffffff;
 }
 
 //noinspection SassScssUnresolvedVariable
@@ -27,6 +44,7 @@
   color-scheme: light;
 
   --bg: var(--bg-light);
+  --bg-dim: var(--bg-light-dim);
   --text: var(--text-light);
   --text-dim: var(--text-light-dim);
   --focus: var(--focus-light);
@@ -34,6 +52,10 @@
   --standout: var(--standout-light);
   --border: var(--border-light);
   --filter: var(--filter-light);
+  --medium-box-shadow: var(--medium-box-shadow-light);
+  --medium-inset-box-shadow: var(--medium-inset-box-shadow-light);
+  --small-box-shadow: var(--small-box-shadow-light);
+  --small-inset-box-shadow: var(--small-inset-box-shadow-light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,40 +64,53 @@
     color-scheme: dark;
 
     --bg: var(--bg-dark);
+    --bg-dim: var(--bg-dark-dim);
     --text: var(--text-dark);
     --text-dim: var(--text-dark-dim);
+    --text-standout: var(--text-dark-standout);
     --focus: var(--focus-dark);
     --accent: var(--accent-dark);
     --standout: var(--standout-dark);
     --border: var(--border-dark);
     --filter: var(--filter-dark);
+    --medium-box-shadow: var(--medium-box-shadow-dark);
+    --medium-inset-box-shadow: var(--medium-inset-box-shadow-dark);
+    --small-box-shadow: var(--small-box-shadow-dark);
+    --small-inset-box-shadow: var(--small-inset-box-shadow-dark);
   }
 }
 
-//noinspection SassScssUnresolvedVariable
-[color-scheme="dark"] {
-  color-scheme: dark;
+// //noinspection SassScssUnresolvedVariable
+// [color-scheme="dark"] {
+//   color-scheme: dark;
 
-  --bg: var(--bg-dark);
-  --text: var(--text-dark);
-  --text-dim: var(--text-dark-dim);
-  --focus: var(--focus-dark);
-  --accent: var(--accent-dark);
-  --standout: var(--standout-dark);
-  --border: var(--border-dark);
-  --filter: var(--filter-dark);
-}
+//   --bg: var(--bg-dark);
+//   --bg-dim: var(--bg-dark-dim);
+//   --text: var(--text-dark);
+//   --text-dim: var(--text-dark-dim);
+//   --focus: var(--focus-dark);
+//   --accent: var(--accent-dark);
+//   --standout: var(--standout-dark);
+//   --border: var(--border-dark);
+//   --filter: var(--filter-dark);
+//   --medium-box-shadow: var(--medium-box-shadow-dark);
+//   --medium-inset-box-shadow: var(--medium-inset-box-shadow-dark);
+//   --small-box-shadow: var(--small-box-shadow-dark);
+// }
 
-//noinspection SassScssUnresolvedVariable
-[color-scheme="light"] {
-  color-scheme: light;
+// //noinspection SassScssUnresolvedVariable
+// [color-scheme="light"] {
+//   color-scheme: light;
 
-  --bg: var(--bg-light);
-  --text: var(--text-light);
-  --text-dim: var(--text-light-dim);
-  --focus: var(--focus-light);
-  --accent: var(--accent-light);
-  --standout: var(--standout-light);
-  --border: var(--border-light);
-  --filter: var(--filter-light);
-}
+//   --bg: var(--bg-light);
+//   --bg-dim: var(--bg-light-dim);
+//   --text: var(--text-light);
+//   --text-dim: var(--text-light-dim);
+//   --focus: var(--focus-light);
+//   --accent: var(--accent-light);
+//   --standout: var(--standout-light);
+//   --border: var(--border-light);
+//   --filter: var(--filter-light);
+//   --medium-box-shadow: var(--medium-box-shadow-light);
+//   --small-box-shadow: var(--small-box-shadow-light);
+// }

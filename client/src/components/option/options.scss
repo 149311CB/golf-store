@@ -1,0 +1,42 @@
+$shadow-hue: 9.5%;
+$shadow-dark: hsl(0, 0%, $shadow-hue);
+$spread: 2px;
+
+.option {
+  padding: 0.7rem 1rem;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  box-sizing: border-box;
+  border-radius: 0.6rem;
+  @include transition();
+
+  &:active{
+    box-shadow: var(--small-inset-box-shadow) !important;
+  }
+
+  &:hover {
+    background: var(--focus);
+    box-shadow: var(--small-box-shadow);
+  }
+  &.active {
+    box-shadow: var(--small-box-shadow) !important;
+    &:hover {
+      background: var(--focus);
+    }
+  }
+  &.v-disabled {
+    color: var(--text-dim);
+    background: var(--bg-dim) !important;
+    &:hover {
+      @include disabledBrightnessFilter();
+      box-shadow: none !important;
+    }
+  }
+}
+
+.option-group-name {
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+}

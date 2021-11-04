@@ -19,9 +19,9 @@ const calculatePrice = asyncHandler(async (req, res, next) => {
     //   return true;
     // });
 
-    cart.products.map(item=>{
-      total = item.quantity * item.product.price
-    })
+    cart.products.map((item) => {
+      total = item.quantity * item.product.price;
+    });
 
     // if (outStockProduct.length < cart.products.length) {
     //   return res.json({ outStockProduct, message: "out of stock" });
@@ -31,8 +31,7 @@ const calculatePrice = asyncHandler(async (req, res, next) => {
     return next();
   }
 
-  return res.status(404).json({message: "cart not found" });
-
+  return res.status(404).json({ message: "cart not found" });
 });
 
 export { calculatePrice };

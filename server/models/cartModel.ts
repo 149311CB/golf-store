@@ -11,10 +11,10 @@ const itemSchema = new Schema<itemInterface>({
     type: Number,
     required: true,
   },
-  isActive:{
-    type:Boolean,
-    required:true,
-  }
+  isActive: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const cartSchema = new Schema<cartInterface>({

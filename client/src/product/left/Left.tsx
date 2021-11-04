@@ -1,7 +1,7 @@
 import React from "react";
 // import Rating from "../../components/Rating";
 // import { useSumReviews } from "../../hooks/useSumReviews";
-import { productInterface, reviewInterface } from "../../types";
+import { productInterface, reviewInterface } from "../../types/types";
 
 interface Props {
   data: productInterface;

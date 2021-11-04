@@ -48,6 +48,38 @@ main {
   }
 }
 
+@mixin box-shadow {
+  box-shadow: 0 1rem 0.5rem -0.5rem;
+  box-shadow: 0 2px $spread $shadow-dark, 0 -2px $spread $shadow-dark,
+    2px 0 $spread $shadow-dark, -2px 0 $spread $shadow-dark;
+}
+
+@mixin transition {
+  transition: box-shadow 150ms ease-out, background 200ms ease-out;
+}
+
+@keyframes disabledBrightnessFilterKeyframes {
+  0% {
+    filter: brightness(1);
+    -webkit-filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+  }
+}
+
+@mixin disabledBrightnessFilter{
+  animation-name: disabledBrightnessFilterKeyframes;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+  transition-timing-function: ease-out;
+}
+
 @import "../components";
 
 @import "../header";

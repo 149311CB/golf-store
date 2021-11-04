@@ -1,4 +1,4 @@
-import { reviewInterface } from "../types";
+import { reviewInterface } from "../types/types";
 
 export const useSumReviews = (id: string, reviews: reviewInterface[]) => {
   return reviews.reduce(

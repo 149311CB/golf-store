@@ -52,7 +52,7 @@ const getGolfById = asyncHandler(async (req, res) => {
         as: "flex",
       },
     },
-    {$unwind:"$flex"}
+    { $unwind: "$flex" },
   ]);
 
   const shafts = await Variant.aggregate([
@@ -66,7 +66,7 @@ const getGolfById = asyncHandler(async (req, res) => {
         as: "shaft",
       },
     },
-    {$unwind:"$shaft"}
+    { $unwind: "$shaft" },
   ]);
 
   const lofts = await Variant.aggregate([
@@ -80,12 +80,14 @@ const getGolfById = asyncHandler(async (req, res) => {
         as: "loft",
       },
     },
-    {$unwind:"$loft"}
+    { $unwind: "$loft" },
   ]);
 
-  const golf = await Golf.findById(req.params.id)
-  const variants = await Variant.find({golf:mongoose.Types.ObjectId(req.params.id)}).populate("shaft flex loft");
-  const properties = {}
+  const golf = await Golf.findById(req.params.id);
+  const variants = await Variant.find({
+    golf: mongoose.Types.ObjectId(req.params.id),
+  }).populate("hand shaft flex loft");
+  const properties = {};
   // @ts-ignore
   properties.shafts = shafts;
   // @ts-ignore

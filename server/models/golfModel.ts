@@ -6,10 +6,9 @@ import {
   shaftInterface,
 } from "../types/golfType";
 
-const variantsRef = new Schema({
-  variant: {
-    type: Schema.Types.ObjectId,
-    ref: "Variant",
+const handSchema = new Schema({
+  side: {
+    type: String,
     required: true,
   },
 });
@@ -30,13 +29,6 @@ const flexSchema = new Schema({
   },
 });
 
-const flexRef = new Schema({
-  type:{
-    type:Schema.Types.ObjectId,
-    required:true
-  }
-})
-
 const shaftSchema = new Schema({
   name: {
     type: String,
@@ -49,19 +41,6 @@ const shaftSchema = new Schema({
   },
 });
 
-const optionSchema = new Schema({
-  hand: {
-    type: String,
-    enum: ["right", "left"],
-    default: "right",
-    required: true,
-  },
-  stock: {
-    type: Number,
-    required: true,
-  },
-});
-
 const variantSchema = new Schema({
   golf: {
     type: Schema.Types.ObjectId,
@@ -69,10 +48,8 @@ const variantSchema = new Schema({
     required: true,
   },
   hand: {
-    type: String,
-    enum: ["right", "left", "both"],
-    default: "both",
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "Hand",
   },
   stock: {
     type: Number,
@@ -91,7 +68,6 @@ const variantSchema = new Schema({
     ref: "Flex",
   },
 });
-
 
 const golfSchema = new Schema<golfInterface>({
   name: {
@@ -116,6 +92,7 @@ const golfSchema = new Schema<golfInterface>({
   },
 });
 
+const Hand = model("Hand", handSchema, "hands");
 const Loft = model("Loft", loftSchema, "lofts");
 const Shaft = model("Shaft", shaftSchema, "shafts");
 const Flex = model("Flex", flexSchema, "flexs");

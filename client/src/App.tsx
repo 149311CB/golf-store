@@ -13,7 +13,7 @@ function App() {
       <Router>
         <main>
           <Route path={"/"} component={Homepage} exact />
-          {/* <Route path={"/"} component={Product} exact /> */}
+          <Route path={"/product/:name"} component={Product} exact />
           {/* <Route path={"/"} component={Checkout} exact /> */}
           {/*<Route path={"/"} component={NewModels} exact />*/}
           {/*<Route path={"/"} component={TestRenderAlgo} exact />*/}

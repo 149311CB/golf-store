@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import OptionGroup from "../../components/OptionGroup";
-import Option from "../../components/Option";
+import OptionGroup from "../../components/option/OptionGroup";
+import Option from "../../components/option/Option";
 
 interface Props {
   data: any;

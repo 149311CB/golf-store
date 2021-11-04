@@ -1,28 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useFetch } from "../hooks/useFetch";
-import { client } from "../utils/client";
+import Category from "./Category";
 
 const Home = () => {
-  const { data, loading, error } = useFetch("/api/golfs/");
-  console.log(data);
+  const { data, loading, error } = useFetch(
+    "/api/categories/list",
+    {
+      categoryList: ["top sale"],
+    },
+    "POST"
+  );
+
+  if (error) {
+    return <div className={"homepage"}>Uh oh! Something went wrong!</div>;
+  }
 
   return (
     <div className={"homepage"}>
-      <div className={"container"}>
-        {data &&
-          data.map((golf: any) => (
-            <div className={"card"}>
-              <div className={"image-container"}>
-                <img src={golf.images[0]} alt={"product-main"} />
-              </div>
-              <div>
-                <h3>{golf.name}</h3>
-                <div>${golf.price}</div>
-                <div>{golf.description}</div>
-              </div>
-            </div>
-          ))}
-      </div>
+      <div className={"carousel"}></div>
+      {data &&
+        data.map((category: any) => (
+          <Category products={category.products} key={category._id} />
+        ))}
     </div>
   );
 };

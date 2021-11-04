@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { OptionGroupContext } from "./OptionGroup";
 
 interface OptionProps {
@@ -18,13 +18,25 @@ const Option: React.FC<OptionProps> = ({
 }) => {
   const context = useContext(OptionGroupContext);
   const optionRef = useRef<HTMLDivElement>(null);
-  const { setActive, removeActiveSibling } = context;
+  const { setActive, removeActiveSibling, runCallback } = context;
+
+  // Remove v-disabled on option click
+  // Set active to the current clicked ref
   const defaultOnClick = () => {
     setActive(optionRef.current);
+    runCallback(value);
+
     if (optionRef.current?.classList.contains("v-disabled")) {
       optionRef.current?.classList.remove("v-disabled");
     }
   };
+
+  useEffect(() => {
+    if (optionRef.current?.classList.contains("active")) {
+      runCallback(value);
+    }
+  });
+
   return (
     <div
       className={`option ${visualDisabled ? "v-disabled" : ""}`}

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { CheckoutInterface, OrderInterface } from "../types";
+import { CheckoutInterface, OrderInterface } from "../types/types";
 import Paypal from "./paypal/Paypal";
 import Stripe from "./stripe/Stripe";
 

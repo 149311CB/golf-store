@@ -1,289 +1,129 @@
-import React, { useEffect, useState } from "react";
-import OptionGroup from "../../components/OptionGroup";
-import Option from "../../components/Option";
-import Button from "../../components/Button";
+import React, { CSSProperties, useEffect, useState } from "react";
+import { transformData, VariantStore } from "../../hooks/useTransformData";
+import {
+  Hand,
+  IGolfProperty,
+} from "../../types/Golfs";
+import { filterActive, filterDisabled } from "../../hooks/useFilterData";
+import { Iterator, MapIterator } from "../../utils/iterator";
+import Button from "../../components/button/Button";
+import Hands from "./hands/Hands";
+import Lofts from "./lofts/Lofts";
+import FLexs from "./flexs/FLexs";
+import Shafts from "./shafts/Shafts";
 
-interface Props {
+interface IProps {
   data: any;
 }
 
-const Right: React.FC<Props> = ({ data }) => {
-  const { golf, variants } = data;
-  const [activeVariants, setActiveVariants] = useState<any[]>([]);
+export interface IGolfComponentsProps {
+  values: Iterator | undefined;
+  onPropertyChange: Function;
+  groupStyle: CSSProperties;
+  optionStyle: CSSProperties;
+}
 
-  const [identifier, setIdentifier] = useState("hand");
+const groupStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  gap: "0.9rem",
+  marginBottom: "1rem",
+};
 
-  const [flexs, setFlexs] = useState<any>([]);
-  const [flex, setFlex] = useState();
+const optionStyle: CSSProperties = {
+  width: "80px",
+  textAlign: "center",
+};
 
-  const [lofts, setLofts] = useState<any[]>([]);
-  const [loft, setLoft] = useState<any[]>();
+const instance = VariantStore.getInstance();
+const Right: React.FC<IProps> = ({ data }) => {
+  const [hands, setHands] = useState<Iterator>();
+  const [lofts, setLofts] = useState<Iterator>();
+  const [flexs, setFlexs] = useState<Iterator>();
+  const [shafts, setShafts] = useState<Iterator>();
+  const [render, setRender] = useState(false);
 
-  const [hands, setHands] = useState<any[]>([]);
-  const [hand, setHand] = useState<any>();
+  // manages states
+  const setProperties = () => {
+    const {
+      hands: transformedHands,
+      lofts: transformedLofts,
+      flexs: transformedFlexs,
+      shafts: transformedShafts,
+    } = instance.transformedData;
 
-  const [shafts, setShafts] = useState<any[]>([]);
-  const [shaft, setShaft] = useState<any>();
-
-  const inlineOptions = {
-    display: "inline-flex",
-    gap: "0.3rem",
+    setHands(new MapIterator(transformedHands));
+    setLofts(new MapIterator(transformedLofts));
+    setFlexs(new MapIterator(transformedFlexs));
+    setShafts(new MapIterator(transformedShafts));
+    setRender((r) => !r);
   };
 
-  const optionGroup = {
-    marginBottom: "0.6rem",
+  const onPropertyChange = (property: IGolfProperty) => {
+    const propertyName = property.constructor.name.toLowerCase();
+    property?.disabled ? filterDisabled(property) : filterActive(property);
+
+    // @ts-ignore
+    instance.choosenVariant[propertyName] = property;
+    setProperties();
   };
 
-  const checkIfExits = (value: any, arr: any[]) => {
-    for (let i = 0; i < arr.length; i++) {
-      if (value._id === arr[i]._id) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const checkIfHandExits = (value: any, arr: any[]) => {
-    for (let i = 0; i < arr.length; i++) {
-      if (value === arr[i].side) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const invertDisabled = (value: any, arr: any[]) => {
-    for (let i = 0; i < arr.length; i++) {
-      if (value._id === arr[i]._id) {
-        arr[i].disabled = false;
-        break;
-      }
-    }
-  };
-
+  // Only run whenever data changed to initialized states
   useEffect(() => {
-    if (identifier !== "hand") return;
-    if (hands.length === 0) return;
-    const activeVariantArr: any = [];
-    variants.forEach((variant: any) => {
-      if (variant.hand === hand) {
-        activeVariantArr.push(variant._id);
-      }
-    });
-    setActiveVariants(activeVariantArr);
-  }, [hand, identifier]);
+    if (!data.variants) return;
 
-  useEffect(() => {
-    if (identifier !== "flex") return;
-    if (flexs.length === 0) return;
-    const activeVariantArr: any = [];
-    variants.forEach((variant: any) => {
-      if (variant.flex._id === flex) {
-        activeVariantArr.push(variant._id);
-      }
-    });
-    setActiveVariants(activeVariantArr);
-  }, [flex, identifier]);
+    // Transform data and initialized states
+    const instance = VariantStore.getInstance();
+    transformData(data.variants);
+    const { hands: transformedHands } = instance.transformedData;
+    setProperties();
 
-  useEffect(() => {
-    if (identifier !== "loft") return;
-    if (lofts.length === 0) return;
-    const activeVariantArr: any = [];
-    variants.forEach((variant: any) => {
-      if (variant.loft._id === loft) {
-        // if(flex !== null && variant.flex._id === flex){
-        //   if(shaft !== null && variant.shaft._id === shaft){
-        //     if(variant.hand !== null && variant.hand === hand){
-        activeVariantArr.push(variant._id);
-        // }
-        // }
-        // }
-      }
-    });
-    setActiveVariants(activeVariantArr);
-  }, [loft, identifier]);
-
-  useEffect(() => {
-    if (identifier !== "shaft") return;
-    if (shafts.length === 0) return;
-    const activeVariantArr: any = [];
-    variants.forEach((variant: any) => {
-      if (variant.shaft._id === shaft) {
-        activeVariantArr.push(variant._id);
-      }
-    });
-    console.log(activeVariants);
-    setActiveVariants(activeVariantArr);
-  }, [shaft, identifier]);
-
-  useEffect(() => {
-    const flexsSet: any[] = [];
-    const loftsSet: any[] = [];
-    const shaftsSet: any[] = [];
-    const handsSet: any[] = [];
-    if (activeVariants.length === 0) return;
-    variants.forEach((variant: any) => {
-      if (!checkIfHandExits(variant.hand, handsSet)) {
-        if (activeVariants.includes(variant._id)) {
-          handsSet.push({ side: variant.hand, disabled: false });
-        } else {
-          handsSet.push({ side: variant.hand, disabled: true });
-        }
-      }
-
-      if (!checkIfExits(variant.flex, flexsSet)) {
-        if (activeVariants.includes(variant._id)) {
-          flexsSet.push({ ...variant.flex, disabled: false });
-        } else {
-          flexsSet.push({ ...variant.flex, disabled: true });
-        }
-      } else if (activeVariants.includes(variant._id)) {
-        invertDisabled(variant.flex, flexsSet);
-      }
-      if (!checkIfExits(variant.loft, loftsSet)) {
-        if (activeVariants.includes(variant._id)) {
-          loftsSet.push({ ...variant.loft, disabled: false });
-        } else {
-          loftsSet.push({ ...variant.loft, disabled: true });
-        }
-      } else if (activeVariants.includes(variant._id)) {
-        invertDisabled(variant.loft, loftsSet);
-      }
-      if (!checkIfExits(variant.shaft, shaftsSet)) {
-        if (activeVariants.includes(variant._id)) {
-          shaftsSet.push({ ...variant.shaft, disabled: false });
-        } else {
-          shaftsSet.push({ ...variant.shaft, disabled: true });
-        }
-      } else if (activeVariants.includes(variant._id)) {
-        invertDisabled(variant.shaft, shaftsSet);
-      }
-    });
-
-    setFlexs(flexsSet);
-    setLofts(loftsSet);
-    setShafts(shaftsSet);
-    setHands(
-      handsSet.sort((a, b) => {
-        return b.side < a.side ? -1 : 1;
-      })
-    );
-  }, [activeVariants]);
-
-  // Run on the first render
-  useEffect(() => {
-    const flexsSet: any[] = [];
-    const loftsSet: any[] = [];
-    const handsSet: any[] = [];
-    const shaftsSet: any[] = [];
-
-    variants.forEach((variant: any) => {
-      if (!checkIfExits(variant.flex, flexsSet)) {
-        flexsSet.push({ ...variant.flex, disabled: false });
-      }
-      if (!checkIfExits(variant.loft, loftsSet)) {
-        // if (variant.flex._id === flex) {
-        loftsSet.push({ ...variant.loft, disabled: false });
-        // } else {
-        // loftsSet.push({ ...variant.loft, disabled: true });
-        // }
-      }
-      shaftsSet.push({ ...variant.shaft, disabled: false });
-    });
-    handsSet.push({ side: "right", disabled: false });
-    handsSet.push({ side: "left", disabled: false });
-    setFlexs(flexsSet);
-    setLofts(loftsSet);
-    setShafts(shaftsSet);
-    setHands(handsSet);
-    setHand("right");
-  }, []);
+    // Set the first selected property using filterActive
+    const firstHand = transformedHands.values().next();
+    const hand = firstHand.value;
+    filterActive(new Hand(hand));
+  }, [data]);
 
   return (
     <div className={"right"}>
       <div className={"container"}>
-        <OptionGroup style={{ ...inlineOptions, ...optionGroup }} name={"Hand"}>
-          {hands.map((hand: any) => (
-            <Option
-              visualDisabled={hand.disabled}
-              onClick={() => {
-                setIdentifier("hand");
-                setHand(hand.side);
-              }}
-            >
-              {hand.side}
-            </Option>
-          ))}
-        </OptionGroup>
-        <OptionGroup
-          disableAutoSelect
-          style={{ ...inlineOptions, ...optionGroup }}
-          name={"Loft"}
-        >
-          {lofts.map((loft: any) => (
-            <Option
-              visualDisabled={loft.disabled}
-              onClick={() => {
-                setLoft(loft._id);
-                setIdentifier("loft");
-              }}
-            >
-              {loft.type}
-            </Option>
-          ))}
-        </OptionGroup>
-        <OptionGroup
-          disableAutoSelect
-          style={{ ...inlineOptions, ...optionGroup }}
-          name={"Flex"}
-        >
-          {flexs.map((flex: any) => (
-            <Option
-              visualDisabled={flex.disabled}
-              onClick={() => {
-                setFlex(flex._id);
-                setIdentifier("flex");
-              }}
-            >
-              {flex.type}
-            </Option>
-          ))}
-        </OptionGroup>
-        <OptionGroup
-          disableAutoSelect
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.3rem",
-            ...optionGroup,
-          }}
-          name={"Shaft"}
-        >
-          {shafts.map((shaft: any) => (
-            <Option
-              visualDisabled={shaft.disabled}
-              onClick={() => {
-                setShaft(shaft._id);
-                setIdentifier("shaft");
-              }}
-              style={inlineOptions}
-            >
-              <div className={"image-container"}>
-                <img src={shaft.image} alt={`shaft-img-${shaft._id}`} />
-              </div>
-              {shaft.name}
-            </Option>
-          ))}
-        </OptionGroup>
+        <Hands
+          values={hands}
+          onPropertyChange={onPropertyChange}
+          groupStyle={groupStyle}
+          optionStyle={optionStyle}
+        />
+        <Lofts
+          values={lofts}
+          onPropertyChange={onPropertyChange}
+          groupStyle={groupStyle}
+          optionStyle={optionStyle}
+        />
+        <FLexs
+          values={flexs}
+          onPropertyChange={onPropertyChange}
+          groupStyle={groupStyle}
+          optionStyle={optionStyle}
+        />
+        <Shafts
+          values={shafts}
+          onPropertyChange={onPropertyChange}
+          groupStyle={groupStyle}
+          optionStyle={optionStyle}
+        />
         <Button
+          className={"checkout-btn"}
           style={{
+            marginTop: "1.3rem",
+            padding: "1rem 0",
             width: "100%",
-            padding: "1.2rem",
-            fontWeight: 600,
-            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+          onClick={() => {
+            console.log(instance.choosenVariant);
           }}
         >
-          BUY NOW
+          Proceed to checkout
         </Button>
       </div>
     </div>

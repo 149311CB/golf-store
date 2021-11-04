@@ -11,6 +11,7 @@ interface OptionGroupProps {
   style?: React.CSSProperties;
   name?: string;
   disableAutoSelect?: boolean;
+  onChange?: Function;
 }
 
 export const OptionGroupContext = createContext<any>(null);
@@ -20,9 +21,11 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
   style,
   name,
   disableAutoSelect = false,
+  onChange,
 }) => {
   const optionGroupRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<any>(null);
+  const selectedValue = useRef(null);
 
   const removeActiveSibling = (e: MouseEvent) => {
     if (active === e.target) return;
@@ -30,11 +33,19 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
     activeChild?.classList.remove("active");
   };
 
+  const runCallback = (value: any) => {
+    if (selectedValue.current !== value) {
+      selectedValue.current = value
+      if (onChange) onChange(selectedValue.current);
+    }
+  };
+
   let value: any;
 
   value = {
     removeActiveSibling,
     setActive,
+    runCallback
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
         active.classList.add("active");
       }
     }
-  }, [children, active]);
+  }, [children, active, disableAutoSelect, onChange]);
 
   return (
     <OptionGroupContext.Provider value={value}>
@@ -75,7 +86,9 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
         {name && (
           <div className={"option-group-name"}>
             <strong>{`${name}: `}</strong>
-            <span>{active && active!.textContent}</span>
+            <span style={{ textOverflow: "clip" }}>
+              {active && active!.textContent}
+            </span>
           </div>
         )}
         <div style={style}>{children}</div>
