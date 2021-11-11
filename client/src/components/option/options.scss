@@ -20,12 +20,14 @@ $spread: 2px;
     background: var(--focus);
     box-shadow: var(--small-box-shadow);
   }
+
   &.active {
     box-shadow: var(--small-box-shadow) !important;
     &:hover {
       background: var(--focus);
     }
   }
+
   &.v-disabled {
     color: var(--text-dim);
     background: var(--bg-dim) !important;
@@ -34,6 +36,15 @@ $spread: 2px;
       box-shadow: none !important;
     }
   }
+
+  &.disabled{
+    color: var(--text-dim);
+    background: var(--bg-dim) !important;
+    &:hover{
+      box-shadow: none !important;
+    }
+  }
+
 }
 
 .option-group-name {

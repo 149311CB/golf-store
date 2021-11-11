@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { OptionGroupContext } from "./OptionGroup";
 
 interface OptionProps {
   children?: React.ReactNode;
   onClick?: Function;
   visualDisabled?: boolean;
+  disabled?: boolean;
   style?: React.CSSProperties;
   value?: any;
 }
@@ -13,6 +14,7 @@ const Option: React.FC<OptionProps> = ({
   children,
   onClick,
   visualDisabled,
+  disabled,
   style,
   value,
 }) => {
@@ -32,6 +34,7 @@ const Option: React.FC<OptionProps> = ({
   };
 
   useEffect(() => {
+    if (disabled) return;
     if (optionRef.current?.classList.contains("active")) {
       runCallback(value);
     }
@@ -39,11 +42,15 @@ const Option: React.FC<OptionProps> = ({
 
   return (
     <div
-      className={`option ${visualDisabled ? "v-disabled" : ""}`}
+      className={`option  ${
+        disabled ? "disabled" : visualDisabled ? "v-disabled" : ""
+      }`}
       onClick={(e) => {
-        removeActiveSibling(e);
-        defaultOnClick();
-        onClick && onClick(value);
+        if (!disabled) {
+          removeActiveSibling(e);
+          defaultOnClick();
+          onClick && onClick(value);
+        }
       }}
       ref={optionRef}
       style={style}

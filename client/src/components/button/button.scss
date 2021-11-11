@@ -2,19 +2,31 @@
   cursor: pointer;
   padding: 0.7rem 1.5rem;
   box-sizing: border-box;
-  border-radius: 0.6rem;
   border: none;
   background: var(--bg);
-  box-shadow: var(--small-box-shadow);
+
   @include transition();
+
+  @include usingBorderRadiusMixin();
+
   &:active {
-    box-shadow: var(--small-inset-box-shadow);
+    @include usingInsetBoxShadowMixin();
   }
+
   &:hover {
     background: var(--focus);
+    @include usingBoxShadowMixin();
   }
 
   &.checkout-btn {
     color: var(--text-standout);
+  }
+
+  &.disabled {
+    color: var(--text-dim);
+    background: var(--bg-dim);
+    &:active {
+      box-shadow: none !important;
+    }
   }
 }

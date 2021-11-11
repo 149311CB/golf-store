@@ -7,20 +7,34 @@ interface Props {
   error?: any;
 }
 
-export const useFetch = (url: string, body?: any, method?: any) => {
+export enum Method {
+  GET = "GET",
+  POST = "POST",
+}
+
+export const useFetch = (
+  url: string,
+  body?: any,
+  method?: Method,
+  isExecute?: boolean
+) => {
+  if (isExecute === undefined) {
+    isExecute = true;
+  }
   const promiseValue: Props = { data: null, loading: true, error: null };
   const [state, setState] = useState(promiseValue);
 
   useEffect(() => {
+    if (!isExecute) return;
     setState((state) => ({ ...state, loading: true })); // This line cause re-render
 
     const fetchData = async () => {
       try {
         let data = null;
-        if (method === "GET") {
+        if (method === Method.GET) {
           data = await client.get(url);
         }
-        if (method === "POST") {
+        if (method === Method.POST) {
           data = await client.post(url, body);
         }
         setState({ data: data, loading: false }); // This line cause re-render
@@ -31,6 +45,6 @@ export const useFetch = (url: string, body?: any, method?: any) => {
 
     // This task being queue
     fetchData().then();
-  }, [url]);
+  }, [url, body, method, isExecute]);
   return state;
 };

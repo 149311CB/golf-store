@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Preview from "./Preview";
-import { golfInterface, productInterface } from "../../types/types";
+import { productInterface } from "../../types/types";
 
 interface Props {
   data: productInterface;

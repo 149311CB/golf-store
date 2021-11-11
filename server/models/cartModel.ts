@@ -1,29 +1,34 @@
 import { Schema, model } from "mongoose";
-import { cartInterface, itemInterface } from "../types/cartType";
+import { ICartInterface, IItemInterface } from "../types/cartType";
 
-const itemSchema = new Schema<itemInterface>({
+const itemSchema = new Schema<IItemInterface>({
   product: {
     type: Schema.Types.ObjectId,
     ref: "Golf",
+    required: true,
+  },
+  variant: {
+    type: Schema.Types.ObjectId,
+    ref: "Variant",
     required: true,
   },
   quantity: {
     type: Number,
     required: true,
   },
+});
+
+const cartSchema = new Schema<ICartInterface>({
+  user: {
+    type: Schema.Types.ObjectId,
+  },
+  products: [itemSchema],
   isActive: {
     type: Boolean,
     required: true,
   },
 });
 
-const cartSchema = new Schema<cartInterface>({
-  user: {
-    type: Schema.Types.ObjectId,
-  },
-  products: [itemSchema],
-});
-
-const Cart = model<cartInterface>("Cart", cartSchema, "carts");
+const Cart = model<ICartInterface>("Cart", cartSchema, "carts");
 
 export default Cart;

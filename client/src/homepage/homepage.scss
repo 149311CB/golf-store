@@ -34,6 +34,7 @@
     height: 350px;
     @include transition;
     cursor: pointer;
+    color: var(--text);
 
     &:hover {
       box-shadow: var(--medium-box-shadow);

@@ -1,18 +1,18 @@
-export interface hand {
+export interface IHand {
   name: string;
 }
 
-export interface loftInterface {
+export interface ILoftInterface {
   type: number;
   stock: number;
 }
 
-export interface flexInterface {
+export interface IFlexInterface {
   name: string;
   stock: number;
 }
 
-export interface shaftInterface {
+export interface IShaftInterface {
   name: string;
   image: string;
   stock: number;
@@ -20,16 +20,11 @@ export interface shaftInterface {
   flexs: string[];
 }
 
-export interface golfInterface {
+export interface IGolfInterface {
   name: string;
-  longName?: string;
-  price: number;
-  stock: number;
-  loft: loftInterface[];
-  shaft: shaftInterface[];
-  flex: flexInterface[];
-  hand: hand[];
-  sku: string;
+  longName: string;
   description: string;
-  images: string[];
+  images: [];
+  price: number;
+  sku: string;
 }

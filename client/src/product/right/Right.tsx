@@ -1,9 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from "react";
 import { transformData, VariantStore } from "../../hooks/useTransformData";
-import {
-  Hand,
-  IGolfProperty,
-} from "../../types/Golfs";
+import { Variant, Hand, IGolfProperty } from "../../types/Golfs";
 import { filterActive, filterDisabled } from "../../hooks/useFilterData";
 import { Iterator, MapIterator } from "../../utils/iterator";
 import Button from "../../components/button/Button";
@@ -11,6 +8,7 @@ import Hands from "./hands/Hands";
 import Lofts from "./lofts/Lofts";
 import FLexs from "./flexs/FLexs";
 import Shafts from "./shafts/Shafts";
+import { client } from "../../utils/client";
 
 interface IProps {
   data: any;
@@ -36,12 +34,40 @@ const optionStyle: CSSProperties = {
 };
 
 const instance = VariantStore.getInstance();
+const verifyChoosenVariant = (golf: any): any => {
+  const choosenVariant = instance.choosenVariant;
+
+  const choosen: Variant = instance.activeVariants.find((variant: Variant) => {
+    return (
+      variant.hand?._id === choosenVariant.hand?._id &&
+      choosenVariant.loft?._id === variant.loft?._id &&
+      variant.flex?._id === choosenVariant.flex?._id &&
+      variant.shaft?._id === choosenVariant.shaft?._id
+    );
+  });
+  if (choosen && choosen.stock > 0) {
+    const choosenProduct = {
+      user: "610844bf701a78827a321fa6",
+      product: {
+        product: golf._id,
+        variant: choosen._id,
+        quantity: 1,
+      },
+    };
+    return choosenProduct;
+  } else {
+    console.log("You had not choose all option or something bad had happened");
+  }
+  return null;
+};
+
 const Right: React.FC<IProps> = ({ data }) => {
   const [hands, setHands] = useState<Iterator>();
   const [lofts, setLofts] = useState<Iterator>();
   const [flexs, setFlexs] = useState<Iterator>();
   const [shafts, setShafts] = useState<Iterator>();
   const [render, setRender] = useState(false);
+  const [choosenProduct, setChoosenProduct] = useState(null);
 
   // manages states
   const setProperties = () => {
@@ -61,7 +87,9 @@ const Right: React.FC<IProps> = ({ data }) => {
 
   const onPropertyChange = (property: IGolfProperty) => {
     const propertyName = property.constructor.name.toLowerCase();
-    property?.disabled ? filterDisabled(property) : filterActive(property);
+    property?.visualDisabled
+      ? filterDisabled(property)
+      : filterActive(property);
 
     // @ts-ignore
     instance.choosenVariant[propertyName] = property;
@@ -75,14 +103,36 @@ const Right: React.FC<IProps> = ({ data }) => {
     // Transform data and initialized states
     const instance = VariantStore.getInstance();
     transformData(data.variants);
-    const { hands: transformedHands } = instance.transformedData;
+    const variants: Variant[] = instance.variants;
     setProperties();
 
     // Set the first selected property using filterActive
-    const firstHand = transformedHands.values().next();
-    const hand = firstHand.value;
-    filterActive(new Hand(hand));
+    const availableVariant: Variant | undefined = variants.find(
+      (variant: Variant) => {
+        return variant.stock > 0;
+      }
+    );
+
+    if (availableVariant !== undefined) {
+      // @ts-ignore
+      filterActive(new Hand(availableVariant.hand));
+    } else {
+      filterActive(null);
+    }
   }, [data]);
+
+  useEffect(() => {
+    if (choosenProduct !== null) {
+      const addToCart = async () => {
+        try {
+          await client.post("/api/carts/addToCart", choosenProduct);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      addToCart();
+    }
+  }, [choosenProduct]);
 
   return (
     <div className={"right"}>
@@ -120,10 +170,10 @@ const Right: React.FC<IProps> = ({ data }) => {
             fontWeight: "bold",
           }}
           onClick={() => {
-            console.log(instance.choosenVariant);
+            setChoosenProduct(verifyChoosenVariant(data.golf));
           }}
         >
-          Proceed to checkout
+          Add to cart
         </Button>
       </div>
     </div>

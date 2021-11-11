@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
 interface ICategoryProps {
@@ -6,6 +6,7 @@ interface ICategoryProps {
 }
 
 const Category: React.FC<ICategoryProps> = ({ products }) => {
+  console.log(products)
   const history = useHistory();
 
   return (

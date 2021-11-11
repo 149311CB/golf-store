@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as Logo } from "../assets/Logo.svg";
 
 import Navbar from "./nav/Navbar";
@@ -19,8 +18,8 @@ const Header = () => {
         <NavLink>ACCESSORIES CUSTOMIZATION</NavLink>
       </Navbar>
       <div className={"left-col"}>
-        <Search />
-        <Cart />
+          <Search />
+          <Cart />
       </div>
     </header>
   );

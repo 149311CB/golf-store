@@ -14,15 +14,22 @@
   }
 }
 
+@media screen and (max-width: 1100px) {
+  .product {
+    flex-wrap: wrap-reverse;
+    .left{
+      width: 100%;
+    }
+    .other-side{
+      width: 100%;
+    }
+  }
+}
+
 @media screen and (max-width: 1034px) {
   .center {
     .preview-list {
       padding-top: 1.2rem;
     }
-  }
-  .left {
-    position: absolute;
-    top: 100%;
-    min-width: 660px;
   }
 }

@@ -37,6 +37,11 @@ header {
     justify-content: flex-end;
     align-items: center;
     width: 30%;
+    gap: 0.6rem;
+
+    & > *:hover {
+      background: var(--focus);
+    }
   }
 
   .search {
@@ -49,13 +54,10 @@ header {
     position: relative;
     overflow: hidden;
     border-radius: 5000px;
-    &:hover {
-      background: #2d2d2d;
-    }
 
     &.expand {
       width: 80%;
-      background: #2d2d2d;
+      background: var(--focus);
     }
 
     input {
@@ -71,6 +73,10 @@ header {
       color: var(--text);
     }
 
+    &i{
+      font-size: 13px;
+    }
+
     button {
       width: 30px;
       height: 30px;
@@ -84,6 +90,25 @@ header {
   }
 
   .cart {
-    padding-left: 1.2rem;
+    position: relative;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: var(--text);
+    .cart-item-count {
+      font-size: 13px;
+      border-radius: 50%;
+      width: 13px;
+      height: 13px;
+      text-align: center;
+      top: 0;
+      right: 0;
+      position: absolute;
+      background: var(--text-standout);
+      color: var(--text-light);
+    }
   }
 }

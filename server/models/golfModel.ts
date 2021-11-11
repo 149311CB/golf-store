@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 import {
-  golfInterface,
-  loftInterface,
-  flexInterface,
-  shaftInterface,
+  IGolfInterface,
+  ILoftInterface,
+  IFlexInterface,
+  IShaftInterface,
 } from "../types/golfType";
 
 const handSchema = new Schema({
@@ -69,7 +69,7 @@ const variantSchema = new Schema({
   },
 });
 
-const golfSchema = new Schema<golfInterface>({
+const golfSchema = new Schema<IGolfInterface>({
   name: {
     type: String,
     required: true,

@@ -1,20 +1,22 @@
+import { type } from "os";
 import {
   Hand,
   Loft,
   Flex,
   Shaft,
-  Golf,
+  Variant,
   IGolfProperty,
   TransformedData,
+  Golf,
 } from "../types/Golfs";
 
 export class VariantStore {
   private static instance: VariantStore;
 
-  public variants: Golf[] | any = [];
-  public activeVariants: Golf[] | any = this.variants;
-  public disabledVariants: Golf[] | any = [];
-  public choosenVariant: Golf = new Golf({
+  public variants: Variant[] | any = [];
+  public activeVariants: Variant[] | any = this.variants;
+  public disabledVariants: Variant[] | any = [];
+  public choosenVariant: Variant = new Variant({
     hand: null,
     loft: null,
     flex: null,
@@ -49,7 +51,7 @@ const transform = (value: IGolfProperty | any) => {
 
 const transformCaller = () => {
   var instance = VariantStore.getInstance();
-  instance.variants.forEach((variant: Golf) => {
+  instance.variants.forEach((variant: Variant) => {
     transform(variant.hand);
     transform(variant.loft);
     transform(variant.flex);
@@ -62,11 +64,13 @@ export const transformData = (data: any): TransformedData => {
 
   data.forEach((variant: any) => {
     instance.variants.push(
-      new Golf({
+      new Variant({
+        _id:variant._id,
         hand: new Hand({ ...variant.hand }),
         loft: new Loft({ ...variant.loft }),
         flex: new Flex({ ...variant.flex }),
         shaft: new Shaft({ ...variant.shaft }),
+        stock: variant.stock,
       })
     );
   });

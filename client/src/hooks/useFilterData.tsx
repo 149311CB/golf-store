@@ -1,4 +1,4 @@
-import { Golf, IGolfProperty } from "../types/Golfs";
+import { Variant, IGolfProperty } from "../types/Golfs";
 import { VariantStore } from "../hooks/useTransformData";
 
 const instance = VariantStore.getInstance();
@@ -6,9 +6,12 @@ const instance = VariantStore.getInstance();
 export const filterActive = (choosenPropety: IGolfProperty | null) => {
   if (!choosenPropety) return;
   const propertyName = choosenPropety.constructor.name.toLowerCase();
-  instance.activeVariants = instance.activeVariants.filter((variant: Golf) => {
-    // @ts-ignore
-    if (variant[propertyName]._id === choosenPropety._id) {
+  instance.activeVariants = instance.activeVariants.filter((variant: Variant) => {
+    if (
+      choosenPropety !== null &&
+      // @ts-ignore
+      variant[propertyName]._id === choosenPropety._id
+    ) {
       return true;
     }
     instance.disabledVariants.push(variant);
@@ -25,25 +28,49 @@ export const filterDisabled = (choosenPropety: IGolfProperty | null) => {
 };
 
 const changeActive = () => {
-  instance.disabledVariants.forEach((variant: Golf) => {
+  instance.disabledVariants.forEach((variant: Variant) => {
     //@ts-ignore
-    instance.transformedData.hands.get(variant.hand?._id).disabled = true;
+    const hand = instance.transformedData.hands.get(variant.hand?._id);
     //@ts-ignore
-    instance.transformedData.lofts.get(variant.loft?._id).disabled = true;
-    //@ts-ignore
-    instance.transformedData.flexs.get(variant.flex?._id).disabled = true;
-    //@ts-ignore
-    instance.transformedData.shafts.get(variant.shaft?._id).disabled = true;
+    const loft = instance.transformedData.lofts.get(variant.loft?._id);
+    // @ts-ignore
+    const flex = instance.transformedData.flexs.get(variant.flex?._id);
+    // @ts-ignore
+    const shaft = instance.transformedData.shafts.get(variant.shaft?._id);
+
+    if (variant.stock <= 0) {
+      if (hand) hand.disabled = true;
+      if (loft) loft.disabled = true;
+      if (flex) flex.disabled = true;
+      if (shaft) shaft.disabled = true;
+    } else {
+      if (hand) hand.visualDisabled = true;
+      if (loft) loft.visualDisabled = true;
+      if (flex) flex.visualDisabled = true;
+      if (shaft) shaft.visualDisabled = true;
+    }
   });
 
-  instance.activeVariants.forEach((variant: Golf) => {
+  instance.activeVariants.forEach((variant: Variant) => {
     //@ts-ignore
-    instance.transformedData.hands.get(variant.hand?._id).disabled = false;
+    const hand = instance.transformedData.hands.get(variant.hand?._id);
     //@ts-ignore
-    instance.transformedData.lofts.get(variant.loft?._id).disabled = false;
-    //@ts-ignore
-    instance.transformedData.flexs.get(variant.flex?._id).disabled = false;
-    //@ts-ignore
-    instance.transformedData.shafts.get(variant.shaft?._id).disabled = false;
+    const loft = instance.transformedData.lofts.get(variant.loft?._id);
+    // @ts-ignore
+    const flex = instance.transformedData.flexs.get(variant.flex?._id);
+    // @ts-ignore
+    const shaft = instance.transformedData.shafts.get(variant.shaft?._id);
+
+    if (variant.stock <= 0) {
+      if (hand) hand.disabled = false;
+      if (loft) loft.disabled = false;
+      if (flex) flex.disabled = false;
+      if (shaft) shaft.disabled = false;
+    } else {
+      if (hand) hand.visualDisabled = false;
+      if (loft) loft.visualDisabled = false;
+      if (flex) flex.visualDisabled = false;
+      if (shaft) shaft.visualDisabled = false;
+    }
   });
 };

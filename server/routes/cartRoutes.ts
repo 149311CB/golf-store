@@ -1,8 +1,18 @@
 import express from "express";
-import {archiveCart} from "../controllers/cartControllers";
+import {
+  addToCart,
+  archivedCart,
+  countItemInCart,
+  getActiveCart,
+  removeProductFromCart,
+} from "../controllers/cartControllers";
 
-const router = express.Router()
+const router = express.Router();
 
-router.route("/archived").post(archiveCart)
+router.route("/activeCart").post(getActiveCart)
+router.route("/addToCart").post(addToCart);
+router.route("/archived").post(archivedCart);
+router.route("/countItem").post(countItemInCart);
+router.route("/removeItem").post(removeProductFromCart);
 
-export default router
+export default router;

@@ -7,6 +7,7 @@
   --text-dark: hsl(0, 0%, 100%);
   --text-dark-dim: hsl(0, 0%, 50%);
   --text-dark-standout: hsl(228, 100%, 83%);
+  --text-dark-danger: hsl(354, 70%, 60%);
   --focus-dark: hsl(0, 0%, 20%);
   --accent-dark: hsl(199, 100%, var(--accent-hue));
   --standout-dark: hsl(0, 0%, 26%);
@@ -20,6 +21,10 @@
     -3px -3px 6px hsla(0, 0%, 28%, 100%);
   --small-inset-box-shadow-dark: inset 3px 3px 6px hsla(0, 0%, 12%, 100%),
     inset -3px -3px 6px hsla(0, 0%, 28%, 100%);
+  --extra-small-box-shadow-dark: 2px 2px 5px hsl(0, 0%, 12%),
+    -2px -2px 5px hsl(0, 0%, 28%);
+  --extra-small-inset-box-shadow-dark: inset 2px 2px 5px hsl(0, 0%, 12%),
+    inset -2px -2px 5px hsl(0, 0%, 28%);
 
   --bg-light: hsl(0, 0%, 90%);
   --bg-light-dim: hsl(0, 0%, 85%);
@@ -68,6 +73,7 @@
     --text: var(--text-dark);
     --text-dim: var(--text-dark-dim);
     --text-standout: var(--text-dark-standout);
+    --text-danger: var(--text-dark-danger);
     --focus: var(--focus-dark);
     --accent: var(--accent-dark);
     --standout: var(--standout-dark);
@@ -77,40 +83,8 @@
     --medium-inset-box-shadow: var(--medium-inset-box-shadow-dark);
     --small-box-shadow: var(--small-box-shadow-dark);
     --small-inset-box-shadow: var(--small-inset-box-shadow-dark);
+    --extra-small-box-shadow: var(--extra-small-box-shadow-dark);
+    --extra-small-inset-box-shadow: var(--extra-small-inset-box-shadow-dark);
   }
 }
 
-// //noinspection SassScssUnresolvedVariable
-// [color-scheme="dark"] {
-//   color-scheme: dark;
-
-//   --bg: var(--bg-dark);
-//   --bg-dim: var(--bg-dark-dim);
-//   --text: var(--text-dark);
-//   --text-dim: var(--text-dark-dim);
-//   --focus: var(--focus-dark);
-//   --accent: var(--accent-dark);
-//   --standout: var(--standout-dark);
-//   --border: var(--border-dark);
-//   --filter: var(--filter-dark);
-//   --medium-box-shadow: var(--medium-box-shadow-dark);
-//   --medium-inset-box-shadow: var(--medium-inset-box-shadow-dark);
-//   --small-box-shadow: var(--small-box-shadow-dark);
-// }
-
-// //noinspection SassScssUnresolvedVariable
-// [color-scheme="light"] {
-//   color-scheme: light;
-
-//   --bg: var(--bg-light);
-//   --bg-dim: var(--bg-light-dim);
-//   --text: var(--text-light);
-//   --text-dim: var(--text-light-dim);
-//   --focus: var(--focus-light);
-//   --accent: var(--accent-light);
-//   --standout: var(--standout-light);
-//   --border: var(--border-light);
-//   --filter: var(--filter-light);
-//   --medium-box-shadow: var(--medium-box-shadow-light);
-//   --small-box-shadow: var(--small-box-shadow-light);
-// }

@@ -1,7 +1,7 @@
 import React from "react";
 import OptionGroup from "../../../components/option/OptionGroup";
 import Option from "../../../components/option/Option";
-import { Flex, Shaft } from "../../../types/Golfs";
+import { Shaft } from "../../../types/Golfs";
 import { IGolfComponentsProps } from "../Right";
 import { VariantStore } from "../../../hooks/useTransformData";
 
@@ -22,13 +22,14 @@ const Shafts: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues((shaft: Shaft) => (
+        values.mapValues((value: Shaft) => (
           <Option
-            key={`${shaft._id}`}
-            visualDisabled={shaft.disabled}
-            value={shaft}
+            key={`${value._id}`}
+            visualDisabled={value.visualDisabled}
+            disabled={value.disabled}
+            value={value}
           >
-            {shaft.name}
+            {value.name}
           </Option>
         ))}
     </OptionGroup>

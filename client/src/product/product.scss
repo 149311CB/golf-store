@@ -1,15 +1,23 @@
 .product {
-  // height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
   padding: 4.5rem 1.2rem 0rem 1.2rem;
   background-color: var(--bg);
   color: var(--text);
-}
+  .left{
+    width: 34%;
+  }
+  .other-side{
+    min-width: 790px;
+    width: 66.66%;
+    display: flex;
+    justify-content: space-evenly;
 
-.product > * {
-  width: 100%;
+    &>*{
+      width: 100%;
+    }
+  }
 }
 
 @import "left/left";

@@ -73,19 +73,113 @@ main {
   }
 }
 
-@mixin disabledBrightnessFilter{
+@mixin disabledBrightnessFilter {
   animation-name: disabledBrightnessFilterKeyframes;
   animation-duration: 500ms;
   animation-fill-mode: forwards;
   transition-timing-function: ease-out;
 }
 
+@mixin usingBoxShadowMixin() {
+  &.box-shadow-none {
+    box-shadow: none;
+  }
+
+  &.box-shadow-x-small {
+    box-shadow: var(--extra-small-box-shadow);
+  }
+
+  &.box-shadow-small {
+    box-shadow: var(--small-box-shadow);
+  }
+
+  &.box-shadow-medium {
+    box-shadow: var(--medium-box-shadow);
+  }
+
+  &.border {
+    border: 1px solid var(--border);
+  }
+}
+
+@mixin usingInsetBoxShadowMixin() {
+  &.box-shadow-none {
+    box-shadow: var(--extra-small-inset-box-shadow) !important;
+  }
+
+  &.box-shadow-x-small {
+    box-shadow: var(--extra-small-inset-box-shadow) !important;
+  }
+
+  &.box-shadow-small {
+    box-shadow: var(--small-inset-box-shadow) !important;
+  }
+
+  &.box-shadow-medium {
+    box-shadow: var(--medium-inset-box-shadow) !important;
+  }
+
+  &.border {
+    border: 1px solid var(--border);
+  }
+}
+
+@mixin usingBorderRadiusMixin() {
+  $border-radius: 0.6rem;
+  &.border-radius-top {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+
+  &.border-radius-bottom {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+
+  &.border-radius-left {
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+
+  &.border-radius-right {
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+
+  &.border-radius-top-left {
+    border-top-left-radius: $border-radius;
+  }
+
+  &.border-radius-bottom-left {
+    border-bottom-left-radius: $border-radius;
+  }
+
+  &.border-radius-top-right {
+    border-top-right-radius: $border-radius;
+  }
+
+  &.border-radius-bottom-right {
+    border-bottom-right-radius: $border-radius;
+  }
+
+  &.border-radius-all {
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+}
+
 @import "../components";
+
+@import "./fonts";
 
 @import "../header";
 
 @import "../product/product";
 
 @import "../homepage/homepage";
+
+@import "../cart/cart";
 
 @import "media";

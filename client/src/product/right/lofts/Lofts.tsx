@@ -25,7 +25,8 @@ const Lofts: React.FC<IGolfComponentsProps> = ({
         values.mapValues((value: Loft) => (
           <Option
             key={`${value._id}`}
-            visualDisabled={value.disabled}
+            visualDisabled={value.visualDisabled}
+            disabled={value.disabled}
             style={optionStyle}
             value={value}
           >
