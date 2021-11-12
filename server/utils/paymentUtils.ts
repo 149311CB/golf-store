@@ -2,16 +2,21 @@ import asyncHandler from "express-async-handler";
 import Cart from "../models/cartModel";
 
 const calculatePrice = asyncHandler(async (req, res, next) => {
-  const cart = await Cart.findOne({ _id: req.query.id }).populate({
+  const { cartId } = req.query;
+  if (!cartId) return res.status(400).json({ message: "required user id" });
+  if (Array.isArray(cartId))
+    return res.status(400).json({ message: "user id must be a string" });
+
+  const cart = await Cart.findOne({ _id: cartId, isActive: true }).populate({
     path: "products.product",
-    select: "price stock",
+    select: "price",
   });
 
   let total = 0;
 
   if (cart) {
-    cart.products.map((item) => {
-      total = item.quantity * item.product.price;
+    cart.products.forEach((item) => {
+      total = total + item.quantity * item.product.price;
     });
 
     req.body.total = total;

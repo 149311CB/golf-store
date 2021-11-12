@@ -22,16 +22,21 @@ const Shafts: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues((value: Shaft) => (
-          <Option
-            key={`${value._id}`}
-            visualDisabled={value.visualDisabled}
-            disabled={value.disabled}
-            value={value}
-          >
-            {value.name}
-          </Option>
-        ))}
+        values.mapValues(
+          (value: Shaft) => (
+            <Option
+              key={`${value._id}`}
+              visualDisabled={value.visualDisabled}
+              disabled={value.disabled}
+              value={value}
+            >
+              {value.name}
+            </Option>
+          ),
+          (a: any, b: any) => {
+            return a.name.localeCompare(b.name);
+          }
+        )}
     </OptionGroup>
   );
 };

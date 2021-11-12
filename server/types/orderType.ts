@@ -1,13 +1,14 @@
 export interface paymentMethodInterface {
-    method: string;
-    details: string;
+  method: string;
+  details: Object;
 }
 
 export interface orderInterface {
-    cart: string;
-    state: string;
-    paymentMethod: paymentMethodInterface;
-    paidAt: Date;
+  cart: string;
+  state: string;
+  paymentMethod: paymentMethodInterface;
+  paidAt: Date;
+  cancelledAt: Date;
 }
 
 /* [

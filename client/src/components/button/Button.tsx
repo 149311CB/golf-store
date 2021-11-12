@@ -40,7 +40,9 @@ const Button: React.FC<IButton> = ({
       box-shadow-${boxShadow} 
       ${border}`}
       style={style}
-      onClick={() => onClick && onClick()}
+      onClick={() => {
+        return !disabled && onClick ? onClick() : null;
+      }}
     >
       {children}
     </button>

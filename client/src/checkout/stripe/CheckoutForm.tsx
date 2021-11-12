@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { CheckoutContext } from "../Checkout";
+import { client } from "../../utils/client";
+import { OrderInterface } from "../../types/types";
 
 const cardStyle = {
   style: {
@@ -18,8 +20,17 @@ const cardStyle = {
 };
 
 const CheckoutForm = () => {
-  const { processing, handleProcessing, handleError, handleSuccess } =
-    useContext(CheckoutContext);
+  const {
+    cartId,
+    processing,
+    error,
+    success,
+    cancelled,
+    handleProcessing,
+    handleError,
+    handleSuccess,
+    handleCancelled,
+  } = useContext(CheckoutContext);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -28,22 +39,21 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     // fetch stripe client secret using to process payment
-    window
-      .fetch("/api/payments/stripe?id=6144e51d4e255dd305a1ab43", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (data.clientSecret) {
-          setClientSecret(data.clientSecret);
+    const fetchData = async () => {
+      const data = await client.get(
+        `/api/payments/stripe?userId=610844bf701a78827a321fa6&cartId=${cartId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
-  }, []);
+      );
+      if (data.clientSecret) {
+        setClientSecret(data.clientSecret);
+      }
+    };
+    fetchData();
+  }, [cartId, error, success, cancelled]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -60,16 +70,30 @@ const CheckoutForm = () => {
     });
 
     if (payload.error) {
-      handleError(`payment failed ${payload.error.message}`);
+      handleError(`payment failed: ${payload.error.message}`);
     } else {
-      // S5
-      handleSuccess({
-        cart: "6144e51d4e255dd305a1ab43",
-        state: "success",
+      const order = new OrderInterface({
+        cart: cartId,
+        state: payload.paymentIntent.status,
         paymentMethod: "stripe",
-        details: "4242",
-        paidAt: new Date(1632062268 * 1000),
+        details: null,
+        paidAt: null,
+        cancelledAt: null,
       });
+      if (payload.paymentIntent.status === "canceled") {
+        order.cancelledAt = new Date(payload.paymentIntent.created);
+        handleCancelled(order);
+      } else {
+        order.details = {
+          exprMonth: paymentMethod.paymentMethod?.card?.exp_month,
+          exprYear: paymentMethod.paymentMethod?.card?.exp_year,
+          type: paymentMethod.paymentMethod?.card?.funding,
+          brand: paymentMethod.paymentMethod?.card?.brand,
+          last4: paymentMethod.paymentMethod?.card?.last4,
+        };
+        order.paidAt = new Date(payload.paymentIntent.created);
+        handleSuccess(order);
+      }
     }
   };
 

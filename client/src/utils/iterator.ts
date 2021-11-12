@@ -1,9 +1,9 @@
-import { IGolfProperty } from "../types/Golfs";
+import { Hand, IGolfProperty } from "../types/Golfs";
 
 export interface Iterator {
   next(): any;
   hasNext(): boolean;
-  mapValues(callback: Function): any;
+  mapValues(callback: Function, sortCallback?: Function): any;
 }
 
 export interface aggregator {
@@ -26,8 +26,15 @@ export class MapIterator implements Iterator {
     return !this.collection.entries().next();
   }
 
-  mapValues(callback: Function): IGolfProperty[] {
-    const values = Array.from(this.collection.values());
+  mapValues(callback: Function, sortCallback?: Function): IGolfProperty[] {
+    let values = [];
+    if (sortCallback) {
+      values = Array.from(this.collection.values()).sort((a: any, b: any) =>
+        sortCallback(a, b)
+      );
+    } else {
+      values = Array.from(this.collection.values());
+    }
     return values.map((value, index, array) => {
       return callback(value, index, array);
     });

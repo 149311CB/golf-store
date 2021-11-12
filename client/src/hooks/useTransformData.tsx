@@ -1,4 +1,3 @@
-import { type } from "os";
 import {
   Hand,
   Loft,
@@ -7,14 +6,13 @@ import {
   Variant,
   IGolfProperty,
   TransformedData,
-  Golf,
 } from "../types/Golfs";
 
 export class VariantStore {
   private static instance: VariantStore;
 
-  public variants: Variant[] | any = [];
-  public activeVariants: Variant[] | any = this.variants;
+  public variants: Variant[] = [];
+  public activeVariants: Variant[] = this.variants;
   public disabledVariants: Variant[] | any = [];
   public choosenVariant: Variant = new Variant({
     hand: null,
@@ -27,8 +25,8 @@ export class VariantStore {
 
   private constructor() {}
 
-  public static getInstance(): VariantStore {
-    if (!this.instance) {
+  public static getInstance(reset: boolean = false): VariantStore {
+    if (!this.instance || reset) {
       this.instance = new VariantStore();
     }
     return this.instance;
@@ -51,7 +49,7 @@ const transform = (value: IGolfProperty | any) => {
 
 const transformCaller = () => {
   var instance = VariantStore.getInstance();
-  instance.variants.forEach((variant: Variant) => {
+  instance.variants?.forEach((variant: Variant) => {
     transform(variant.hand);
     transform(variant.loft);
     transform(variant.flex);
@@ -62,10 +60,19 @@ const transformCaller = () => {
 export const transformData = (data: any): TransformedData => {
   var instance = VariantStore.getInstance();
 
+  instance.variants = [];
+  instance.disabledVariants = []
+  instance.transformedData =new TransformedData()
+  instance.choosenVariant =new Variant({
+    hand: null,
+    loft: null,
+    flex: null,
+    shaft: null,
+  });
   data.forEach((variant: any) => {
-    instance.variants.push(
+    instance.variants?.push(
       new Variant({
-        _id:variant._id,
+        _id: variant._id,
         hand: new Hand({ ...variant.hand }),
         loft: new Loft({ ...variant.loft }),
         flex: new Flex({ ...variant.flex }),
@@ -74,6 +81,7 @@ export const transformData = (data: any): TransformedData => {
       })
     );
   });
+  instance.activeVariants = instance.variants;
   transformCaller();
   return instance.transformedData;
 };

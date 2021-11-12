@@ -21,14 +21,14 @@ const orderUsingStripe = asyncHandler(async (req, res) => {
   res.send({ clientSecret: paymentIntent.client_secret });
 });
 
-const orderUsingPaypal = asyncHandler(async (req,res)=>{
-  const paypal_secret = process.env.PAYPAL_CLIENT_SECRET
+const orderUsingPaypal = asyncHandler(async (req, res) => {
+  const paypal_secret = process.env.PAYPAL_CLIENT_SECRET;
 
-  const items = req.body
+  const items = req.body;
 
-  const amount = items.total
+  const amount = items.total;
 
-  res.send({clientId:paypal_secret,amount:amount.toString()})
-})
+  res.send({ clientId: paypal_secret, amount: amount });
+});
 
-export { orderUsingStripe,orderUsingPaypal };
+export { orderUsingStripe, orderUsingPaypal };

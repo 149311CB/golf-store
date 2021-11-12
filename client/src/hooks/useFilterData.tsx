@@ -6,7 +6,7 @@ const instance = VariantStore.getInstance();
 export const filterActive = (choosenPropety: IGolfProperty | null) => {
   if (!choosenPropety) return;
   const propertyName = choosenPropety.constructor.name.toLowerCase();
-  instance.activeVariants = instance.activeVariants.filter((variant: Variant) => {
+  instance.activeVariants = instance.activeVariants?.filter((variant: Variant) => {
     if (
       choosenPropety !== null &&
       // @ts-ignore
@@ -51,7 +51,7 @@ const changeActive = () => {
     }
   });
 
-  instance.activeVariants.forEach((variant: Variant) => {
+  instance.activeVariants?.forEach((variant: Variant) => {
     //@ts-ignore
     const hand = instance.transformedData.hands.get(variant.hand?._id);
     //@ts-ignore

@@ -7,7 +7,6 @@ import { RouterProps } from "react-router-dom";
 const Products: React.FC<RouterProps> = ({ history }) => {
   const { location }: any = history;
   const { id } = location.state;
-  console.log(id)
   const products = `/api/golfs/${id}`;
   const { data, loading, error } = useFetch(products, null, Method.GET);
 

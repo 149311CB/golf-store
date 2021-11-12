@@ -31,12 +31,7 @@ const Controls: React.FC<{
         >
           <i className="fas fa-minus"></i>
         </Button>
-        <input
-          value={qty}
-          type={"number"}
-          min={0}
-          onChange={() => {}}
-        />
+        <input value={qty} type={"number"} min={0} onChange={() => {}} />
         <Button
           boxShadow={"none"}
           borderRadius={"right"}
@@ -55,13 +50,7 @@ const Controls: React.FC<{
       >
         <p>Change item</p>
       </Button>
-      <Button
-        className={"other-control buy-later"}
-        boxShadow={"x-small"}
-        onClick={() => {
-          removeProduct();
-        }}
-      >
+      <Button className={"other-control buy-later"} boxShadow={"x-small"}>
         <p>Buy later</p>
       </Button>
       <Button

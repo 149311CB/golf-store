@@ -22,17 +22,22 @@ const FLexs: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues((value: Flex) => (
-          <Option
-            key={`${value._id}`}
-            visualDisabled={value.visualDisabled}
-            disabled={value.disabled}
-            style={optionStyle}
-            value={value}
-          >
-            {value.type}
-          </Option>
-        ))}
+        values.mapValues(
+          (value: Flex) => (
+            <Option
+              key={`${value._id}`}
+              visualDisabled={value.visualDisabled}
+              disabled={value.disabled}
+              style={optionStyle}
+              value={value}
+            >
+              {value.type}
+            </Option>
+          ),
+          (a: any, b: any) => {
+            return a.type.localeCompare(b.type)
+          }
+        )}
     </OptionGroup>
   );
 };

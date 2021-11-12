@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Button from "../components/button/Button";
 import { Golf, Variant } from "../types/Golfs";
 import { client } from "../utils/client";
-import Controls from "./controls/Controls";
-import Specs from "./specs/Specs";
+import ProductContainer from "./product-container/ProductContainer";
 
 export class CartProduct {
   _id: string;
@@ -34,7 +35,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
-  console.log(products);
+  const history = useHistory();
 
   const removeProduct = async (_id: string) => {
     setLoading(true);
@@ -56,6 +57,7 @@ const Cart = () => {
       });
       setLoading(false);
       const { products, _id, user, isActive } = data;
+      if (!products || products === undefined) return;
       setCartMeta({ _id, user, isActive });
 
       const fetchedData: CartProduct[] = initialized(products);
@@ -71,57 +73,27 @@ const Cart = () => {
         <div>loading...</div>
       ) : (
         <div className={"cart"}>
-          <div className={"product-list left-col"}>
-            {products &&
-              products.map(
-                (product: CartProduct, index: number) =>
-                  product && (
-                    <div key={product._id}>
-                      <div className={"product-container"}>
-                        <div className={"image-container"}>
-                          <img
-                            src={product.product.images[0]}
-                            alt={`${product.product.name} ${index}`}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            width: "100%",
-                          }}
-                        >
-                          <div className={"specs"}>
-                            <Specs
-                              variant={product.variant}
-                              product={product.product}
-                            />
-                            <Controls
-                              cartProduct={product}
-                              removeProduct={removeProduct}
-                            />
-                          </div>
-                          <div
-                            className={"price-container"}
-                            style={{ fontSize: "16px", fontWeight: 600 }}
-                          >
-                            ${product.product.price}
-                          </div>
-                        </div>
-                      </div>
-                      {index < products.length - 1 && (
-                        <div className={"divider"} />
-                      )}
-                    </div>
-                  )
-              )}
-          </div>
+          <ProductContainer products={products} removeProduct={removeProduct} />
           <div className={"right-col"}>
             <div className={"shipping-address"}>
               <div>51/4 Thanh Thai</div>
             </div>
             <div className={"coupons"}>$10 off</div>
             <div className={"price-box"}>20000</div>
+            <Button
+              className={"checkout-btn"}
+              border={"border"}
+              disabled={cartMeta === null}
+              onClick={() =>
+                cartMeta &&
+                history.push({
+                  pathname: `/checkout`,
+                  state: { id: cartMeta._id },
+                })
+              }
+            >
+              Proceed to checkout <i className="fas fa-angle-double-right"></i>
+            </Button>
           </div>
         </div>
       )}

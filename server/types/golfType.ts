@@ -20,11 +20,26 @@ export interface IShaftInterface {
   flexs: string[];
 }
 
-export interface IGolfInterface {
+export class IGolfInterface {
   name: string;
   longName: string;
   description: string;
   images: [];
   price: number;
   sku: string;
+  constructor({
+    name,
+    longName,
+    description,
+    images,
+    price,
+    sku,
+  }: IGolfInterface) {
+    this.name = name;
+    this.longName = longName;
+    this.description = description;
+    this.images = images;
+    this.price = price;
+    this.sku = sku;
+  }
 }

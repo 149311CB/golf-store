@@ -1,7 +1,7 @@
 import React from "react";
 import OptionGroup from "../../../components/option/OptionGroup";
 import Option from "../../../components/option/Option";
-import { Hand} from "../../../types/Golfs";
+import { Hand } from "../../../types/Golfs";
 import { IGolfComponentsProps } from "../Right";
 
 const Hands: React.FC<IGolfComponentsProps> = ({
@@ -19,17 +19,22 @@ const Hands: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues((value: Hand) => (
-          <Option
-            key={`${value._id}`}
-            visualDisabled={value.visualDisabled}
-            disabled={value.disabled}
-            style={optionStyle}
-            value={value}
-          >
-            {value.side}
-          </Option>
-        ))}
+        values.mapValues(
+          (value: Hand) => (
+            <Option
+              key={`${value._id}`}
+              visualDisabled={value.visualDisabled}
+              disabled={value.disabled}
+              style={optionStyle}
+              value={value}
+            >
+              {value.side}
+            </Option>
+          ),
+          (a: any, b: any) => {
+            return a.side.localeCompare(b.side);
+          }
+        )}
     </OptionGroup>
   );
 };

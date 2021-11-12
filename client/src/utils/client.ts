@@ -30,8 +30,8 @@ export async function client(
     if (response.ok) {
       return data;
     }
-    throw new Error(response.statusText);
-    // return { status: response.status, statusText: response.statusText };
+    // throw new Error(response.statusText);
+    return { status: response.status, statusText: response.statusText };
   } catch (err) {
     if (err instanceof Error) {
       return Promise.reject(err.message ? err.message : data);

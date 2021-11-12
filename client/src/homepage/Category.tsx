@@ -6,7 +6,6 @@ interface ICategoryProps {
 }
 
 const Category: React.FC<ICategoryProps> = ({ products }) => {
-  console.log(products)
   const history = useHistory();
 
   return (
@@ -23,9 +22,10 @@ const Category: React.FC<ICategoryProps> = ({ products }) => {
                     key={product.golf._id}
                     onClick={() =>
                       history.push({
-                        pathname: `/product/${product.golf.name
-                          .replace(/\s+/g, "-")
-                          .toLowerCase()}`,
+                        pathname: `/product/${product.golf._id}`,
+                        // ${product.golf.name
+                        //   .replace(/\s+/g, "-")
+                        //   .toLowerCase()}/${product.golf._id}`,
                         state: { id: product.golf._id },
                       })
                     }

@@ -1,8 +1,9 @@
 import expressAsyncHandler from "express-async-handler";
+import Cart from "../models/cartModel";
 import Order from "../models/orderModel";
 
 const createOrder = expressAsyncHandler(async (req, res) => {
-  const { cart, state, paymentMethod, details, paidAt } = req.body;
+  const { cart, state, paymentMethod, details, paidAt, cancelledAt } = req.body;
 
   const order = new Order({
     cart: cart,
@@ -12,12 +13,20 @@ const createOrder = expressAsyncHandler(async (req, res) => {
       details: details,
     },
     paidAt: paidAt,
+    cancelledAt: cancelledAt,
   });
 
-  const createOrder = await order.save();
-
-  res.status(200).json(createOrder);
+  try {
+    const createOrder = await order.save();
+    const exist = await Cart.findOne({ _id: cart });
+    if (exist) {
+      exist.isActive = false;
+      await exist.save();
+    }
+    return res.status(200).json(createOrder);
+  } catch (error) {
+    return res.status(500);
+  }
 });
 
 export { createOrder };
-

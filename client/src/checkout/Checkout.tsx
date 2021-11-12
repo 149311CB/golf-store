@@ -1,13 +1,16 @@
 import React, { createContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { RouterProps } from "react-router-dom";
 import { CheckoutInterface, OrderInterface } from "../types/types";
+import { client } from "../utils/client";
 import Paypal from "./paypal/Paypal";
 import Stripe from "./stripe/Stripe";
 
 export const CheckoutContext = createContext<CheckoutInterface>({
+  cartId: "",
   processing: false,
   error: "",
   success: false,
+  cancelled: false,
   handleProcessing: () => {
     return "Unknown processing state";
   },
@@ -17,69 +20,66 @@ export const CheckoutContext = createContext<CheckoutInterface>({
   handleSuccess: () => {
     return "Unknown success state";
   },
+  handleCancelled: () => {
+    return "Unknown cancelled state";
+  },
 });
 
-const Checkout = () => {
+const Checkout: React.FC<RouterProps> = ({ history }) => {
+  const { location }: any = history;
+
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [cancelled, setCancelled] = useState(false);
 
-  // const history = useHistory();
-
-  const createOrder = ({
-    cart,
-    state,
-    paymentMethod,
-    details,
-    paidAt,
-  }: OrderInterface) => {
-    window
-      .fetch("/api/orders/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cart,
-          state,
-          paymentMethod,
-          details,
-          paidAt,
-        }),
-      })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setSuccess((success) => !success);
-        // history.push("#");
+  const createOrder = (order: OrderInterface) => {
+    const fetchData = async () => {
+      await client.post("/api/orders/create", order, {
+        "Content-Type": "application/json",
       });
+      if (order.state === "cancelled") {
+        setCancelled(true);
+      } else {
+        history.push("/success");
+      }
+    };
+    fetchData();
   };
 
   const handleProcessing = (state: boolean) => {
     setProcessing(state);
   };
 
-  // TODO: Remember to clear everything on fail
   const handleError = (err: string) => {
     handleProcessing(false);
     setError(err);
   };
 
-  // TODO: Remember to clear everything on success
   const handleSuccess = (order: OrderInterface) => {
     handleError("");
     createOrder(order);
   };
 
+  const handleCancelled = (order: OrderInterface) => {
+    handleSuccess(order);
+  };
+
+  if (location.state === null || location.state === undefined) {
+    history.push("/");
+    return <></>;
+  }
+  const { id: cartId } = location.state;
   const value = {
-    processing: processing,
-    error: error,
-    success: success,
-    // TODO: Should I split this?
-    handleProcessing: handleProcessing,
-    handleError: handleError,
-    handleSuccess: handleSuccess,
+    cartId,
+    processing,
+    error,
+    success,
+    cancelled,
+    handleProcessing,
+    handleError,
+    handleSuccess,
+    handleCancelled,
   };
 
   return (
@@ -89,7 +89,7 @@ const Checkout = () => {
         {error && <div>{error}</div>}
         {success && <div>Payment success</div>}
         <Stripe />
-        {/* <Paypal /> */}
+        <Paypal />
       </div>
     </CheckoutContext.Provider>
   );

@@ -33,18 +33,19 @@ const optionStyle: CSSProperties = {
   textAlign: "center",
 };
 
-const instance = VariantStore.getInstance();
-const verifyChoosenVariant = (golf: any): any => {
+const verifyChoosenVariant = (golf: any, instance: VariantStore): any => {
   const choosenVariant = instance.choosenVariant;
 
-  const choosen: Variant = instance.activeVariants.find((variant: Variant) => {
-    return (
-      variant.hand?._id === choosenVariant.hand?._id &&
-      choosenVariant.loft?._id === variant.loft?._id &&
-      variant.flex?._id === choosenVariant.flex?._id &&
-      variant.shaft?._id === choosenVariant.shaft?._id
-    );
-  });
+  const choosen: Variant | undefined = instance.activeVariants?.find(
+    (variant: Variant) => {
+      return (
+        variant.hand?._id === choosenVariant.hand?._id &&
+        choosenVariant.loft?._id === variant.loft?._id &&
+        variant.flex?._id === choosenVariant.flex?._id &&
+        variant.shaft?._id === choosenVariant.shaft?._id
+      );
+    }
+  );
   if (choosen && choosen.stock > 0) {
     const choosenProduct = {
       user: "610844bf701a78827a321fa6",
@@ -61,6 +62,7 @@ const verifyChoosenVariant = (golf: any): any => {
   return null;
 };
 
+let instance = VariantStore.getInstance();
 const Right: React.FC<IProps> = ({ data }) => {
   const [hands, setHands] = useState<Iterator>();
   const [lofts, setLofts] = useState<Iterator>();
@@ -68,6 +70,7 @@ const Right: React.FC<IProps> = ({ data }) => {
   const [shafts, setShafts] = useState<Iterator>();
   const [render, setRender] = useState(false);
   const [choosenProduct, setChoosenProduct] = useState(null);
+  // console.log(instance.choosenVariant)
 
   // manages states
   const setProperties = () => {
@@ -101,8 +104,8 @@ const Right: React.FC<IProps> = ({ data }) => {
     if (!data.variants) return;
 
     // Transform data and initialized states
-    const instance = VariantStore.getInstance();
     transformData(data.variants);
+    // const instance = VariantStore.getInstance();
     const variants: Variant[] = instance.variants;
     setProperties();
 
@@ -170,7 +173,7 @@ const Right: React.FC<IProps> = ({ data }) => {
             fontWeight: "bold",
           }}
           onClick={() => {
-            setChoosenProduct(verifyChoosenVariant(data.golf));
+            setChoosenProduct(verifyChoosenVariant(data.golf, instance));
           }}
         >
           Add to cart

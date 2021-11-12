@@ -4,6 +4,8 @@ import Product from "./product/Products";
 import Homepage from "./homepage/Homepage";
 import Checkout from "./checkout/Checkout";
 import Cart from "./cart/Cart";
+import Error from "./error/Error";
+import PaymentSuccess from "./checkout/success/PaymentSuccess";
 
 function App() {
   return (
@@ -12,9 +14,12 @@ function App() {
         <Header />
         <main>
           <Route path={"/"} component={Homepage} exact />
-          <Route path={"/product/:name"} component={Product} exact />
+          <Route path={"/product/:id"} component={Product} exact />
           <Route path={"/cart/"} component={Cart} exact />
-          {/* <Route path={"/"} component={Checkout} exact /> */}
+          <Route path={"/checkout"} component={Checkout} exact />
+          <Route path={"/error"} component={Error} exact/>
+          <Route path={"/success"} component={PaymentSuccess} exact/>
+          {/* <Redirect to={"/error"}/> */}
           {/*<Route path={"/"} component={NewModels} exact />*/}
           {/*<Route path={"/"} component={TestRenderAlgo} exact />*/}
           {/* <Route path={"/"} component={TestNewComponent} exact />*/}

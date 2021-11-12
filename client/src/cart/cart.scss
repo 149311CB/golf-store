@@ -50,9 +50,15 @@ main {
     flex-direction: column;
     width: 30%;
     gap: 1rem;
+
+    .checkout-btn {
+      font-weight: 600;
+      padding: 0.9rem 0;
+      color: var(--text-standout);
+    }
   }
 
-  .right-col > * {
+  .right-col > div {
     box-shadow: var(--medium-box-shadow);
     padding: $padding;
     border-radius: 0.6rem;

@@ -5,8 +5,8 @@ export interface reactChild {
 }
 
 export interface productInterface {
-  golf: golfInterface
-  variants:[ VariantInterface ]
+  golf: golfInterface;
+  variants: [VariantInterface];
 }
 
 export interface golfInterface {
@@ -19,29 +19,29 @@ export interface golfInterface {
   description: string;
 }
 
-export interface VariantInterface{
-  _id:string
-  hand:string
-  golf:string
-  loft:Loft
-  flex:Flex
-  shaft:Shaft
+export interface VariantInterface {
+  _id: string;
+  hand: string;
+  golf: string;
+  loft: Loft;
+  flex: Flex;
+  shaft: Shaft;
 }
 
 export interface Shaft {
-  _id:string
+  _id: string;
   name: string;
   image: string;
 }
 
-export interface Loft{
-  _id:string
-  type:number
+export interface Loft {
+  _id: string;
+  type: number;
 }
 
-export interface Flex{
-  _id:string
-  type:number
+export interface Flex {
+  _id: string;
+  type: number;
 }
 
 export interface reviewInterface {
@@ -53,18 +53,37 @@ export interface reviewInterface {
 }
 
 export interface CheckoutInterface {
+  cartId: string;
   processing: boolean;
   error: string;
   success: boolean;
+  cancelled: boolean;
   handleProcessing: (state: boolean) => void;
   handleError: (error: string) => void;
   handleSuccess: (order: OrderInterface) => void;
+  handleCancelled: (order: OrderInterface) => void;
 }
 
-export interface OrderInterface {
-  cart: string;
-  state: string;
+export class OrderInterface {
+  cart: string | null;
+  state: string | null;
   paymentMethod: string;
-  details: string;
-  paidAt: Date;
+  details: Object | null;
+  paidAt: Date | null;
+  cancelledAt: Date | null;
+  constructor({
+    cart,
+    state,
+    paymentMethod,
+    details,
+    paidAt,
+    cancelledAt,
+  }: OrderInterface) {
+    this.cart = cart;
+    this.state = state;
+    this.paymentMethod = paymentMethod;
+    this.details = details;
+    this.paidAt = paidAt;
+    this.cancelledAt = cancelledAt;
+  }
 }

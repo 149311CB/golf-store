@@ -1,73 +1,104 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CheckoutContext } from "../Checkout";
+import { client } from "../../utils/client";
+import { OrderInterface } from "../../types/types";
+import { useHistory } from "react-router-dom";
 
 const Paypal = () => {
-  const { processing, handleProcessing, handleError, handleSuccess } =
-    useContext(CheckoutContext);
+  const {
+    cartId,
+    processing,
+    success,
+    cancelled,
+    handleProcessing,
+    handleError,
+    handleSuccess,
+    handleCancelled,
+  } = useContext(CheckoutContext);
 
   const [clientId, setClientId] = useState("");
   const [amount, setAmount] = useState("");
+  const history = useHistory();
+
+  const generateOrder = (): OrderInterface => {
+    const order = new OrderInterface({
+      cart: cartId,
+      state: null,
+      paymentMethod: "paypal",
+      details: null,
+      paidAt: null,
+      cancelledAt: null,
+    });
+    return order;
+  };
 
   useEffect(() => {
-    window
-      .fetch("/api/payments/paypal?id=6144e51d4e255dd305a1ab43", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (data.clientId) {
-          setClientId(data.clientId);
-          setAmount(data.amount);
+    const fetchData = async () => {
+      const data = await client.get(
+        `/api/payments/paypal?userId=610844bf701a78827a321fa6&cartId=${cartId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
-  }, []);
-
-  if (!clientId) {
-    return <div>Loading...</div>;
-  }
+      );
+      if (data?.status === 404) {
+        history.push("/");
+      }
+      if (data.clientId) {
+        setClientId(data.clientId);
+        setAmount(data.amount);
+      }
+    };
+    fetchData();
+  }, [cartId, success, cancelled, history]);
 
   return (
     <div className={"paypal"}>
-      <PayPalScriptProvider options={{ "client-id": clientId }}>
-        <PayPalButtons
-          style={{ layout: "horizontal" }}
-          createOrder={(_, actions) => {
-            handleProcessing(true);
-            return actions.order.create({
-              purchase_units: [
-                {
-                  amount: {
-                    value: amount,
+      {clientId && (
+        <PayPalScriptProvider options={{ "client-id": clientId }}>
+          <PayPalButtons
+            style={{ layout: "horizontal" }}
+            createOrder={(_, actions) => {
+              handleProcessing(true);
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: amount,
+                    },
                   },
+                ],
+                application_context: {
+                  shipping_preference: "NO_SHIPPING",
                 },
-              ],
-              application_context: {
-                shipping_preference: "NO_SHIPPING",
-              },
-            });
-          }}
-          onApprove={async (_, actions) => {
-            const order = await actions.order.capture();
-            handleSuccess({
-              cart: "6144e51d4e255dd305a1ab43",
-              state: "success",
-              paymentMethod: "paypal",
-              details: "abc@gmail.com",
-              paidAt: new Date(1632062268 * 1000),
-            });
-          }}
-          onError={async (error) => {
-            handleError(error.toString());
-          }}
-          disabled={processing && true}
-        />
-      </PayPalScriptProvider>
+              });
+            }}
+            onApprove={async (_, actions) => {
+              const payload = await actions.order.capture();
+              const order = generateOrder();
+              order.details = {
+                email: payload.payer.email_address,
+                name: payload.payer.name,
+              };
+              order.paidAt = new Date(payload.create_time);
+              order.state = "succeed";
+              handleSuccess(order);
+            }}
+            onError={async (error) => {
+              handleError(`payment failed: ${error.toString()}`);
+            }}
+            onCancel={async () => {
+              const order = generateOrder();
+              order.state = "cancelled";
+              order.cancelledAt = new Date(Date.now());
+              handleCancelled(order);
+            }}
+            disabled={processing && !clientId ? true : false}
+          />
+        </PayPalScriptProvider>
+      )}
     </div>
   );
 };

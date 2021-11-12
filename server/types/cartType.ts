@@ -17,9 +17,9 @@ interface IVariant {
 
 export interface IItemInterface {
   _id: string;
-  product: number;
+  product: any;
   // stock: number;
-  variant: any;
+  variant: string;
   quantity: number;
 }
 
