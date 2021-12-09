@@ -1,0 +1,21 @@
+[
+  {
+    "_id": {"$oid": "610844bf701a78827a321fa6"},
+    "email": "an.nickhcm2000@gmail.com",
+    "firstName": "Vi",
+    "isActive": true,
+    "lastName": "Nguyen Hung",
+    "password": "$2a$10$Jg5onW6g2/bP.3q00aOEXuYLgVYoDslgIFTHamdH.zJUEGUHnamwm",
+    "phoneNumber": "0965423357"
+  },
+  {
+    "_id": {"$oid": "618e5ee651b7f56c81362574"},
+    "email": "an.nickhcm2000v2@gmail.com",
+    "firstName": "Nick",
+    "isActive": true,
+    "lastName": "Nguyen",
+    "password": "$2a$10$Jg5onW6g2/bP.3q00aOEXuYLgVYoDslgIFTHamdH.zJUEGUHnamwm",
+    "phoneNumber": "0965493574",
+    "__v": 0
+  }
+]

@@ -8,6 +8,7 @@ import paymentRoutes from "./routes/paymentRroutes";
 import orderRoutes from "./routes/orderRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
+import userRoutes from "./routes/userRoutes";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 

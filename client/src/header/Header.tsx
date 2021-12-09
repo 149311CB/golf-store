@@ -4,22 +4,26 @@ import Navbar from "./nav/Navbar";
 import NavLink from "./nav/NavLink";
 import Search from "./search/Search";
 import Cart from "./cart/Cart";
+import User from "./user/User";
 
 const Header = () => {
   return (
     <header>
       <div className={"logo"}>
-        <Logo />
+        <NavLink to={"/"}>
+          <Logo />
+        </NavLink>
       </div>
       <Navbar>
-        <NavLink>CLUBS</NavLink>
-        <NavLink>GOLF</NavLink>
-        <NavLink>BALLS APPAREL</NavLink>
-        <NavLink>ACCESSORIES CUSTOMIZATION</NavLink>
+        <NavLink to={"/"}>CLUBS</NavLink>
+        <NavLink to={"/"}>GOLF</NavLink>
+        <NavLink to={"/"}>BALLS APPAREL</NavLink>
+        <NavLink to={"/"}>ACCESSORIES CUSTOMIZATION</NavLink>
       </Navbar>
       <div className={"left-col"}>
-          <Search />
-          <Cart />
+        <Search />
+        <Cart />
+        <User/>
       </div>
     </header>
   );

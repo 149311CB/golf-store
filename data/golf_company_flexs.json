@@ -1,0 +1,12 @@
+[
+  {
+    "_id": {"$oid": "614e1c50cb12eea38afb5312"},
+    "__v": 0,
+    "type": "Regular"
+  },
+  {
+    "_id": {"$oid": "614e1c51cb12eea38afb535b"},
+    "__v": 0,
+    "type": "Stiff"
+  }
+]

@@ -1,0 +1,346 @@
+[
+  {
+    "_id": {"$oid": "61485b77b2140c517a7a2b15"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T09:59:19.485Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T09:59:19.485Z"}
+  },
+  {
+    "_id": {"$oid": "61485baab2140c517a7a2b1d"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T10:00:10.526Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T10:00:10.526Z"}
+  },
+  {
+    "_id": {"$oid": "61485c43b2140c517a7a2b23"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T10:02:43.393Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T10:02:43.393Z"}
+  },
+  {
+    "_id": {"$oid": "61485d33b2140c517a7a2b2d"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T10:06:43.772Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T10:06:43.772Z"}
+  },
+  {
+    "_id": {"$oid": "61485d4fb2140c517a7a2b31"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T10:07:11.225Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T10:07:11.225Z"}
+  },
+  {
+    "_id": {"$oid": "61485d67b2140c517a7a2b35"},
+    "__v": 0,
+    "cart": {"$oid": "6144e51d4e255dd305a1ab43"},
+    "createdAt": {"$date": "2021-09-20T10:07:35.289Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-09-20T10:07:35.289Z"}
+  },
+  {
+    "_id": {"$oid": "618d0f35b2eae620372df3b9"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T12:40:21.148Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-11-11T12:40:21.148Z"}
+  },
+  {
+    "_id": {"$oid": "618d0f6fb2eae620372df3c0"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T12:41:19.197Z"},
+    "paidAt": {"$date": "2021-09-19T14:37:48.000Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": "4242"
+    },
+    "state": "success",
+    "updatedAt": {"$date": "2021-11-11T12:41:19.197Z"}
+  },
+  {
+    "_id": {"$oid": "618d167171944c7368045bca"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:11:13.140Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:16.262Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:11:13.140Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d172271944c7368045bd0"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:14:10.857Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:16.435Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:14:10.857Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d195971944c7368045bed"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:23:37.766Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:16.988Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:23:37.766Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d19f771944c7368045bf7"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:26:15.720Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:17.166Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:26:15.720Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d1a3f71944c7368045c02"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:27:27.334Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:17.239Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:27:27.334Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d1a5f71944c7368045c06"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T13:27:59.155Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:17.247Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T13:27:59.155Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d296b71944c7368045c37"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T14:32:11.594Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:21.121Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T14:32:11.594Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d2a0071944c7368045c6b"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T14:34:40.776Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:21.271Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T14:34:40.776Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d2a4971944c7368045c74"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T14:35:53.091Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:21.343Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T14:35:53.091Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618d2c2ae3f2aa736122ccb1"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-11T14:43:54.173Z"},
+    "paidAt": {"$date": "1970-01-19T22:37:21.823Z"},
+    "paymentMethod": {
+      "method": "stripe",
+      "details": {
+        "exprMonth": 4,
+        "exprYear": 2024,
+        "type": "credit",
+        "brand": "visa",
+        "last4": "4242"
+      }
+    },
+    "state": "succeeded",
+    "updatedAt": {"$date": "2021-11-11T14:43:54.173Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618e1d5496a9de4a79ba2f6b"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-12T07:52:52.278Z"},
+    "paidAt": {"$date": "2021-11-12T07:52:31.000Z"},
+    "paymentMethod": {
+      "method": "paypal",
+      "details": {
+        "email": "sb-c5mcc7568283@personal.example.com",
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        }
+      }
+    },
+    "state": "succeed",
+    "updatedAt": {"$date": "2021-11-12T07:52:52.278Z"},
+    "cancelledAt": null
+  },
+  {
+    "_id": {"$oid": "618e1e3696a9de4a79ba2f80"},
+    "__v": 0,
+    "cart": {"$oid": "6183e01b5f99b701f08e8dec"},
+    "createdAt": {"$date": "2021-11-12T07:56:38.346Z"},
+    "paidAt": {"$date": "2021-11-12T07:56:26.000Z"},
+    "paymentMethod": {
+      "method": "paypal",
+      "details": {
+        "email": "sb-c5mcc7568283@personal.example.com",
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        }
+      }
+    },
+    "state": "succeed",
+    "updatedAt": {"$date": "2021-11-12T07:56:38.346Z"},
+    "cancelledAt": null
+  }
+]

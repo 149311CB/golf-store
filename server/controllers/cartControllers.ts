@@ -1,5 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
+import { verifyToken } from "../middlewares/authMiddleware";
 import Cart from "../models/cartModel";
+import generateToken from "../utils/generateToken";
 
 const archivedCart = expressAsyncHandler(async (req, res) => {
   try {
@@ -16,20 +18,37 @@ const archivedCart = expressAsyncHandler(async (req, res) => {
 });
 
 // will update to have authentication before doing this
-const addToCart = expressAsyncHandler(async (req, res) => {
+const authedAddToCart = expressAsyncHandler(async (req, res) => {
   const { user, product } = req.body;
   try {
-    const exist = await Cart.findOne({
-      user: user,
-      isActive: true,
-    });
+    let exist;
+    if (user) {
+      exist = await Cart.findOne({
+        user: user._id,
+        isActive: true,
+      });
+    }
+
     if (exist) {
-      exist.products.push({ ...product });
+      const existItem = exist.products.find((item: any) => {
+        return item.variant == product.variant;
+      });
+
+      if (existItem) {
+        existItem.quantity = existItem.quantity + product.quantity;
+      } else {
+        exist.products.push({ ...product });
+      }
+
       const cart = await exist.save();
-      res.status(201).json(cart);
+      if (user) {
+        return res.status(201).json(cart);
+      } else if (cart) {
+        return res.status(201).json({ cart });
+      }
     } else {
       const newCart = new Cart({
-        user: user,
+        user: user._id,
         products: [product],
         isActive: true,
       });
@@ -42,14 +61,56 @@ const addToCart = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const guestAddToCart = expressAsyncHandler(async (req, res) => {
+  try {
+    const result = verifyToken(req);
+    if (result) {
+      const { product } = req.body;
+      // @ts-ignore
+      const { cartId } = result;
+      if (cartId) {
+        const exist = await Cart.findOne({
+          _id: cartId,
+          isActive: true,
+        });
+        if (exist) {
+          exist.products.push({ ...product });
+          const cart = await exist.save();
+          return res.status(201).json(cart);
+        }
+        res.status(401);
+      } else {
+        const newCart = new Cart({
+          user: null,
+          products: [product],
+          isActive: true,
+        });
+
+        await newCart.save();
+        return res
+          .status(201)
+          .json({ guestToken: generateToken({ cartId: newCart._id }) });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
+
 const getActiveCart = expressAsyncHandler(async (req, res) => {
-  const exist = await Cart.findOne({
-    isActive: true,
-    user: req.body.user,
-  }).populate({
-    path: "products.variant products.product",
-    populate: { path: "hand loft flex shaft" },
-  });
+  const { user } = req.body;
+  let exist;
+  if (user) {
+    exist = await Cart.findOne({
+      isActive: true,
+      user: user._id,
+    }).populate({
+      path: "products.variant products.product",
+      populate: { path: "hand loft flex shaft" },
+    });
+  }
+
   if (!exist) {
     return res.status(404).json({ message: "not found" });
   }
@@ -62,10 +123,25 @@ const getActiveCart = expressAsyncHandler(async (req, res) => {
   });
 });
 
-const countItemInCart = expressAsyncHandler(async (req, res) => {
+const guestGetActiveCart = expressAsyncHandler(async (req, res) => {});
+
+const authCountItemInCart = expressAsyncHandler(async (req, res) => {
   const { user } = req.body;
   try {
     const exist = await Cart.findOne({ user: user, isActive: true });
+    if (exist) {
+      res.json({ count: exist.products.length });
+    }
+    res.status(404);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
+
+const countItemInCart = expressAsyncHandler(async (req, res) => {
+  const { cartId } = req.body;
+  try {
+    const exist = await Cart.findOne({ _id: cartId, isActive: true });
     if (exist) {
       res.json({ count: exist.products.length });
     }
@@ -101,8 +177,10 @@ const removeProductFromCart = expressAsyncHandler(async (req, res) => {
 
 export {
   archivedCart,
-  addToCart,
+  authedAddToCart,
+  authCountItemInCart,
   countItemInCart,
   getActiveCart,
   removeProductFromCart,
+  guestAddToCart,
 };

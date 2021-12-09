@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { GlobalContext } from "../App";
 import Button from "../components/button/Button";
 import { Golf, Variant } from "../types/Golfs";
 import { client } from "../utils/client";
+import { getCart, getCartFromApi } from "../utils/verifyUser";
 import ProductContainer from "./product-container/ProductContainer";
 
 export class CartProduct {
@@ -36,6 +38,7 @@ const Cart = () => {
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
   const history = useHistory();
+  const { setIsOpen } = useContext(GlobalContext);
 
   const removeProduct = async (_id: string) => {
     setLoading(true);
@@ -49,20 +52,65 @@ const Cart = () => {
     setProducts(fetchedData);
   };
 
+  const proceedToCheckout = () => {
+    if (!localStorage.getItem("token")) {
+      setIsOpen((current: boolean) => !current);
+      return;
+    }
+    if (cartMeta) {
+      history.push({
+        pathname: `/checkout`,
+        state: { id: cartMeta._id },
+      });
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await client.post("/api/carts/activeCart", {
-        user: "610844bf701a78827a321fa6",
-      });
+      const loginToken = localStorage.getItem("token");
+      if (loginToken) {
+        const data = await client.post(
+          "/api/carts/activeCart",
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${loginToken}`,
+            },
+          }
+        );
+
+        if (data) {
+          const { products: fetchProducts, _id, user, isActive } = data;
+          if (!fetchProducts || fetchProducts === undefined) return;
+          if (user) {
+            setCartMeta({ _id, user, isActive });
+          } else {
+            setCartMeta({ _id, isActive });
+          }
+          const fetchedData: CartProduct[] = initialized(fetchProducts);
+
+          setProducts(fetchedData);
+          // }
+        }
+      }
+      // const data = await getCart()
+
       setLoading(false);
-      const { products, _id, user, isActive } = data;
-      if (!products || products === undefined) return;
-      setCartMeta({ _id, user, isActive });
 
-      const fetchedData: CartProduct[] = initialized(products);
+      // if (data) {
+      //   const { products: fetchProducts, _id, user, isActive } = data;
+      //   if (!fetchProducts || fetchProducts === undefined) return;
+      //   if (user) {
+      //     setCartMeta({ _id, user, isActive });
+      //   } else {
+      //     setCartMeta({ _id, isActive });
+      //   }
+      //   const fetchedData: CartProduct[] = initialized(fetchProducts);
 
-      setProducts(fetchedData);
+      //   setProducts(fetchedData);
+      // }
     };
     fetchData();
   }, []);
@@ -84,13 +132,7 @@ const Cart = () => {
               className={"checkout-btn"}
               border={"border"}
               disabled={cartMeta === null}
-              onClick={() =>
-                cartMeta &&
-                history.push({
-                  pathname: `/checkout`,
-                  state: { id: cartMeta._id },
-                })
-              }
+              onClick={() => proceedToCheckout()}
             >
               Proceed to checkout <i className="fas fa-angle-double-right"></i>
             </Button>

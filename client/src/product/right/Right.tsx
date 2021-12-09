@@ -33,7 +33,7 @@ const optionStyle: CSSProperties = {
   textAlign: "center",
 };
 
-const verifyChoosenVariant = (golf: any, instance: VariantStore): any => {
+const verifyChoosenProduct = (instance: VariantStore): any => {
   const choosenVariant = instance.choosenVariant;
 
   const choosen: Variant | undefined = instance.activeVariants?.find(
@@ -47,18 +47,25 @@ const verifyChoosenVariant = (golf: any, instance: VariantStore): any => {
     }
   );
   if (choosen && choosen.stock > 0) {
+    return choosen;
+  }
+  return null;
+};
+
+const createChoosenProduct = (golf: any, instance: VariantStore): any => {
+  const choosen = verifyChoosenProduct(instance);
+  if (choosen !== null) {
+    const products = {
+      product: golf._id,
+      variant: choosen._id,
+      quantity: 1,
+    };
     const choosenProduct = {
-      user: "610844bf701a78827a321fa6",
-      product: {
-        product: golf._id,
-        variant: choosen._id,
-        quantity: 1,
-      },
+      product: products,
     };
     return choosenProduct;
-  } else {
-    console.log("You had not choose all option or something bad had happened");
   }
+  // replace this with warning message
   return null;
 };
 
@@ -127,10 +134,37 @@ const Right: React.FC<IProps> = ({ data }) => {
   useEffect(() => {
     if (choosenProduct !== null) {
       const addToCart = async () => {
-        try {
-          await client.post("/api/carts/addToCart", choosenProduct);
-        } catch (error) {
-          console.log(error);
+        // try {
+        // @ts-ignore
+        if (choosenProduct !== null) {
+          const token = localStorage.getItem("token");
+          if (token) {
+            await client.post("/api/carts/authAddToCart", choosenProduct, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+          } else {
+            let guestToken = localStorage.getItem("guestToken");
+            let config;
+            if (guestToken) {
+              config = {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${guestToken}`,
+                },
+              };
+            }
+            const data = await client.post(
+              "/api/carts/guestAddToCart",
+              choosenProduct,
+              config
+            );
+            if (data.guestToken) {
+              localStorage.setItem("guestToken", data.guestToken);
+            }
+          }
         }
       };
       addToCart();
@@ -165,7 +199,8 @@ const Right: React.FC<IProps> = ({ data }) => {
           optionStyle={optionStyle}
         />
         <Button
-          className={"checkout-btn"}
+          className={"add-to-cart-btn"}
+          border="border"
           style={{
             marginTop: "1.3rem",
             padding: "1rem 0",
@@ -173,7 +208,7 @@ const Right: React.FC<IProps> = ({ data }) => {
             fontWeight: "bold",
           }}
           onClick={() => {
-            setChoosenProduct(verifyChoosenVariant(data.golf, instance));
+            setChoosenProduct(createChoosenProduct(data.golf, instance));
           }}
         >
           Add to cart
