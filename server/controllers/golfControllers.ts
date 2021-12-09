@@ -85,7 +85,7 @@ const getGolfById = asyncHandler(async (req, res) => {
 
   const golf = await Golf.findById(req.params.id);
   const variants = await Variant.find({
-    golf: mongoose.Types.ObjectId(req.params.id),
+    golf: req.params.id,
   }).populate("hand shaft flex loft");
   const properties = {};
   // @ts-ignore

@@ -1,16 +1,16 @@
 import { Application, RequestHandler } from "express";
 import http from "http";
-import { Mongoose } from "mongoose";
+import { connect } from "mongoose";
 import Controller from "./typings/Controller";
 
 export default class Server {
   private _app: Application;
-  private _database: Mongoose;
+  // private _database: Mongoose;
   private readonly _port: number;
 
-  constructor(app: Application, database: Mongoose, port: number) {
+  constructor(app: Application, port: number) {
     this._app = app;
-    this._database = database;
+    // this._database = database;
     this._port = port;
   }
 
@@ -34,7 +34,7 @@ export default class Server {
 
   public async connectDatabase(): Promise<void> {
     try {
-      const conn = await this._database.connect(process.env.MONGO_URI!, {
+      const conn = await connect(process.env.MONGO_URI!, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useCreateIndex: true,

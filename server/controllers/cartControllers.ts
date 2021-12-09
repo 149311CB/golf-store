@@ -5,12 +5,12 @@ import generateToken from "../utils/generateToken";
 
 const archivedCart = expressAsyncHandler(async (req, res) => {
   try {
-    const cart = await Cart.findOne({ _id: req.query.id });
-    if (cart) {
-      cart.isActive = false;
-      await cart.save();
-      return res.json({ message: "cart updated" });
-    }
+    // const cart = await Cart.findOne({ _id: req.query.id });
+    // if (cart) {
+    //   cart.isActive = false;
+    //   await cart.save();
+    //   return res.json({ message: "cart updated" });
+    // }
   } catch (error) {
     console.log(error);
   }

@@ -15,9 +15,9 @@ export default class WellcomGateController extends Controller {
     super();
   }
   async wellcomeHandler(
-    req: Request,
+    _: Request,
     res: Response,
-    next: NextFunction
+    __: NextFunction
   ): Promise<void> {
     try {
       super.sendSuccess(200, res, {}, "Api is running..");

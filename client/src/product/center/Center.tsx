@@ -7,8 +7,9 @@ interface Props {
 }
 
 const Center: React.FC<Props> = ({ data }) => {
-  const { golf } = data;
   const [bigImage, setBigImage] = useState(0);
+  if (!data) return <></>;
+  const { golf } = data;
   return (
     <div className={"center"}>
       <div className={"main-image"}>

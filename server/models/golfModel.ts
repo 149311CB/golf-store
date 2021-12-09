@@ -1,19 +1,14 @@
 import { Schema, model } from "mongoose";
-import {
-  IGolfInterface,
-  ILoftInterface,
-  IFlexInterface,
-  IShaftInterface,
-} from "../types/golfType";
+import { IFlex, IHand, ILoft, IProduct, IShaft, IVariant } from "../types/productTypes";
 
-const handSchema = new Schema({
+const handSchema = new Schema<IHand>({
   side: {
     type: String,
     required: true,
   },
 });
 
-const loftSchema = new Schema({
+const loftSchema = new Schema<ILoft>({
   type: {
     type: Number,
     required: true,
@@ -21,7 +16,7 @@ const loftSchema = new Schema({
   },
 });
 
-const flexSchema = new Schema({
+const flexSchema = new Schema<IFlex>({
   type: {
     type: String,
     required: true,
@@ -29,7 +24,7 @@ const flexSchema = new Schema({
   },
 });
 
-const shaftSchema = new Schema({
+const shaftSchema = new Schema<IShaft>({
   name: {
     type: String,
     required: true,
@@ -41,7 +36,7 @@ const shaftSchema = new Schema({
   },
 });
 
-const variantSchema = new Schema({
+const variantSchema = new Schema<IVariant>({
   golf: {
     type: Schema.Types.ObjectId,
     ref: "Golf",
@@ -69,7 +64,7 @@ const variantSchema = new Schema({
   },
 });
 
-const golfSchema = new Schema<IGolfInterface>({
+const golfSchema = new Schema<IProduct>({
   name: {
     type: String,
     required: true,
@@ -92,11 +87,11 @@ const golfSchema = new Schema<IGolfInterface>({
   },
 });
 
-const Hand = model("Hand", handSchema, "hands");
-const Loft = model("Loft", loftSchema, "lofts");
-const Shaft = model("Shaft", shaftSchema, "shafts");
-const Flex = model("Flex", flexSchema, "flexs");
-const Variant = model("Variant", variantSchema, "variants");
+const Hand = model<IHand>("Hand", handSchema, "hands");
+const Loft = model<ILoft>("Loft", loftSchema, "lofts");
+const Shaft = model<IShaft>("Shaft", shaftSchema, "shafts");
+const Flex = model<IFlex>("Flex", flexSchema, "flexs");
+const Variant = model<IVariant>("Variant", variantSchema, "variants");
 const Golf = model("Golf", golfSchema, "golfs");
 
-export { Golf, Variant, Loft, Shaft, Flex };
+export { Golf, Variant, Hand, Loft, Shaft, Flex, };

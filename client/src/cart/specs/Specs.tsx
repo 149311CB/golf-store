@@ -19,9 +19,9 @@ const Specs: React.FC<{ variant: Variant; product: Golf }> = ({
       <div>
         <strong>Flex:</strong> {variant.flex?.type}
       </div>
-      <div>
-        <strong>SKU:</strong> {product.sku}
-      </div>
+      {/* <div> */}
+      {/*   <strong>SKU:</strong> {product.sku} */}
+      {/* </div> */}
     </div>
   );
 };

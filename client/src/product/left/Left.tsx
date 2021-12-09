@@ -8,6 +8,7 @@ interface Props {
   reviews: reviewInterface[] | null;
 }
 const Left: React.FC<Props> = ({ data }) => {
+  if (!data) return <></>;
   const { golf } = data;
 
   // const reviewTotal = useSumReviews(golf._id, reviews);
@@ -15,7 +16,7 @@ const Left: React.FC<Props> = ({ data }) => {
   return (
     <div className={"left"}>
       <div className={"container"}>
-        <div className={"sku"}>{golf.sku}</div>
+        {/* <div className={"sku"}>{golf.sku}</div> */}
         <div className={"name"}>{golf.name}</div>
         {/* <Rating
           value={reviewTotal.average}

@@ -131,6 +131,7 @@ const Right: React.FC<IProps> = ({ data }) => {
     }
   }, [data]);
 
+
   useEffect(() => {
     if (choosenProduct !== null) {
       const addToCart = async () => {
