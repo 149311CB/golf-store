@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "app.js",
   "author": "Nick",
   "license": "MIT",
   "dependencies": {
@@ -23,6 +23,6 @@
   },
   "scripts": {
     "start": "node server",
-    "server": "tsc -w & nodemon dist/server.js"
+    "server": "tsc -w & nodemon dist/app.js"
   }
 }

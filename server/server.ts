@@ -1,35 +1,48 @@
-import dotenv from "dotenv";
-import express from "express";
-import connectDB from "./config/db";
-import cors from "cors";
+import { Application, RequestHandler } from "express";
+import http from "http";
+import { Mongoose } from "mongoose";
+import Controller from "./typings/Controller";
 
-import golfRoutes from "./routes/golfRoutes";
-import paymentRoutes from "./routes/paymentRroutes";
-import orderRoutes from "./routes/orderRoutes";
-import cartRoutes from "./routes/cartRoutes";
-import categoryRoutes from "./routes/categoryRoutes";
-import userRoutes from "./routes/userRoutes";
+export default class Server {
+  private _app: Application;
+  private _database: Mongoose;
+  private readonly _port: number;
 
-dotenv.config();
+  constructor(app: Application, database: Mongoose, port: number) {
+    this._app = app;
+    this._database = database;
+    this._port = port;
+  }
 
-connectDB();
+  public run(): http.Server {
+    return this._app.listen(this._port, () => {
+      console.log(`server is running on port ${this._port} `);
+    });
+  }
 
-const app = express();
+  public loadControllers(controllers: Array<Controller>): void {
+    controllers.forEach((controller) => {
+      this._app.use(controller.path, controller.setRoutes());
+    });
+  }
 
-app.use(express.json());
-app.use(cors({ origin: "*" }));
+  public loadMiddlewares(middlewares: Array<RequestHandler>): void {
+    middlewares.forEach((middleware) => {
+      this._app.use(middleware);
+    });
+  }
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
-app.use("/api/golfs", golfRoutes);
-app.use("/api/payments", paymentRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/carts", cartRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/user", userRoutes);
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  public async connectDatabase(): Promise<void> {
+    try {
+      const conn = await this._database.connect(process.env.MONGO_URI!, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useCreateIndex: true,
+      });
+      console.log(`MongoDB connected: ${conn.connection.host}`);
+    } catch (error: any) {
+      console.error(`ERROR: ${error.message}`);
+      process.exit(1);
+    }
+  }
+}
