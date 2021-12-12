@@ -1,14 +1,18 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-type userTypes = {
-  _id: string;
+export type userTypes = {
+  _id?: string;
   firstName: string;
   lastName: string;
   isActive: boolean;
   email: string;
+  emailVerification: boolean;
   phoneNumber: string;
   password: string;
+  refreshToken: string;
+  facebookId?: string;
+  googleId?: string;
 };
 
 const userSchema = new Schema<userTypes>({
@@ -22,16 +26,15 @@ const userSchema = new Schema<userTypes>({
   },
   isActive: {
     type: Boolean,
-    required: true,
-  },
-  isGuest: {
-    type: Boolean,
-    required: true,
     default: false,
   },
   email: {
     type: String,
     required: true,
+  },
+  emailVerification: {
+    type: String,
+    default: false,
   },
   phoneNumber: {
     type: String,
@@ -40,6 +43,18 @@ const userSchema = new Schema<userTypes>({
   password: {
     type: String,
     required: true,
+  },
+  refreshToken: {
+    type: String,
+    required: false,
+  },
+  facebookId: {
+    type: String,
+    required: false,
+  },
+  googleId: {
+    type: String,
+    required: false,
   },
 });
 

@@ -4,7 +4,6 @@ import { GlobalContext } from "../App";
 import Button from "../components/button/Button";
 import { Golf, Variant } from "../types/Golfs";
 import { client } from "../utils/client";
-import { getCart, getCartFromApi } from "../utils/verifyUser";
 import ProductContainer from "./product-container/ProductContainer";
 
 export class CartProduct {
@@ -68,49 +67,22 @@ const Cart = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const loginToken = localStorage.getItem("token");
-      if (loginToken) {
-        const data = await client.post(
-          "/api/carts/activeCart",
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${loginToken}`,
-            },
-          }
-        );
+      const { data } = await client.get("/api/carts/auth/active");
 
-        if (data) {
-          const { products: fetchProducts, _id, user, isActive } = data;
-          if (!fetchProducts || fetchProducts === undefined) return;
-          if (user) {
-            setCartMeta({ _id, user, isActive });
-          } else {
-            setCartMeta({ _id, isActive });
-          }
-          const fetchedData: CartProduct[] = initialized(fetchProducts);
-
-          setProducts(fetchedData);
-          // }
+      if (data) {
+        const { products: fetchProducts, _id, user, isActive } = data;
+        if (!fetchProducts || fetchProducts === undefined) return;
+        if (user) {
+          setCartMeta({ _id, user, isActive });
+        } else {
+          setCartMeta({ _id, isActive });
         }
+        const fetchedData: CartProduct[] = initialized(fetchProducts);
+
+        setProducts(fetchedData);
       }
-      // const data = await getCart()
 
       setLoading(false);
-
-      // if (data) {
-      //   const { products: fetchProducts, _id, user, isActive } = data;
-      //   if (!fetchProducts || fetchProducts === undefined) return;
-      //   if (user) {
-      //     setCartMeta({ _id, user, isActive });
-      //   } else {
-      //     setCartMeta({ _id, isActive });
-      //   }
-      //   const fetchedData: CartProduct[] = initialized(fetchProducts);
-
-      //   setProducts(fetchedData);
-      // }
     };
     fetchData();
   }, []);

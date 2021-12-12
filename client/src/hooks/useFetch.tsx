@@ -33,7 +33,6 @@ export const useFetch = (
         let data = null;
         if (method === Method.GET) {
           data = await client.get(url);
-          console.log(data)
         }
         if (method === Method.POST) {
           data = await client.post(url, body);

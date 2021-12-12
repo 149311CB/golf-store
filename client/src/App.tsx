@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import Header from "./header/Header";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Product from "./product/Products";
@@ -7,13 +7,35 @@ import Checkout from "./checkout/Checkout";
 import Cart from "./cart/Cart";
 import Error from "./error/Error";
 import PaymentSuccess from "./checkout/success/PaymentSuccess";
+import { client } from "./utils/client";
 
-export const GlobalContext = createContext<any>({})
+export const GlobalContext = createContext<any>({});
+const refreshToken = async () => {
+  const { data } = await client.get("/api/user/auth/token/refresh", {
+    credentials: "include",
+  });
+  return data;
+};
 function App() {
+  const [token, setToken] = useState<string | null>(null);
+
+  const getToken = useCallback(() => {
+    refreshToken().then((data) => {
+      setToken(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    getToken();
+    setTimeout(() => {
+      getToken();
+    }, 5 * 60 * 1000);
+  }, [getToken]);
+
   return (
     <>
       <Router>
-        <GlobalContext.Provider value={{}}>
+        <GlobalContext.Provider value={{ token }}>
           <Header />
           <main>
             <Route path={"/"} component={Homepage} exact />

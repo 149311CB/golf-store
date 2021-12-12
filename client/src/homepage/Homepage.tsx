@@ -6,7 +6,6 @@ import Category from "./Category";
 const Home = () => {
   // const [isExecute, setIsExecute] = useState(true);
   const [data, setData] = useState<any>(null);
-  console.log(data)
 
   // const { data, loading, error } = useFetch(
   //   "/api/category/list",

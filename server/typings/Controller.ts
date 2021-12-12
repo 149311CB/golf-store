@@ -1,9 +1,4 @@
-import {
-  Response,
-  Request,
-  NextFunction,
-  Router,
-} from "express";
+import { Response, Request, NextFunction, Router } from "express";
 
 export enum Methods {
   GET = "GET",
@@ -57,7 +52,7 @@ export default abstract class Controller {
   protected sendSuccess(
     status: number,
     res: Response,
-    data: object,
+    data: object | null,
     message?: string
   ): Response {
     return res.status(status).json({
@@ -77,6 +72,6 @@ export default abstract class Controller {
   }
 
   protected sendRedirect(res: Response, url: string) {
-    return res.redirect(url);
+    res.redirect(url);
   }
 }

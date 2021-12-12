@@ -26,21 +26,22 @@ const User = () => {
     e.preventDefault();
 
     const data = await client.post(
-      "/api/user/login",
+      "/api/user/auth/login",
       {
         email: emailRef.current?.value,
         password: passwordRef.current?.value,
       },
       {
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
-
-    const { token } = data;
-    localStorage.setItem("token", token);
-    setIsOpen(false);
+    // const { token } = data;
+    // localStorage.setItem("token", token);
+    // setIsOpen(false);
   };
 
   useEffect(() => {
