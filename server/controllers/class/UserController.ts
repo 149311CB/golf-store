@@ -1,61 +1,78 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../../models/userModel";
+import User, { userTypes } from "../../models/userModel";
 import Controller, { Methods } from "../../typings/Controller";
 import {
   COOKIES_OPTIONS,
   generateRefreshToken,
   generateToken,
 } from "../../utils/generateToken";
+import { GoogleStrategy } from "./strategies/authentication/GoogleStrategy";
+import { LocalValidation } from "./strategies/authentication/LocalStrategy";
+import { AuthRequest } from "./strategies/authentication/AuthRequest";
+import { FacebookStrategy } from "./strategies/authentication/FacebookStrategy";
 
-export const localStrategy = async (
+export async function jwtValidate(
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: "email and password required" });
-  }
-  const user = await User.findOne({ email: email, isActive: true });
-  if (!user || !(await user.matchPassword(password))) {
+): Promise<any> {
+  try {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      let token;
+      token = req.headers.authorization.split(" ")[1];
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      if (typeof decoded === "string") {
+        return res.status(400).json({ message: "invalid token" });
+      }
+
+      const user = await User.findById(decoded.userId);
+      if (!user) {
+        return res.status(401).json({ message: "UnAuthorized" });
+      }
+      req.user = user;
+      return next();
+    }
+    return res.status(401).json({ message: "UnAuthorized" });
+  } catch (error) {
     return res.status(401).json({ message: "UnAuthorized" });
   }
-  req.user = user;
-  return next();
-};
+}
 
-const jwtStrategy = async (req: Request, res: Response, next: NextFunction) => {
+export async function jwtCartValidate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<userTypes | unknown> {
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    try {
-      const token = req.headers.authorization.split(" ")[1];
-      if (!token) {
-        return res.status(401);
-      }
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-      if (typeof decoded === "string") {
-        return res.status(401);
-      }
-      req.user = await User.findById(decoded.userId).select("-password");
-      return next();
-    } catch (error) {
-      console.log(error);
-      return res.status(500);
-    }
-  }
-};
+    let token;
+    token = req.headers.authorization.split(" ")[1];
 
-class UserController extends Controller {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    if (typeof decoded === "string") {
+      return res.status(400).json({ message: "invalid token" });
+    }
+
+    req.cartId = decoded.cartId;
+    next();
+  }
+}
+
+class AuthController extends Controller {
   public path = "/api/user/auth";
   protected routes = [
     {
       path: "/login",
       method: Methods.POST,
       handler: this.login,
-      localMiddlewares: [localStrategy],
+      localMiddlewares: [],
     },
     {
       path: "/token/refresh",
@@ -69,6 +86,36 @@ class UserController extends Controller {
       handler: this.register,
       localMiddlewares: [],
     },
+    {
+      path: "/login/google",
+      method: Methods.GET,
+      handler: this.google,
+      localMiddlewares: [],
+    },
+    {
+      path: "/login/google/callback",
+      method: Methods.GET,
+      handler: this.googleCallback,
+      localMiddlewares: [],
+    },
+    {
+      path: "/login/facebook",
+      method: Methods.GET,
+      handler: this.facebook,
+      localMiddlewares: [],
+    },
+    {
+      path: "/login/facebook/callback",
+      method: Methods.GET,
+      handler: this.facebookCallback,
+      localMiddlewares: [],
+    },
+    {
+      path: "/details",
+      method: Methods.GET,
+      handler: this.getuserDetails,
+      localMiddlewares: [jwtValidate],
+    },
   ];
 
   constructor() {
@@ -77,23 +124,86 @@ class UserController extends Controller {
 
   async login(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
-      const { user } = req;
-      const exist = await User.findById(user._id);
-      if (!exist) {
-        super.sendError(401, res, "UnAuthorized");
+      const { email, password } = req.body;
+      const request = new AuthRequest(new LocalValidation(email, password));
+
+      const user = await request.verify();
+
+      if (!user) {
+        return res.status(401).json("UnAuthorized");
       }
-      const refreshToken = generateRefreshToken({ userId: exist._id });
-      exist.refreshToken = refreshToken;
-      await exist.save();
-      res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      if (req.register) {
-        super.sendSuccess(200, res, null);
-      } else {
-        super.sendSuccess(200, res, null);
-      }
+
+      res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
+
+      return super.sendSuccess(200, res, null);
     } catch (error) {
       console.log(error);
       super.sendError(500, res);
+    }
+  }
+
+  async google(_: Request, res: Response, __: NextFunction): Promise<any> {
+    const scope = [
+      "https%3A//www.googleapis.com/auth/userinfo.email",
+      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile",
+    ];
+    const redirect_uri =
+      "https://localhost:5001/api/user/auth/login/google/callback";
+
+    res.redirect(
+      `https://accounts.google.com/o/oauth2/v2/auth?scope=${scope.join(
+        "+"
+      )}&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${redirect_uri}&client_id=${
+        process.env.GOOGLE_CLIENT_ID
+      }`
+    );
+  }
+
+  async googleCallback(
+    req: Request,
+    res: Response,
+    _: NextFunction
+  ): Promise<any> {
+    try {
+      const { code } = req.query;
+      const request = new AuthRequest(new GoogleStrategy(code as string));
+      const user = await request.verify();
+
+      if (user) {
+        res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
+      }
+
+      return res.redirect("https://localhost:3000");
+    } catch (error) {
+      console.log(error);
+      return res.redirect("https://localhost:3000");
+    }
+  }
+
+  async facebook(req: Request, res: Response, __: NextFunction): Promise<any> {
+    const redirect_uri = `https://localhost:5001/api/user/auth/login/facebook/callback`;
+    const uri = `https://www.facebook.com/v12.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${redirect_uri}&scope=public_profile,email`;
+    req.strategy = "facebook";
+    res.redirect(uri);
+  }
+
+  async facebookCallback(
+    req: Request,
+    res: Response,
+    _: NextFunction
+  ): Promise<any> {
+    try {
+      const { code } = req.query;
+      const request = new AuthRequest(new FacebookStrategy(code as string));
+      const user = await request.verify();
+
+      if (user) {
+        res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
+      }
+
+      return res.redirect("https://localhost:3000");
+    } catch (error) {
+      return res.redirect("https://localhost:3000");
     }
   }
 
@@ -108,15 +218,19 @@ class UserController extends Controller {
       if (!refreshToken) {
         return super.sendError(401, res, "UnAuthorized");
       }
+
       const payload = jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET!
       );
+
       if (typeof payload === "string") {
         return super.sendError(401, res, "UnAuthorized, token failed");
       }
+
       const { userId } = payload;
       const user = await User.findById(userId);
+
       if (!user || user.refreshToken !== refreshToken) {
         return super.sendError(401, res, "UnAuthorized, invalid refresh token");
       }
@@ -133,11 +247,7 @@ class UserController extends Controller {
     }
   }
 
-  async register(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<any> {
+  async register(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const {
         firstName,
@@ -148,7 +258,7 @@ class UserController extends Controller {
         confirmPass,
         phoneNumber,
       } = req.body;
-      if (!password || password === undefined) {
+      if (!password) {
         return res.status(400).json({ message: "required password" });
       }
 
@@ -188,6 +298,27 @@ class UserController extends Controller {
       return super.sendError(500, res);
     }
   }
-}
 
-export default UserController;
+  async getuserDetails(
+    req: Request,
+    res: Response,
+    _: NextFunction
+  ): Promise<any> {
+    const query = req.query;
+    let select = Object.keys(query).join(" ");
+    if (!/\S/.test(select) || select === null || select === undefined) {
+      select = "-password -refresh_token";
+    }
+
+    if (!req.user) {
+      return res.status(401);
+    }
+    const user = await User.findById(req.user._id).select(select);
+    try {
+      return res.status(200).json(user);
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+}
+export default AuthController;

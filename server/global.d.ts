@@ -4,7 +4,9 @@ declare global {
   namespace Express {
     interface Request {
       user: userTypes;
+      cartId: string;
       register: Boolean;
+      strategy: string;
     }
   }
 }

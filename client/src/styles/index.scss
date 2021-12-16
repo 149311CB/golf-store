@@ -1,5 +1,25 @@
 @import "themes";
 
+@font-face {
+  font-family: brutal-regular;
+  src: url("../assets/fonts/BrutalType.woff2");
+}
+
+@font-face {
+  font-family: brutal-thin;
+  src: url("../assets/fonts/BrutalType-Thin.woff2");
+}
+
+@font-face {
+  font-family: brutal-light;
+  src: url("../assets/fonts/BrutalType-Light.woff2");
+}
+
+@font-face {
+  font-family: brutal-medium;
+  src: url("../assets/fonts/BrutalType-Medium.woff2");
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -80,25 +100,27 @@ main {
   transition-timing-function: ease-out;
 }
 
-@mixin usingBoxShadowMixin() {
-  &.box-shadow-none {
-    box-shadow: none;
-  }
+@mixin usingBoxShadowMixin($type) {
+  @if $type == "primary" {
+    &.box-shadow-none {
+      box-shadow: none;
+    }
 
-  &.box-shadow-x-small {
-    box-shadow: var(--extra-small-box-shadow);
-  }
+    &.box-shadow-x-small {
+      box-shadow: var(--extra-small-box-shadow);
+    }
 
-  &.box-shadow-small {
-    box-shadow: var(--small-box-shadow);
-  }
+    &.box-shadow-small {
+      box-shadow: var(--small-box-shadow);
+    }
 
-  &.box-shadow-medium {
-    box-shadow: var(--medium-box-shadow);
-  }
+    &.box-shadow-medium {
+      box-shadow: var(--medium-box-shadow);
+    }
 
-  &.border {
-    border: 1px solid var(--border);
+    &.border {
+      border: 1px solid var(--border);
+    }
   }
 }
 
@@ -167,6 +189,27 @@ main {
     border-bottom-right-radius: $border-radius;
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
+  }
+}
+
+#login-form {
+  font-family: "brutal-regular";
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: hsl(0, 0%, 90%);
+  input {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    border: none;
+    box-shadow: inset 2px 2px 5px hsl(0, 0%, 18%),
+      inset -2px -2px 5px hsl(0, 0%, 35%);
+    background-color: hsl(0, 0%, 26%);
+    &:focus {
+      outline: 1px solid hsla(0, 0%, 96%, 0.3);
+    }
   }
 }
 

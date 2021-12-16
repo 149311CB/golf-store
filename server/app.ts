@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import Server from "./server";
 import Controller from "./typings/Controller";
-import WellcomGateController from "./controllers/class/WelcomeGateController";
 import ProductController from "./controllers/class/ProductController";
 import CategoryController from "./controllers/class/CategoryController";
 import CartController from "./controllers/class/CartController";
-import UserController from "./controllers/class/UserController";
+import AuthController from "./controllers/class/UserController";
+import PaymentController from "./controllers/class/PaymentController";
+import OrderController from "./controllers/class/OrderController";
 
 // .env initialized
 dotenv.config();
@@ -20,7 +21,7 @@ const app: Application = express();
 const globalMiddlewares: Array<RequestHandler> = [
   json(),
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://localhost:3000",
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
   }),
@@ -31,11 +32,12 @@ const globalMiddlewares: Array<RequestHandler> = [
 const server: Server = new Server(app, 5001);
 
 const controllers: Array<Controller> = [
-  new WellcomGateController(),
   new ProductController(),
   new CategoryController(),
   new CartController(),
-  new UserController(),
+  new AuthController(),
+  new PaymentController(),
+  new OrderController(),
 ];
 
 Promise.resolve()

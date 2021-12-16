@@ -3,6 +3,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { CheckoutContext } from "../Checkout";
 import { client } from "../../utils/client";
 import { OrderInterface } from "../../types/types";
+import { GlobalContext } from "../../App";
 
 const cardStyle = {
   style: {
@@ -34,18 +35,19 @@ const CheckoutForm = () => {
 
   const stripe = useStripe();
   const elements = useElements();
+  const { token } = useContext(GlobalContext);
 
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
+    if (!token) return;
     // fetch stripe client secret using to process payment
     const fetchData = async () => {
-      const data = await client.get(
-        `/api/payments/stripe?userId=610844bf701a78827a321fa6&cartId=${cartId}`,
+      const { data } = await client.get(
+        `/api/payment/auth/stripe?cartId=${cartId}`,
         {
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -54,17 +56,30 @@ const CheckoutForm = () => {
       }
     };
     fetchData();
-  }, [cartId, error, success, cancelled]);
+  }, [cartId, error, success, cancelled, token]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     handleProcessing(true);
 
+    if (!elements) {
+      return handleError("something went wrong");
+    }
+
+    const card = elements.getElement(CardElement);
+    if (!card) {
+      return handleError("something went wrong");
+    }
+
     const paymentMethod = await stripe!.createPaymentMethod({
       type: "card",
-      //@ts-ignore
-      card: elements.getElement(CardElement),
+      card: card,
     });
+    console.log(paymentMethod);
+
+    if (!paymentMethod || !paymentMethod.paymentMethod) {
+      return handleError("invalid card");
+    }
 
     const payload = await stripe!.confirmCardPayment(clientSecret, {
       payment_method: paymentMethod.paymentMethod!.id,

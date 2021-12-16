@@ -4,6 +4,7 @@ import { CheckoutContext } from "../Checkout";
 import { client } from "../../utils/client";
 import { OrderInterface } from "../../types/types";
 import { useHistory } from "react-router-dom";
+import { GlobalContext } from "../../App";
 
 const Paypal = () => {
   const {
@@ -20,6 +21,7 @@ const Paypal = () => {
   const [clientId, setClientId] = useState("");
   const [amount, setAmount] = useState("");
   const history = useHistory();
+  const { token } = useContext(GlobalContext);
 
   const generateOrder = (): OrderInterface => {
     const order = new OrderInterface({
@@ -34,16 +36,18 @@ const Paypal = () => {
   };
 
   useEffect(() => {
+    if (!token) return;
     const fetchData = async () => {
-      const data = await client.get(
-        `/api/payments/paypal?userId=610844bf701a78827a321fa6&cartId=${cartId}`,
+      const { data } = await client.get(
+        `/api/payment/auth/paypal?cartId=${cartId}`,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+
       if (data?.status === 404) {
         history.push("/");
       }
@@ -53,7 +57,7 @@ const Paypal = () => {
       }
     };
     fetchData();
-  }, [cartId, success, cancelled, history]);
+  }, [cartId, success, cancelled, history, token]);
 
   return (
     <div className={"paypal"}>

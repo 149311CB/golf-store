@@ -99,13 +99,15 @@ header {
     border-radius: 50%;
     color: var(--text);
     .cart-item-count {
+      box-sizing: content-box;
+      border: 2px solid var(--standout);
       font-size: 13px;
       border-radius: 50%;
       width: 13px;
       height: 13px;
       text-align: center;
-      top: 0;
-      right: 0;
+      top: -2px;
+      right: -3px;
       position: absolute;
       background: var(--text-standout);
       color: var(--text-light);

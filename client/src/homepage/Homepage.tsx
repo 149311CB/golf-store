@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Method, useFetch } from "../hooks/useFetch";
+import { useEffect, useState } from "react";
 import { client } from "../utils/client";
 import Category from "./Category";
 
@@ -21,7 +20,7 @@ const Home = () => {
       const { data } = await client.post("/api/category/list", {
         categoryList: ["top sale"],
       });
-      setData(data)
+      setData(data.data)
     };
     fetchData();
   }, []);

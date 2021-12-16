@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import Header from "./header/Header";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
 import Product from "./product/Products";
 import Homepage from "./homepage/Homepage";
 import Checkout from "./checkout/Checkout";
@@ -14,14 +14,17 @@ const refreshToken = async () => {
   const { data } = await client.get("/api/user/auth/token/refresh", {
     credentials: "include",
   });
-  return data;
+  return data.data;
 };
+
 function App() {
   const [token, setToken] = useState<string | null>(null);
 
   const getToken = useCallback(() => {
     refreshToken().then((data) => {
-      setToken(data);
+      if(!data) return
+      const { token } = data
+      setToken(token);
     });
   }, []);
 
@@ -42,8 +45,9 @@ function App() {
             <Route path={"/product/:id"} component={Product} exact />
             <Route path={"/cart/"} component={Cart} exact />
             <Route path={"/checkout"} component={Checkout} exact />
-            <Route path={"/error"} component={Error} exact />
+            {/* <Route path={"/error"} component={Error} exact /> */}
             <Route path={"/success"} component={PaymentSuccess} exact />
+
             {/* <Redirect to={"/error"}/> */}
             {/*<Route path={"/"} component={NewModels} exact />*/}
             {/*<Route path={"/"} component={TestRenderAlgo} exact />*/}

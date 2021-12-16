@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import { transformData, VariantStore } from "../../hooks/useTransformData";
 import { Variant, Hand, IGolfProperty } from "../../types/Golfs";
 import { filterActive, filterDisabled } from "../../hooks/useFilterData";
@@ -9,6 +9,7 @@ import Lofts from "./lofts/Lofts";
 import FLexs from "./flexs/FLexs";
 import Shafts from "./shafts/Shafts";
 import { client } from "../../utils/client";
+import { GlobalContext } from "../../App";
 
 interface IProps {
   data: any;
@@ -77,7 +78,7 @@ const Right: React.FC<IProps> = ({ data }) => {
   const [shafts, setShafts] = useState<Iterator>();
   const [render, setRender] = useState(false);
   const [choosenProduct, setChoosenProduct] = useState(null);
-  // console.log(instance.choosenVariant)
+  const { token } = useContext(GlobalContext);
 
   // manages states
   const setProperties = () => {
@@ -131,46 +132,28 @@ const Right: React.FC<IProps> = ({ data }) => {
     }
   }, [data]);
 
-
-  useEffect(() => {
-    if (choosenProduct !== null) {
-      const addToCart = async () => {
-        // try {
-        // @ts-ignore
-        if (choosenProduct !== null) {
-          const token = localStorage.getItem("token");
-          if (token) {
-            await client.post("/api/carts/authAddToCart", choosenProduct, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            });
-          } else {
-            let guestToken = localStorage.getItem("guestToken");
-            let config;
-            if (guestToken) {
-              config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${guestToken}`,
-                },
-              };
-            }
-            const data = await client.post(
-              "/api/carts/guestAddToCart",
-              choosenProduct,
-              config
-            );
-            if (data.guestToken) {
-              localStorage.setItem("guestToken", data.guestToken);
-            }
-          }
-        }
-      };
-      addToCart();
+  const addToCart = async (choosenProduct: any) => {
+    if (token) {
+      await client.post("/api/carts/auth/add", choosenProduct, {
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } else {
+      const { data } = await client.post("/api/carts/add", choosenProduct, {
+        credentials: "include",
+      });
+      if (data.guestToken) {
+        localStorage.setItem("guestToken", data.guestToken);
+      }
     }
-  }, [choosenProduct]);
+  };
+  // useEffect(() => {
+  //   if (choosenProduct !== null) {
+  //     addToCart();
+  //   }
+  // }, [choosenProduct, token]);
 
   return (
     <div className={"right"}>
@@ -208,8 +191,11 @@ const Right: React.FC<IProps> = ({ data }) => {
             width: "100%",
             fontWeight: "bold",
           }}
+          disabled={!data.golf || !instance}
           onClick={() => {
-            setChoosenProduct(createChoosenProduct(data.golf, instance));
+            const choosen = createChoosenProduct(data.golf, instance);
+            setChoosenProduct(choosen);
+            addToCart(choosen);
           }}
         >
           Add to cart

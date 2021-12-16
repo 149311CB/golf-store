@@ -1,5 +1,6 @@
 import { Application, RequestHandler } from "express";
-import http from "http";
+import https from "https";
+import fs from "fs";
 import { connect } from "mongoose";
 import Controller from "./typings/Controller";
 
@@ -10,12 +11,16 @@ export default class Server {
 
   constructor(app: Application, port: number) {
     this._app = app;
-    // this._database = database;
     this._port = port;
   }
 
-  public run(): http.Server {
-    return this._app.listen(this._port, () => {
+  public run(): https.Server {
+    const credentials = {
+      key: fs.readFileSync("./localhost-key.pem"),
+      cert: fs.readFileSync("./localhost.pem"),
+    };
+    const httpsServer = https.createServer(credentials, this._app);
+    return httpsServer.listen(this._port, () => {
       console.log(`server is running on port ${this._port} `);
     });
   }

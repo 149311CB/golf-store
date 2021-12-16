@@ -8,17 +8,16 @@
 
   @include usingBorderRadiusMixin();
 
-  &.border{
+  &.border {
     border: 1px solid var(--border);
   }
-
   &:active {
     @include usingInsetBoxShadowMixin();
   }
 
   &:hover {
     background: var(--focus);
-    @include usingBoxShadowMixin();
+    @include usingBoxShadowMixin(primary);
   }
 
   &.disabled {
@@ -27,8 +26,20 @@
     &:active {
       box-shadow: none !important;
     }
-    &:hover{
+    &:hover {
       box-shadow: none !important;
     }
+  }
+  &.secondary {
+    background: var(--bg-standout);
+    border: 1px solid hsla(0, 100%, 96%, 0.2);
+    color: var(--text-dark-standout);
+    font-size: 1rem;
+    font-family: brutal-medium;
+    &:hover {
+      box-shadow: 2px 2px 5px hsl(0, 0%, 18%), -2px -2px 5px hsl(0, 0%, 35%);
+    }
+
+    padding: 0.9rem;
   }
 }

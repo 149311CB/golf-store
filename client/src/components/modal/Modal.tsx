@@ -8,7 +8,6 @@ const OVERLAY_STYLES: CSSProperties = {
   bottom: "0",
   right: "0",
   background: "hsla(0,0%,0%,0.7)",
-  zIndex: 1000,
 };
 
 const MODAL_STYLES: CSSProperties = {
@@ -17,15 +16,14 @@ const MODAL_STYLES: CSSProperties = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   backgroundColor: "#FFF",
-  padding: "50px",
   zIndex: 1000,
 };
 
-const Modal: React.FC<{ isOpen: boolean; setIsOpen: Function }> = ({
-  children,
-  isOpen = false,
-  setIsOpen,
-}) => {
+const Modal: React.FC<{
+  isOpen: boolean;
+  setIsOpen: Function;
+  styles?: CSSProperties;
+}> = ({ children, isOpen = false, setIsOpen, styles }) => {
   if (!isOpen) return null;
   const element = document.getElementById("portal");
 
@@ -37,7 +35,7 @@ const Modal: React.FC<{ isOpen: boolean; setIsOpen: Function }> = ({
           style={OVERLAY_STYLES}
           onClick={() => setIsOpen(!isOpen)}
         />
-        <div className={"modal"} style={MODAL_STYLES}>
+        <div className={"modal"} style={{ ...MODAL_STYLES, ...styles }}>
           {children}
         </div>
       </>,

@@ -1,12 +1,20 @@
 import { ReactComponent as Logo } from "../assets/Logo.svg";
-
 import Navbar from "./nav/Navbar";
 import NavLink from "./nav/NavLink";
 import Search from "./search/Search";
 import Cart from "./cart/Cart";
-import User from "./user/User";
+import AuthModal from "../user/auth/AuthModal";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../App";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const value = useContext(GlobalContext);
+
+  useEffect(() => {
+    value.setIsOpen = setIsOpen;
+  }, [setIsOpen, value]);
+
   return (
     <header>
       <div className={"logo"}>
@@ -23,7 +31,10 @@ const Header = () => {
       <div className={"left-col"}>
         <Search />
         <Cart />
-        <User/>
+        <div className={"header-user"}>
+          <i className="fas fa-user pop" onClick={() => setIsOpen(true)}></i>
+        </div>
+        <AuthModal isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
     </header>
   );

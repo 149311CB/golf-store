@@ -12,8 +12,9 @@
       margin-bottom: 1rem;
     }
     .item-list {
+      gap: "0.9rem";
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       justify-content: space-between;
     }
   }
@@ -40,8 +41,8 @@
       box-shadow: var(--medium-box-shadow);
     }
 
-    &:active{
-        box-shadow: var(--medium-inset-box-shadow);
+    &:active {
+      box-shadow: var(--medium-inset-box-shadow);
     }
   }
 
@@ -69,7 +70,7 @@
     margin-bottom: 1rem;
   }
 
-  .category{
+  .category {
     padding-bottom: 3rem;
   }
 }

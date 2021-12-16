@@ -37,7 +37,7 @@ export const useFetch = (
         if (method === Method.POST) {
           data = await client.post(url, body);
         }
-        setState({ data: data, loading: false }); // This line cause re-render
+        setState({ data: data?.data, loading: false }); // This line cause re-render
       } catch (error) {
         setState({ loading: false, error });
       }

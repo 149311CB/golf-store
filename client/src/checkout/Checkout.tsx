@@ -1,7 +1,8 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { RouterProps } from "react-router-dom";
+import { GlobalContext } from "../App";
 import { CheckoutInterface, OrderInterface } from "../types/types";
-import { client } from "../utils/client";
+import { client, IResponsePayload } from "../utils/client";
 import Paypal from "./paypal/Paypal";
 import Stripe from "./stripe/Stripe";
 
@@ -32,19 +33,32 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [cancelled, setCancelled] = useState(false);
+  const { token } = useContext(GlobalContext);
 
-  const createOrder = (order: OrderInterface) => {
-    const fetchData = async () => {
-      await client.post("/api/orders/create", order, {
-        "Content-Type": "application/json",
+  const createOrder = async (order: OrderInterface) => {
+    console.log(order);
+    if (order.state === "cancelled") {
+      history.push("/cancelled");
+    }
+    await client
+      .post("/api/order/auth/create", order, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(({ data, status }) => {
+        console.log(data);
+        console.log(status);
+        if (data && status === 201) {
+          return history.push({
+            pathname: "/success",
+            state: { orderId: data._id },
+          });
+        } else {
+          return setError("something has went wrong");
+        }
       });
-      if (order.state === "cancelled") {
-        setCancelled(true);
-      } else {
-        history.push("/success");
-      }
-    };
-    fetchData();
   };
 
   const handleProcessing = (state: boolean) => {

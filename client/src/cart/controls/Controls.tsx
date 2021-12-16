@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../../App";
 import Button from "../../components/button/Button";
+import { client } from "../../utils/client";
 import { CartProduct } from "../Cart";
 
 const Controls: React.FC<{
   cartProduct: CartProduct;
   removeProduct: Function;
-}> = ({ cartProduct, removeProduct }) => {
+  setLoading: Function;
+}> = ({ cartProduct, removeProduct, setLoading }) => {
   const { quantity, variant, _id } = cartProduct;
-  const [qty, setQty] = useState<number>(quantity);
+  const { token } = useContext(GlobalContext);
 
-  const onChangeQuantity = (option: string) => {
-    if (option === "minus" && qty > 1) {
-      setQty((qty) => qty - 1);
+  const onChangeQuantity = async (option: string) => {
+    let newQty = quantity;
+    if (option === "minus" && quantity > 1) {
+      newQty -= 1;
     }
-    if (option === "plus" && qty < variant.stock) {
-      setQty((qty) => qty + 1);
+    if (option === "plus" && quantity < variant.stock) {
+      newQty += 1;
     }
+    await client.post(
+      "/api/carts/auth/quantity/update",
+      {
+        lineItemId: cartProduct._id,
+        quantity: newQty,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   };
 
   return (
@@ -24,20 +40,26 @@ const Controls: React.FC<{
         <Button
           boxShadow={"none"}
           borderRadius={"left"}
-          disabled={qty <= 1}
+          disabled={quantity <= 1}
           onClick={() => {
-            onChangeQuantity("minus");
+            setLoading(true);
+            onChangeQuantity("minus").then(() => {
+              setLoading(false);
+            });
           }}
         >
           <i className="fas fa-minus"></i>
         </Button>
-        <input value={qty} type={"number"} min={0} onChange={() => {}} />
+        <input value={quantity} type={"number"} min={0} onChange={() => {}} />
         <Button
           boxShadow={"none"}
           borderRadius={"right"}
-          disabled={qty >= variant.stock}
+          disabled={quantity >= variant.stock}
           onClick={() => {
-            onChangeQuantity("plus");
+            setLoading(true);
+            onChangeQuantity("plus").then(() => {
+              setLoading(false);
+            });
           }}
         >
           <i className="fas fa-plus"></i>

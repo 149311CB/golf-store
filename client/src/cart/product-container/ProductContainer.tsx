@@ -6,7 +6,8 @@ import Specs from "../specs/Specs";
 const ProductContainer: React.FC<{
   products: CartProduct[];
   removeProduct: Function;
-}> = ({ products, removeProduct }) => {
+  setLoading: Function;
+}> = ({ products, removeProduct, setLoading }) => {
   return (
     <div className={"product-list left-col"}>
       {products &&
@@ -36,6 +37,7 @@ const ProductContainer: React.FC<{
                       <Controls
                         cartProduct={product}
                         removeProduct={removeProduct}
+                        setLoading={setLoading}
                       />
                     </div>
                     <div

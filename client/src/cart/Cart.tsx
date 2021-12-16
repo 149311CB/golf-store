@@ -37,22 +37,36 @@ const Cart = () => {
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
   const history = useHistory();
-  const { setIsOpen } = useContext(GlobalContext);
+  const { setIsOpen, token } = useContext(GlobalContext);
 
   const removeProduct = async (_id: string) => {
     setLoading(true);
-    const newCart = await client.post("/api/carts/removeItem", {
-      cartId: cartMeta._id,
-      removedItemId: _id,
-    });
+
+    const { data: newCart } = await client.post(
+      "/api/carts/auth/remove",
+      {
+        productId: _id,
+      },
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     setLoading(false);
-    const { products } = newCart;
+
+    if (!newCart) {
+      return;
+    }
+    const { products } = newCart.data;
     const fetchedData: CartProduct[] = initialized(products);
     setProducts(fetchedData);
   };
 
   const proceedToCheckout = () => {
-    if (!localStorage.getItem("token")) {
+    if (!token) {
       setIsOpen((current: boolean) => !current);
       return;
     }
@@ -65,52 +79,55 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    if (!token || loading) return;
     const fetchData = async () => {
-      setLoading(true);
-      const { data } = await client.get("/api/carts/auth/active");
+      const { data } = await client.get("/api/carts/auth/active", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
 
-      if (data) {
-        const { products: fetchProducts, _id, user, isActive } = data;
+      if (data.data) {
+        const { products: fetchProducts, _id, user, isActive } = data.data;
         if (!fetchProducts || fetchProducts === undefined) return;
         if (user) {
           setCartMeta({ _id, user, isActive });
         } else {
           setCartMeta({ _id, isActive });
         }
+
         const fetchedData: CartProduct[] = initialized(fetchProducts);
 
         setProducts(fetchedData);
       }
-
-      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [token, loading]);
 
   return (
     <>
-      {loading ? (
-        <div>loading...</div>
-      ) : (
-        <div className={"cart"}>
-          <ProductContainer products={products} removeProduct={removeProduct} />
-          <div className={"right-col"}>
-            <div className={"shipping-address"}>
-              <div>51/4 Thanh Thai</div>
-            </div>
-            <div className={"coupons"}>$10 off</div>
-            <div className={"price-box"}>20000</div>
-            <Button
-              className={"checkout-btn"}
-              border={"border"}
-              disabled={cartMeta === null}
-              onClick={() => proceedToCheckout()}
-            >
-              Proceed to checkout <i className="fas fa-angle-double-right"></i>
-            </Button>
+      <div className={"cart"}>
+        <ProductContainer
+          products={products}
+          removeProduct={removeProduct}
+          setLoading={setLoading}
+        />
+        <div className={"right-col"}>
+          <div className={"shipping-address"}>
+            <div>51/4 Thanh Thai</div>
           </div>
+          <div className={"coupons"}>$10 off</div>
+          <div className={"price-box"}>20000</div>
+          <Button
+            className={"checkout-btn"}
+            border={"border"}
+            disabled={cartMeta === null || loading}
+            onClick={() => proceedToCheckout()}
+          >
+            Proceed to checkout <i className="fas fa-angle-double-right"></i>
+          </Button>
         </div>
-      )}
+      </div>
     </>
   );
 };
