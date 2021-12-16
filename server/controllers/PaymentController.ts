@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Stripe from "stripe";
-import Controller, { Methods } from "../../typings/Controller";
-import { calculatePrice } from "../../utils/paymentUtils";
-import { jwtValidate } from "./UserController";
+import Controller, { Methods } from "../typings/Controller";
+import { calculatePrice } from "../utils/paymentUtils";
+import {jwtValidate} from "../middlewares/authMiddleware";
 
 export default class PaymentController extends Controller {
   public path = "/api/payment";

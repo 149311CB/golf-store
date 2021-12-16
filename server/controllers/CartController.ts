@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import Cart from "../../models/cartModel";
-import User from "../../models/userModel";
-import Controller, { Methods } from "../../typings/Controller";
-import { jwtValidate } from "./UserController";
+import Cart from "../models/cartModel";
+import Controller, { Methods } from "../typings/Controller";
+import {jwtValidate} from "../middlewares/authMiddleware";
 
 export default class CartController extends Controller {
   public path = "/api/carts";
@@ -194,10 +193,7 @@ export default class CartController extends Controller {
 
       if (exist) {
         exist.products = exist.products.filter((product) => {
-          if (product._id == productId) {
-            return false;
-          }
-          return true;
+          return product._id != productId;
         });
 
         const newCart = await exist.save();

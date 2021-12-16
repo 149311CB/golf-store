@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import Server from "./server";
 import Controller from "./typings/Controller";
-import ProductController from "./controllers/class/ProductController";
-import CategoryController from "./controllers/class/CategoryController";
-import CartController from "./controllers/class/CartController";
-import AuthController from "./controllers/class/UserController";
-import PaymentController from "./controllers/class/PaymentController";
-import OrderController from "./controllers/class/OrderController";
+import ProductController from "./controllers/ProductController";
+import CategoryController from "./controllers/CategoryController";
+import CartController from "./controllers/CartController";
+import AuthController from "./controllers/user/UserController";
+import PaymentController from "./controllers/PaymentController";
+import OrderController from "./controllers/OrderController";
 
 // .env initialized
 dotenv.config();

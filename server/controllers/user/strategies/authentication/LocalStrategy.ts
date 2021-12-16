@@ -1,6 +1,7 @@
-import User, { userTypes } from "../../../../models/userModel";
+import User from "../../../../models/userModel";
 import { generateRefreshToken } from "../../../../utils/generateToken";
 import { IAuthenticationStrategy } from "./AuthStrategy";
+import {UserTypes} from "../../../../types/userTypes";
 
 export class LocalValidation implements IAuthenticationStrategy {
   email: string;
@@ -12,7 +13,7 @@ export class LocalValidation implements IAuthenticationStrategy {
   }
 
   // Check if user exist
-  async authenticate(): Promise<userTypes | null> {
+  async authenticate(): Promise<UserTypes | null> {
     const user = await User.findOne({ email: this.email });
 
     if (!user || !(await user.matchPassword(this.password))) {

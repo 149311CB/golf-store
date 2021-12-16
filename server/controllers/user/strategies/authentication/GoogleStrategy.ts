@@ -1,5 +1,4 @@
-import { BasicInfo, userTypes } from "../../../../models/userModel";
-import { httpHelper } from "../../httpHelper";
+import { httpHelper } from "../../../../utils/httpHelper";
 import jwt from "jsonwebtoken";
 import { IAuthenticationStrategy } from "./AuthStrategy";
 
@@ -77,7 +76,7 @@ export class GoogleStrategy implements IAuthenticationStrategy {
     // get user info
     let userInfo = jwt.decode(tokens?.id_token as string) as IUserProfile;
 
-    if (!userInfo || typeof userInfo === "string") {
+    if (!userInfo) {
       return null;
     }
 

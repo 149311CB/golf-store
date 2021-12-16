@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../../models/golfModel";
-import Controller, { Methods } from "../../typings/Controller";
+import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../models/golfModel";
+import Controller, { Methods } from "../typings/Controller";
 
 export default class ProductController extends Controller {
   public path = "/api/products";
@@ -36,47 +36,6 @@ export default class ProductController extends Controller {
     _: NextFunction
   ): Promise<void> {
     try {
-      // const flexs = await Variant.aggregate([
-      //   { $match: { golf: mongoose.Types.ObjectId(req.params.id) } },
-      //   { $group: { _id: "$flex" } },
-      //   {
-      //     $lookup: {
-      //       from: "flexs",
-      //       localField: "_id",
-      //       foreignField: "_id",
-      //       as: "flex",
-      //     },
-      //   },
-      //   { $unwind: "$flex" },
-      // ]);
-
-      // const shafts = await Variant.aggregate([
-      //   { $match: { golf: mongoose.Types.ObjectId(req.params.id) } },
-      //   { $group: { _id: "$shaft" } },
-      //   {
-      //     $lookup: {
-      //       from: "shafts",
-      //       localField: "_id",
-      //       foreignField: "_id",
-      //       as: "shaft",
-      //     },
-      //   },
-      //   { $unwind: "$shaft" },
-      // ]);
-
-      // const lofts = await Variant.aggregate([
-      //   { $match: { golf: mongoose.Types.ObjectId(req.params.id) } },
-      //   { $group: { _id: "$loft" } },
-      //   {
-      //     $lookup: {
-      //       from: "lofts",
-      //       localField: "_id",
-      //       foreignField: "_id",
-      //       as: "loft",
-      //     },
-      //   },
-      //   { $unwind: "$loft" },
-      // ]);
       const golf = await Golf.findById(mongoose.Types.ObjectId(req.params.id));
       if (!golf) {
         super.sendError(404, res, "not found");
@@ -85,13 +44,7 @@ export default class ProductController extends Controller {
       const variants = await Variant.find({
         golf: golf._id,
       }).populate("hand shaft flex loft");
-      // const properties = {};
-      // // @ts-ignore
-      // properties.shafts = shafts;
-      // // @ts-ignore
-      // properties.flexs = flexs;
-      // // @ts-ignore
-      // properties.lofts = lofts;
+
       super.sendSuccess(200, res, { golf, variants });
     } catch (error: any) {
       console.log(error);

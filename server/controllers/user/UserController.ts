@@ -1,69 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import User, { userTypes } from "../../models/userModel";
-import Controller, { Methods } from "../../typings/Controller";
-import {
-  COOKIES_OPTIONS,
-  generateRefreshToken,
-  generateToken,
-} from "../../utils/generateToken";
-import { GoogleStrategy } from "./strategies/authentication/GoogleStrategy";
-import { LocalValidation } from "./strategies/authentication/LocalStrategy";
-import { AuthRequest } from "./strategies/authentication/AuthRequest";
-import { FacebookStrategy } from "./strategies/authentication/FacebookStrategy";
-
-export async function jwtValidate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<any> {
-  try {
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      let token;
-      token = req.headers.authorization.split(" ")[1];
-
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-      if (typeof decoded === "string") {
-        return res.status(400).json({ message: "invalid token" });
-      }
-
-      const user = await User.findById(decoded.userId);
-      if (!user) {
-        return res.status(401).json({ message: "UnAuthorized" });
-      }
-      req.user = user;
-      return next();
-    }
-    return res.status(401).json({ message: "UnAuthorized" });
-  } catch (error) {
-    return res.status(401).json({ message: "UnAuthorized" });
-  }
-}
-
-export async function jwtCartValidate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<userTypes | unknown> {
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    let token;
-    token = req.headers.authorization.split(" ")[1];
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    if (typeof decoded === "string") {
-      return res.status(400).json({ message: "invalid token" });
-    }
-
-    req.cartId = decoded.cartId;
-    next();
-  }
-}
+import User from "../../models/userModel";
+import Controller, {Methods} from "../../typings/Controller";
+import {COOKIES_OPTIONS, generateRefreshToken, generateToken,} from "../../utils/generateToken";
+import {GoogleStrategy} from "./strategies/authentication/GoogleStrategy";
+import {LocalValidation} from "./strategies/authentication/LocalStrategy";
+import {AuthRequest} from "./strategies/authentication/AuthRequest";
+import {FacebookStrategy} from "./strategies/authentication/FacebookStrategy";
+import {UserTypes} from "../../types/userTypes";
+import {jwtValidate} from "../../middlewares/authMiddleware";
 
 class AuthController extends Controller {
   public path = "/api/user/auth";

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { Category } from "../../models/categoryModel";
-import Controller, { Methods } from "../../typings/Controller";
+import { Category } from "../models/categoryModel";
+import Controller, { Methods } from "../typings/Controller";
 
 export default class CategoryController extends Controller {
   public path = "/api/category";

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import Cart from "../../models/cartModel";
-import Order from "../../models/orderModel";
-import Controller, { Methods } from "../../typings/Controller";
-import { jwtValidate } from "./UserController";
+import Cart from "../models/cartModel";
+import Order from "../models/orderModel";
+import Controller, { Methods } from "../typings/Controller";
+import {jwtValidate} from "../middlewares/authMiddleware";
 
 export default class OrderController extends Controller {
   public path = "/api/order";

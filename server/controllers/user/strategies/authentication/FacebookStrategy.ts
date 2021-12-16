@@ -1,7 +1,5 @@
 import { IAuthenticationStrategy } from "./AuthStrategy";
-import { httpHelper } from "../../httpHelper";
-import User, { userTypes } from "../../../../models/userModel";
-import { generateRefreshToken } from "../../../../utils/generateToken";
+import { httpHelper } from "../../../../utils/httpHelper";
 import { ITokenResults } from "./GoogleStrategy";
 
 export interface IPublicProfile {
