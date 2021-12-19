@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../models/golfModel";
-import Controller, { Methods } from "../typings/Controller";
+import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../../models/golfModel";
+import Controller, { Methods } from "../../typings/Controller";
 
 export default class ProductController extends Controller {
   public path = "/api/products";

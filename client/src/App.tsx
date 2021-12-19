@@ -19,6 +19,7 @@ const refreshToken = async () => {
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
+  console.log(token)
 
   const getToken = useCallback(() => {
     refreshToken().then((data) => {

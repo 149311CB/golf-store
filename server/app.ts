@@ -4,12 +4,15 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import Server from "./server";
 import Controller from "./typings/Controller";
-import ProductController from "./controllers/ProductController";
+import ProductController from "./controllers/product/ProductController";
 import CategoryController from "./controllers/CategoryController";
 import CartController from "./controllers/CartController";
 import AuthController from "./controllers/user/UserController";
 import PaymentController from "./controllers/PaymentController";
 import OrderController from "./controllers/OrderController";
+import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
+import ProductProtect from "./controllers/product/ProtectedProxy";
+import { UserProtect } from "./controllers/user/UserProtected";
 
 // .env initialized
 dotenv.config();
@@ -32,12 +35,13 @@ const globalMiddlewares: Array<RequestHandler> = [
 const server: Server = new Server(app, 5001);
 
 const controllers: Array<Controller> = [
-  new ProductController(),
+  new ProductProtect(),
   new CategoryController(),
   new CartController(),
-  new AuthController(),
+  new UserProtect(),
   new PaymentController(),
   new OrderController(),
+  new EmployeeAuth(),
 ];
 
 Promise.resolve()

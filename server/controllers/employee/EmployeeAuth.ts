@@ -1,0 +1,94 @@
+import { NextFunction, Request, Response } from "express";
+import Employee from "../../models/employeeModel";
+import Controller, { Methods } from "../../typings/Controller";
+import jwt from "jsonwebtoken";
+import {
+  COOKIES_OPTIONS,
+  generateRefreshToken,
+  generateToken,
+} from "../../utils/generateToken";
+
+export class EmployeeAuth extends Controller {
+  public path = "/api/employee/";
+  protected routes = [
+    {
+      path: "/auth/login",
+      method: Methods.POST,
+      handler: this.login,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/token/refresh",
+      method: Methods.GET,
+      handler: this.refreshToken,
+      localMiddlewares: [],
+    },
+  ];
+
+  async login(req: Request, res: Response, _: NextFunction): Promise<any> {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return super.sendError(400, res, "required email and password");
+      }
+      const exist = await Employee.findOne({ email: email });
+
+      // @ts-ignore
+      if (!exist || !(await exist.matchPassword(password))) {
+        return super.sendError(401, res, "UnAuthorized");
+      }
+
+      const refreshToken = generateRefreshToken({ employeeId: exist._id });
+      exist.refreshToken = refreshToken;
+      await exist.save();
+      res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+
+      return super.sendSuccess(200, res, null);
+    } catch (error) {
+      console.log(error);
+      return super.sendError(500, res);
+    }
+  }
+
+  async refreshToken(
+    req: Request,
+    res: Response,
+    _: NextFunction
+  ): Promise<any> {
+    try {
+      const { signedCookies = {} } = req;
+      const { refresh_token: refreshToken } = signedCookies;
+      if (!refreshToken) {
+        return super.sendError(401, res, "UnAuthorized");
+      }
+
+      const payload = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET!
+      );
+
+      if (typeof payload === "string") {
+        return super.sendError(401, res, "UnAuthorized, token failed");
+      }
+
+      const { employeeId } = payload;
+      const employee = await Employee.findById(employeeId);
+
+      if (!employee || employee.refreshToken !== refreshToken) {
+        return super.sendError(401, res, "UnAuthorized, invalid refresh token");
+      }
+
+      const token = generateToken({ employeeId: employee._id });
+      const newRefreshToken = generateRefreshToken({
+        employeeId: employee._id,
+      });
+      employee.refreshToken = newRefreshToken;
+      await employee.save();
+      res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
+      return super.sendSuccess(200, res, { token });
+    } catch (error) {
+      console.log(error);
+      return super.sendError(500, res);
+    }
+  }
+}

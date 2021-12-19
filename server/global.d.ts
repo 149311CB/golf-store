@@ -1,9 +1,10 @@
-import {UserTypes} from "./types/userTypes";
+import { UserTypes } from "./types/userTypes";
 
 declare global {
   namespace Express {
     interface Request {
       user: UserTypes;
+      userId: string;
       cartId: string;
       register: Boolean;
       strategy: string;

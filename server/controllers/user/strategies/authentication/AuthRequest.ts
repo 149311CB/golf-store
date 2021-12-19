@@ -2,7 +2,7 @@ import User from "../../../../models/userModel";
 import { generateRefreshToken } from "../../../../utils/generateToken";
 import { IAuthenticationStrategy } from "./AuthStrategy";
 import { LocalValidation } from "./LocalStrategy";
-import {UserTypes} from "../../../../types/userTypes";
+import { UserTypes } from "../../../../types/userTypes";
 
 // context class
 export class AuthRequest {
@@ -19,17 +19,19 @@ export class AuthRequest {
       const exist = await User.findOne({ email: user.email });
 
       if (exist) {
+        exist.refreshToken = generateRefreshToken({ userId: exist._id });
+        await exist.save()
         return exist;
       }
+
       user = await AuthRequest.createUser(profile);
     }
     return user;
   }
 
   private static async createUser(user: any): Promise<UserTypes> {
-    console.log(user);
     const newUser = await User.create(user);
-    newUser.refreshToken = generateRefreshToken({ userId: newUser });
+    newUser.refreshToken = generateRefreshToken({ userId: newUser._id });
     await newUser.save();
     return newUser;
   }

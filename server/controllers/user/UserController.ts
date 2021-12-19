@@ -1,14 +1,17 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../../models/userModel";
-import Controller, {Methods} from "../../typings/Controller";
-import {COOKIES_OPTIONS, generateRefreshToken, generateToken,} from "../../utils/generateToken";
-import {GoogleStrategy} from "./strategies/authentication/GoogleStrategy";
-import {LocalValidation} from "./strategies/authentication/LocalStrategy";
-import {AuthRequest} from "./strategies/authentication/AuthRequest";
-import {FacebookStrategy} from "./strategies/authentication/FacebookStrategy";
-import {UserTypes} from "../../types/userTypes";
-import {jwtValidate} from "../../middlewares/authMiddleware";
+import Controller, { Methods } from "../../typings/Controller";
+import {
+  COOKIES_OPTIONS,
+  generateRefreshToken,
+  generateToken,
+} from "../../utils/generateToken";
+import { GoogleStrategy } from "./strategies/authentication/GoogleStrategy";
+import { LocalValidation } from "./strategies/authentication/LocalStrategy";
+import { AuthRequest } from "./strategies/authentication/AuthRequest";
+import { FacebookStrategy } from "./strategies/authentication/FacebookStrategy";
+import { jwtValidate } from "../../middlewares/authMiddleware";
 
 class AuthController extends Controller {
   public path = "/api/user/auth";
@@ -158,32 +161,32 @@ class AuthController extends Controller {
     _: NextFunction
   ): Promise<any> {
     try {
-      const { signedCookies = {} } = req;
-      const { refresh_token: refreshToken } = signedCookies;
-      if (!refreshToken) {
-        return super.sendError(401, res, "UnAuthorized");
-      }
+      // const { signedCookies = {} } = req;
+      // const { refresh_token: refreshToken } = signedCookies;
+      // if (!refreshToken) {
+      //   return super.sendError(401, res, "UnAuthorized");
+      // }
 
-      const payload = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET!
-      );
+      // const payload = jwt.verify(
+      //   refreshToken,
+      //   process.env.REFRESH_TOKEN_SECRET!
+      // );
 
-      if (typeof payload === "string") {
-        return super.sendError(401, res, "UnAuthorized, token failed");
-      }
+      // if (typeof payload === "string") {
+      //   return super.sendError(401, res, "UnAuthorized, token failed");
+      // }
 
-      const { userId } = payload;
-      const user = await User.findById(userId);
+      const { user } = req;
+      const exist = await User.findById(user._id);
 
-      if (!user || user.refreshToken !== refreshToken) {
-        return super.sendError(401, res, "UnAuthorized, invalid refresh token");
-      }
+      // if (!user || user.refreshToken !== refreshToken) {
+      //   return super.sendError(401, res, "UnAuthorized, invalid refresh token");
+      // }
 
-      const token = generateToken({ userId: user._id });
-      const newRefreshToken = generateRefreshToken({ userId: user._id });
-      user.refreshToken = newRefreshToken;
-      await user.save();
+      const token = generateToken({ userId: exist._id });
+      const newRefreshToken = generateRefreshToken({ userId: exist._id });
+      exist.refreshToken = newRefreshToken;
+      await exist.save();
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {
