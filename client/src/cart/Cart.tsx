@@ -42,8 +42,12 @@ const Cart = () => {
   const removeProduct = async (_id: string) => {
     setLoading(true);
 
-    const { data: newCart } = await client.post(
-      "/api/carts/auth/remove",
+    let route = "/api/carts/remove";
+    if (token) {
+      route = "/api/carts/auth/remove";
+    }
+    await client.post(
+      route,
       {
         productId: _id,
       },
@@ -56,13 +60,6 @@ const Cart = () => {
       }
     );
     setLoading(false);
-
-    if (!newCart) {
-      return;
-    }
-    const { products } = newCart.data;
-    const fetchedData: CartProduct[] = initialized(products);
-    setProducts(fetchedData);
   };
 
   const proceedToCheckout = () => {
@@ -79,9 +76,14 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    if (!token || loading) return;
+    if (loading) return;
+    let route = "/api/carts/active";
+    if (token) {
+      route = "/api/carts/auth/active";
+    }
     const fetchData = async () => {
-      const { data } = await client.get("/api/carts/auth/active", {
+      const { data } = await client.get(route, {
+        credentials: "include",
         headers: {
           authorization: `Bearer ${token}`,
         },

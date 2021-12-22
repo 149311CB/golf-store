@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../App";
 import Button from "../../components/button/Button";
 import { client } from "../../utils/client";
@@ -20,13 +20,18 @@ const Controls: React.FC<{
     if (option === "plus" && quantity < variant.stock) {
       newQty += 1;
     }
+    let route = "/api/carts/quantity/update";
+    if (token) {
+      route = "/api/carts/auth/quantity/update";
+    }
     await client.post(
-      "/api/carts/auth/quantity/update",
+      route,
       {
         lineItemId: cartProduct._id,
         quantity: newQty,
       },
       {
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
         },
