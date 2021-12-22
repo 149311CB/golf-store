@@ -1,31 +1,84 @@
-import { model, Schema } from "mongoose";
+import {
+  Document,
+  FilterQuery,
+  Model,
+  model,
+  PopulateOptions,
+  Schema,
+} from "mongoose";
 import { orderInterface } from "../types/orderType";
 
-const orderSchema = new Schema<orderInterface>(
-  {
-    cart: {
-      type: Schema.Types.ObjectId,
-      ref: "Golf",
-      required: true,
+// const Order = model<orderInterface>("Order", orderSchema, "orders");
+class Order {
+  stateSchema = new Schema(
+    {
+      state: { type: String, required: true },
     },
-    state: {
-      type: String,
-      required: true,
+    { timestamps: true }
+  );
+  orderSchema = new Schema<orderInterface>(
+    {
+      cart: {
+        type: Schema.Types.ObjectId,
+        ref: "Cart",
+        required: true,
+      },
+      state: {
+        type: this.stateSchema,
+        required: true,
+      },
+      paymentMethod: {
+        type: Object,
+        required: true,
+      },
+      paidAt: {
+        type: Date,
+      },
+      cancelledAt: {
+        type: Date,
+      },
+      stateHistory: [this.stateSchema],
     },
-    paymentMethod: {
-      type: Object,
-      required: true,
-    },
-    paidAt: {
-      type: Date,
-    },
-    cancelledAt: {
-      type: Date,
-    },
-  },
-  { timestamps: true }
-);
+    { timestamps: true }
+  );
 
-const Order = model<orderInterface>("Order", orderSchema, "orders");
+  model: Model<orderInterface, any, any>;
+  private static instance: Order;
+
+  private constructor() {
+    this.model = model<orderInterface>("Order", this.orderSchema, "orders");
+  }
+
+  public static getInstace(): Order {
+    if (!Order.instance) {
+      Order.instance = new Order();
+    }
+    return Order.instance;
+  }
+
+  async create(order: orderInterface): Promise<orderInterface | null> {
+    return await this.model.create(order);
+  }
+
+  async findById(
+    id: string,
+    options?: PopulateOptions | Array<PopulateOptions>
+  ): Promise<orderInterface & Document<any, any, orderInterface>> {
+    return await this.model.findById(id).populate(options);
+  }
+
+  async find(
+    query: FilterQuery<orderInterface>,
+    options?: PopulateOptions | Array<PopulateOptions>
+  ): Promise<orderInterface & Document<any, any, orderInterface>> {
+    return await this.model.find(query).populate(options);
+  }
+
+  async updateInfo(
+    order: orderInterface & Document<any, any, orderInterface>
+  ): Promise<orderInterface | null> {
+    return await order.save();
+  }
+}
 
 export default Order;

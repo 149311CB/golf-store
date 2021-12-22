@@ -6,7 +6,7 @@ import palette from "./theme";
 import Page from "./page/Page";
 import { client } from "./utils/client";
 
-const GlobalContext = createContext<any>(null);
+export const GlobalContext = createContext<any>(null);
 function App() {
   const theme = React.useMemo(() => createTheme({ palette: palette }), []);
   const [token, setToken] = useState<string | null>(null);

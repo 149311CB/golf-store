@@ -7,7 +7,6 @@ import PeopleFill from "@iconify/icons-eva/people-fill";
 import CubeFill from "@iconify/icons-eva/cube-fill";
 import ShoppingBagFill from "@iconify/icons-eva/shopping-bag-fill";
 import { Link, useLocation } from "react-router-dom";
-import { LocationState } from "history";
 
 const SidebarNav = styled((props: BoxProps & { isActive?: boolean }) => (
   <Box {...props} />

@@ -7,26 +7,42 @@ export class TokenValidateBase {
   protected decoded: jwt.JwtPayload | undefined;
   protected secret: string;
   protected extractStrategy: IExtractTokenStrategy;
+  protected passReqToHandler: boolean;
 
-  public constructor(extractStrategy: IExtractTokenStrategy, secret: string) {
+  public constructor(
+    extractStrategy: IExtractTokenStrategy,
+    secret: string,
+    passReqToHandler = false
+  ) {
     this.extractStrategy = extractStrategy;
     this.secret = secret;
+    this.passReqToHandler = passReqToHandler;
   }
 
   public validateToken(req: Request, res: Response): jwt.JwtPayload {
-    const token = this.extractToken(req);
-    if (!token) {
-      return res.status(401).json({ message: "UnAuthorized, token not found" });
+    try {
+      const token = this.extractToken(req);
+      console.log(token)
+      console.log(this.passReqToHandler)
+      if (!token) {
+        throw new Error("UnAuthorized, token not found");
+      }
+
+      const result = this.verifyToken(token);
+
+      if (!result) {
+        throw new Error("UnAuthorized, token failed");
+      }
+
+      this.decoded = result;
+      return this.decoded;
+    } catch (error: any) {
+    console.log(error)
+      if (this.passReqToHandler) {
+        return {};
+      }
+      return res.status(401).json({ message: error.message });
     }
-
-    const result = this.verifyToken(token);
-
-    if (!result) {
-      return res.status(401).json({ message: "UnAuthorized, token failed" });
-    }
-
-    this.decoded = result;
-    return this.decoded;
   }
 
   protected extractToken(req: Request): string | null {

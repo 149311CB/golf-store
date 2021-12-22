@@ -13,6 +13,8 @@ import OrderController from "./controllers/OrderController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
+import OrderProtect from "./controllers/order/OrderProtect";
+import CartProtect from "./controllers/cart/CartProtect";
 
 // .env initialized
 dotenv.config();
@@ -37,10 +39,10 @@ const server: Server = new Server(app, 5001);
 const controllers: Array<Controller> = [
   new ProductProtect(),
   new CategoryController(),
-  new CartController(),
+  new CartProtect(),
   new UserProtect(),
   new PaymentController(),
-  new OrderController(),
+  new OrderProtect(),
   new EmployeeAuth(),
 ];
 

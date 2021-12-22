@@ -185,8 +185,8 @@ class AuthController extends Controller {
 
       const token = generateToken({ userId: exist._id });
       const newRefreshToken = generateRefreshToken({ userId: exist._id });
-      exist.refreshToken = newRefreshToken;
-      await exist.save();
+      exist.refreshToken = newRefreshToken!;
+      await exist.save()
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {

@@ -50,13 +50,24 @@ export class UserTypes extends BasicInfo {
   }
 }
 
+export interface IPermission {
+  resource: string;
+  read: boolean;
+  write: boolean;
+}
+
+export interface IRole {
+  name: string;
+  permissions: [IPermission];
+}
+
 export class EmployeeTypes extends BasicInfo {
-  role: string;
+  role: IRole;
   constructor(
     firstName: string,
     lastName: string,
     email: string,
-    role: string,
+    role: IRole,
     password?: string,
     refreshToken?: string,
     isActive?: boolean
@@ -65,4 +76,3 @@ export class EmployeeTypes extends BasicInfo {
     this.role = role;
   }
 }
-

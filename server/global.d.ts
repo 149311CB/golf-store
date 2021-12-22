@@ -1,10 +1,13 @@
+import {Document} from "mongoose";
+import { ICartInterface } from "./types/cartType";
 import { UserTypes } from "./types/userTypes";
 
 declare global {
   namespace Express {
     interface Request {
-      user: UserTypes;
+      user: BasicInfo;
       userId: string;
+      cart: ICartInterface & Document<any, any, ICartInterface>;
       cartId: string;
       register: Boolean;
       strategy: string;

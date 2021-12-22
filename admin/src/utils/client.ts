@@ -21,7 +21,7 @@ export async function client(
   }
 
   const config: RequestInit = {
-    method: body ? "POST" : "GET",
+    // method: body ? "POST" : "GET",
     ...customConfig,
     headers: {
       ...headers,
@@ -58,6 +58,26 @@ client.get = function (endpoint: string, customConfig: RequestInit = {}) {
   return client(endpoint, { ...customConfig, method: "GET" });
 };
 
-client.post = function (endpoint: string, body: any, customConfig:RequestInit = {}) {
-  return client(endpoint, { ...{ body: body }, ...customConfig });
+client.post = function (
+  endpoint: string,
+  body: any,
+  customConfig: RequestInit = {}
+) {
+  return client(endpoint, {
+    ...{ body: body },
+    ...customConfig,
+    method: "POST",
+  });
+};
+
+client.put = function (
+  endpoint: string,
+  body: any,
+  customConfig: RequestInit = {}
+) {
+  return client(endpoint, {
+    ...{ body: body },
+    ...customConfig,
+    method: "PUT",
+  });
 };

@@ -17,7 +17,7 @@ export default class ProductProtect extends ProductController {
       );
       const { employeeId } = service.validateToken(req, res);
 
-      const employee = await Employee.findById(employeeId);
+      const employee = await Employee.getInstance().findById(employeeId);
       if (!employee) {
         return super.sendError(401, res, "UnAuthorized");
       }
