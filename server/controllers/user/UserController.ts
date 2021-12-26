@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import User from "../../models/userModel";
 import Controller, { Methods } from "../../typings/Controller";
 import {

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Employee from "../../models/employeeModel";
 import { EmployeeTypes } from "../../types/userTypes";
 import { HeaderExtract, TokenValidateBase } from "../auth/AuthenticateBase";
-import OrderController from "../OrderController";
+import OrderController from "./OrderController";
 
 export default class OrderProtect extends OrderController {
   async getEmployeeInfo(

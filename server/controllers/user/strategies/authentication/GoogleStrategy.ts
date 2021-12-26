@@ -1,6 +1,8 @@
-import { httpHelper } from "../../../../utils/httpHelper";
+import {httpHelper} from "../../../../utils/httpHelper";
 import jwt from "jsonwebtoken";
-import { IAuthenticationStrategy } from "./AuthStrategy";
+import {IAuthenticationStrategy} from "./AuthStrategy";
+import {UserTypes} from "../../../../types/userTypes";
+import {GoogleAdapter} from "./adapter/GoogleAdapter";
 
 export interface IUserProfile {
   aud: string | undefined;
@@ -59,7 +61,7 @@ export class GoogleStrategy implements IAuthenticationStrategy {
     return tokens;
   }
 
-  async authenticate(): Promise<any> {
+  async authenticate(): Promise<UserTypes | null> {
     // initialized data to post to Google's authentication server
     const data = {
       code: this._code,
@@ -76,15 +78,8 @@ export class GoogleStrategy implements IAuthenticationStrategy {
     // get user info
     let userInfo = jwt.decode(tokens?.id_token as string) as IUserProfile;
 
-    if (!userInfo) {
-      return null;
-    }
-
-    return {
-      firstName: userInfo.given_name,
-      lastName: userInfo.family_name,
-      email: userInfo.email,
-      googleId: userInfo.sub,
-    };
+    const adapter = new GoogleAdapter(userInfo);
+    return adapter.adapt();
   }
 }
+

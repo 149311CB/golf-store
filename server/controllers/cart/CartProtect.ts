@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { CookieExtraction, TokenValidateBase } from "../auth/AuthenticateBase";
-import CartController from "../CartController";
+import CartController from "./CartController";
 
 export default class CartProtect extends CartController {
   async getCartInforFromCookie(req: Request, res: Response): Promise<any> {

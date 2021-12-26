@@ -1,6 +1,8 @@
-import { IAuthenticationStrategy } from "./AuthStrategy";
-import { httpHelper } from "../../../../utils/httpHelper";
-import { ITokenResults } from "./GoogleStrategy";
+import {IAuthenticationStrategy} from "./AuthStrategy";
+import {httpHelper} from "../../../../utils/httpHelper";
+import {ITokenResults} from "./GoogleStrategy";
+import {UserTypes} from "../../../../types/userTypes";
+import {FacebookAdapter} from "./adapter/FacebookAdapter";
 
 export interface IPublicProfile {
   id: string | undefined;
@@ -78,7 +80,7 @@ export class FacebookStrategy implements IAuthenticationStrategy {
     return userInfo as IPublicProfile;
   }
 
-  async authenticate(): Promise<any> {
+  async authenticate(): Promise<UserTypes | null> {
     // get access token
     const tokens = await this.getAccessToken();
     if (!tokens) {
@@ -88,14 +90,10 @@ export class FacebookStrategy implements IAuthenticationStrategy {
     const { data } = await this.inspectToken(tokens.access_token);
 
     // get user info by id
-    const userInfo = await this.getUserInfo(data.user_id, tokens.access_token);
-    this._profile = userInfo;
+    this._profile = await this.getUserInfo(data.user_id, tokens.access_token);
 
-    return {
-      firstName: userInfo.first_name,
-      lastName: userInfo.last_name,
-      email: userInfo.email,
-      facebookId: userInfo.id,
-    };
+    const adapter = new FacebookAdapter(this._profile);
+    return adapter.adapt();
   }
 }
+

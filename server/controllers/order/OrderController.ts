@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import Cart from "../models/cartModel";
-import Order from "../models/orderModel";
-import Controller, { Methods } from "../typings/Controller";
-import { orderInterface } from "../types/orderType";
-import { StateManager } from "./order/OrderState";
+import Cart from "../../models/cartModel";
+import Order from "../../models/orderModel";
+import Controller, { Methods } from "../../typings/Controller";
+import { orderInterface } from "../../types/orderType";
+import { StateManager } from "./OrderState";
 
 export default class OrderController extends Controller {
   public path = "/api/order";
@@ -236,7 +236,7 @@ export default class OrderController extends Controller {
     __: NextFunction
   ): Promise<any> {
     const { id } = req.params;
-    if (!id || typeof id !== "string") {
+    if (!id) {
       return super.sendError(400, res, "id is required");
     }
     try {

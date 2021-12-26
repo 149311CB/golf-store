@@ -6,15 +6,16 @@ import Server from "./server";
 import Controller from "./typings/Controller";
 import ProductController from "./controllers/product/ProductController";
 import CategoryController from "./controllers/CategoryController";
-import CartController from "./controllers/CartController";
+import CartController from "./controllers/cart/CartController";
 import AuthController from "./controllers/user/UserController";
 import PaymentController from "./controllers/PaymentController";
-import OrderController from "./controllers/OrderController";
+import OrderController from "./controllers/order/OrderController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
 import OrderProtect from "./controllers/order/OrderProtect";
 import CartProtect from "./controllers/cart/CartProtect";
+import { LoggerController } from "./controllers/logger/LoggerController";
 
 // .env initialized
 dotenv.config();
@@ -44,6 +45,7 @@ const controllers: Array<Controller> = [
   new PaymentController(),
   new OrderProtect(),
   new EmployeeAuth(),
+  new LoggerController(),
 ];
 
 Promise.resolve()
