@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 import { Switch, Route } from "react-router-dom";
-import React from "react";
 import Header from "../components/header/Header";
 import Sidebar from "../sidebar/Sidebar";
 import Product from "../product/Product";
 import EnhancedTable from "../order/EnhancedTable";
 import Order from "../order/Order";
+import Logs from "../logs/Logs";
 
 const Page = () => {
   return (
@@ -22,6 +22,9 @@ const Page = () => {
           </Route>
           <Route path={"/orders"}>
             <Order />
+          </Route>
+          <Route path={"/logs"}>
+            <Logs/>
           </Route>
         </Switch>
       </Box>

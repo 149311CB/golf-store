@@ -17,7 +17,7 @@ class FileLogger extends LoggerBase<Config> {
 
   public format(value: any): string {
     if (Object.keys(value).length > 0) {
-      return `\n${inspect(value, false, null, false)}\n`;
+      return `${inspect(value, false, null, false)}`;
     }
 
     return String(value);

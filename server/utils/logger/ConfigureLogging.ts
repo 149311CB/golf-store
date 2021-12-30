@@ -1,6 +1,8 @@
 import LoggerBase from "./ILogger";
 import { getLocation } from "./Location";
-import {ILevel} from "./ILevel";
+import { ILevel } from "./ILevel";
+import DbLogger from "./DbLogger";
+import StreamLogger from "./StreamLogger";
 
 export class ConfigureLogging {
   loggers: Array<LoggerBase>;
@@ -14,6 +16,10 @@ export class ConfigureLogging {
       return this.loggers.forEach((logger: LoggerBase) => {
         if (!logger.isAllowed(level)) {
           return null;
+        }
+
+        if (logger instanceof DbLogger || logger instanceof StreamLogger) {
+          return logger.log(expressions);
         }
 
         // TODO: I don't like reduce

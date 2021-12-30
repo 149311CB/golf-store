@@ -7,7 +7,7 @@ export enum Methods {
   DELETE = "DELETE",
 }
 
-interface IRoute {
+export interface IRoute {
   path: string;
   method: string;
   handler: (
@@ -25,7 +25,7 @@ interface IRoute {
 export default abstract class Controller {
   public router: Router = Router();
   public abstract path: string;
-  protected abstract readonly routes: Array<IRoute>;
+  public abstract readonly routes: Array<IRoute>;
 
   public setRoutes = (): Router => {
     for (let route of this.routes) {

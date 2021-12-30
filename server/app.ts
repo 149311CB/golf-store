@@ -4,18 +4,22 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import Server from "./server";
 import Controller from "./typings/Controller";
-import ProductController from "./controllers/product/ProductController";
 import CategoryController from "./controllers/CategoryController";
-import CartController from "./controllers/cart/CartController";
-import AuthController from "./controllers/user/UserController";
 import PaymentController from "./controllers/PaymentController";
-import OrderController from "./controllers/order/OrderController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
 import OrderProtect from "./controllers/order/OrderProtect";
 import CartProtect from "./controllers/cart/CartProtect";
-import { LoggerController } from "./controllers/logger/LoggerController";
+import ConfigureLogging from "./utils/logger/ConfigureLogging";
+import FileLogger from "./utils/logger/FileLogger";
+import path from "path";
+import TemplateBuilder from "./utils/logger/TemplateBuilder";
+import LoggerController from "./controllers/logger/LoggerController";
+import { UserLoggingDecorator } from "./controllers/user/UserLogging";
+import DbLogger from "./utils/logger/DbLogger";
+import OrderLoggingDecorator from "./controllers/order/OrderLogging";
+import StreamLogger from "./utils/logger/StreamLogger";
 
 // .env initialized
 dotenv.config();
@@ -36,14 +40,33 @@ const globalMiddlewares: Array<RequestHandler> = [
 
 // initialized new instance of Server
 const server: Server = new Server(app, 5001);
+const logger = new ConfigureLogging([
+  new FileLogger({
+    level: "info",
+    path: path.join(__dirname, "/logs"),
+    template: new TemplateBuilder()
+      .addLevel()
+      .addText(" ")
+      .addMessage()
+      .addText(" ")
+      .addDate()
+      .build(),
+  }),
+  new DbLogger({
+    level: "info",
+  }),
+  // new StreamLogger({
+  //   level: "info",
+  // }),
+]);
 
 const controllers: Array<Controller> = [
   new ProductProtect(),
   new CategoryController(),
   new CartProtect(),
-  new UserProtect(),
+  new UserLoggingDecorator(new UserProtect(), logger),
   new PaymentController(),
-  new OrderProtect(),
+  new OrderLoggingDecorator(new OrderProtect(), logger),
   new EmployeeAuth(),
   new LoggerController(),
 ];

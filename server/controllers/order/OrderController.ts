@@ -28,8 +28,6 @@ export default class OrderController extends Controller {
     },
     {
       path: "/auth/confirm/:id",
-      method: Methods.PUT,
-      handler: this.confirmOrder.bind(this),
       localMiddlewares: [],
     },
     {
@@ -76,7 +74,7 @@ export default class OrderController extends Controller {
         neworder as orderInterface
       );
 
-      const exist = await Cart.findById({ _id: cart });
+      const exist = await Cart.getInstance().findById(cart);
       if (exist) {
         exist.isActive = false;
         await exist.save();
@@ -191,7 +189,6 @@ export default class OrderController extends Controller {
       console.log(error);
       return super.sendError(500, res);
     }
-    // try {
     //   const { orderId } = req.body;
     //   const exist = await Order.getInstace().findById(orderId);
     //   if (!exist) {

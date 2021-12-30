@@ -1,5 +1,5 @@
-import {ILevel} from "./ILevel";
-import {Level} from "./Level";
+import { ILevel } from "./ILevel";
+import { Level } from "./Level";
 import { IInfo } from "./TemplateBuilder";
 
 interface LoggerConfig {
@@ -15,7 +15,7 @@ abstract class LoggerBase<T extends LoggerConfig = LoggerConfig> {
     level: "info",
   };
 
-  protected config: T;
+  public config: T;
   public constructor(config: T) {
     this.config = { ...this.defaultConfig, ...(config as any) };
   }
@@ -32,15 +32,9 @@ abstract class LoggerBase<T extends LoggerConfig = LoggerConfig> {
     return this.config.template!(info);
   }
 
-  public abstract log({
-    message,
-    level,
-  }: {
-    message: string;
-    level: string;
-  }): string;
+  public abstract log(info: any): any;
 }
 
-export { LoggerConfig};
+export { LoggerConfig };
 
 export default LoggerBase;

@@ -6,6 +6,7 @@ import PieChart2Fill from "@iconify/icons-eva/pie-chart-2-fill";
 import PeopleFill from "@iconify/icons-eva/people-fill";
 import CubeFill from "@iconify/icons-eva/cube-fill";
 import ShoppingBagFill from "@iconify/icons-eva/shopping-bag-fill";
+import AlertCircleFill from "@iconify/icons-eva/alert-circle-fill";
 import { Link, useLocation } from "react-router-dom";
 
 const SidebarNav = styled((props: BoxProps & { isActive?: boolean }) => (
@@ -116,6 +117,14 @@ const Sidebar: React.FC<{ sx?: SxProps }> = ({ sx }) => {
               <Icon icon={ShoppingBagFill} width={22} height={22} />
             </span>
             <Typography>Orders</Typography>
+          </SidebarNav>
+        </Link>
+        <Link to={"/logs"} style={{ textDecoration: "none" }}>
+          <SidebarNav isActive={pathname.includes("/logs")}>
+            <span>
+              <Icon icon={AlertCircleFill} width={22} height={22} />
+            </span>
+            <Typography>Logs</Typography>
           </SidebarNav>
         </Link>
       </Stack>
