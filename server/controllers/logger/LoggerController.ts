@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import LogRepository from "../../models/LogRepository";
+import LogRepository from "../../repositories/LogRepository";
 import Controller, { Methods } from "../../typings/Controller";
 import LoggerEventEmit from "../../utils/logger/LoggerEventEmit";
 

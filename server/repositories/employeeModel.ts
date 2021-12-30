@@ -2,7 +2,7 @@ import { Model, model, PopulateOptions, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { EmployeeTypes, IPermission, IRole } from "../types/userTypes";
 
-export class Role {
+export class RoleRepository {
   permissionSchema = new Schema<IPermission>({
     resource: {
       type: String,
@@ -27,21 +27,21 @@ export class Role {
   });
 
   roleModel: Model<IRole, any, any>;
-  private static instance: Role;
+  private static instance: RoleRepository;
 
   private constructor() {
     this.roleModel = model("Role", this.role, "roles");
   }
 
   public static getInstance() {
-    if (!Role.instance) {
-      Role.instance = new Role();
+    if (!RoleRepository.instance) {
+      RoleRepository.instance = new RoleRepository();
     }
-    return Role.instance;
+    return RoleRepository.instance;
   }
 }
 
-export default class Employee {
+export default class EmployeeRepository {
   private employeeSchema = new Schema<EmployeeTypes>({
     firstName: {
       type: String,
@@ -75,7 +75,7 @@ export default class Employee {
   });
 
   private model: Model<EmployeeTypes, any, any>;
-  private static instance: Employee;
+  private static instance: EmployeeRepository;
 
   private constructor() {
     this.employeeSchema.methods.matchPassword = async function (
@@ -98,15 +98,15 @@ export default class Employee {
       this.password = await bcrypt.hash(this.password, salt);
     });
 
-    Role.getInstance();
+    RoleRepository.getInstance();
     this.model = model("Employee", this.employeeSchema, "employees");
   }
 
-  public static getInstance(): Employee {
-    if (!Employee.instance) {
-      Employee.instance = new Employee();
+  public static getInstance(): EmployeeRepository {
+    if (!EmployeeRepository.instance) {
+      EmployeeRepository.instance = new EmployeeRepository();
     }
-    return Employee.instance;
+    return EmployeeRepository.instance;
   }
 
   async findById(

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../../models/golfModel";
+import { FlexRepository, GolfRepository, HandRepository, LoftRepository, ShaftRepository, VariantRepository } from "../../repositories/GolfRepository";
 import Controller, { Methods } from "../../typings/Controller";
 
 export default class ProductController extends Controller {
@@ -35,12 +35,12 @@ export default class ProductController extends Controller {
     _: NextFunction
   ): Promise<void> {
     try {
-      const golf = await Golf.getInstance().findById(req.params.id);
+      const golf = await GolfRepository.getInstance().findById(req.params.id);
       if (!golf) {
         super.sendError(404, res, "not found");
       }
 
-      const variants = await Variant.getInstance().all(
+      const variants = await VariantRepository.getInstance().all(
         {
           golf: golf._id,
         },
@@ -60,7 +60,7 @@ export default class ProductController extends Controller {
     __: NextFunction
   ): Promise<void> {
     try {
-      const golfs = await Golf.getInstance().all();
+      const golfs = await GolfRepository.getInstance().all();
 
       super.sendSuccess(200, res, golfs);
     } catch (error: any) {
@@ -76,7 +76,7 @@ export default class ProductController extends Controller {
     try {
       const { variants, golf } = req.body;
 
-      const created = await Golf.getInstance().create(golf);
+      const created = await GolfRepository.getInstance().create(golf);
 
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -87,7 +87,7 @@ export default class ProductController extends Controller {
         let flexId = null;
 
         if (loft) {
-          const updatedLoft = await Loft.getInstance().findOneAndUpdate(
+          const updatedLoft = await LoftRepository.getInstance().findOneAndUpdate(
             { type: loft.type },
             { ...loft },
             { new: true, upsert: true, useFindAndModify: false }
@@ -96,7 +96,7 @@ export default class ProductController extends Controller {
         }
 
         if (shaft) {
-          const updatedShaft = await Shaft.getInstance().findOneAndUpdate(
+          const updatedShaft = await ShaftRepository.getInstance().findOneAndUpdate(
             {
               name: shaft.name,
             },
@@ -107,16 +107,16 @@ export default class ProductController extends Controller {
         }
 
         if (flex) {
-          const updatedFlex = await Flex.getInstance().findOneAndUpdate(
+          const updatedFlex = await FlexRepository.getInstance().findOneAndUpdate(
             { type: flex.type },
             { ...shaft },
             { new: true, upsert: true, useFindAndModify: false }
           );
           flexId = updatedFlex._id;
         }
-        const existHand = await Hand.getInstance().findOne({ side: hand.side });
+        const existHand = await HandRepository.getInstance().findOne({ side: hand.side });
 
-        await Variant.getInstance().create({
+        await VariantRepository.getInstance().create({
           golf: created._id,
           loft: loftId,
           shaft: shaftId,

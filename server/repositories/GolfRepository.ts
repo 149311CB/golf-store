@@ -18,8 +18,7 @@ import {
   IVariant,
 } from "../types/productTypes";
 
-// const Hand = model<IHand>("Hand", handSchema, "hands");
-class Hand {
+class HandRepository {
   handSchema = new Schema<IHand>({
     side: {
       type: String,
@@ -28,17 +27,17 @@ class Hand {
   });
 
   private model: Model<IHand, any, any>;
-  private static instance: Hand;
+  private static instance: HandRepository;
 
   constructor() {
     this.model = model<IHand>("Hand", this.handSchema, "hands");
   }
 
-  public static getInstance(): Hand {
-    if (!Hand.instance) {
-      Hand.instance = new Hand();
+  public static getInstance(): HandRepository {
+    if (!HandRepository.instance) {
+      HandRepository.instance = new HandRepository();
     }
-    return Hand.instance;
+    return HandRepository.instance;
   }
 
   async findOne(
@@ -49,7 +48,7 @@ class Hand {
   }
 }
 
-class Loft {
+class LoftRepository {
   loftSchema = new Schema<ILoft>({
     type: {
       type: Number,
@@ -59,17 +58,17 @@ class Loft {
   });
 
   private model: Model<ILoft, any, any>;
-  private static instance: Loft;
+  private static instance: LoftRepository;
 
   constructor() {
     this.model = model<ILoft>("Lofts", this.loftSchema, "lofts");
   }
 
-  public static getInstance(): Loft {
-    if (!Loft.instance) {
-      Loft.instance = new Loft();
+  public static getInstance(): LoftRepository {
+    if (!LoftRepository.instance) {
+      LoftRepository.instance = new LoftRepository();
     }
-    return Loft.instance;
+    return LoftRepository.instance;
   }
 
   async findOneAndUpdate(
@@ -84,7 +83,7 @@ class Loft {
   }
 }
 
-class Shaft {
+class ShaftRepository {
   shaftSchema = new Schema<IShaft>({
     name: {
       type: String,
@@ -98,17 +97,17 @@ class Shaft {
   });
 
   private model: Model<IShaft, any, any>;
-  private static instance: Shaft;
+  private static instance: ShaftRepository;
 
   constructor() {
     this.model = model<IShaft>("Shaft", this.shaftSchema, "shafts");
   }
 
-  public static getInstance(): Shaft {
-    if (!Shaft.instance) {
-      Shaft.instance = new Shaft();
+  public static getInstance(): ShaftRepository {
+    if (!ShaftRepository.instance) {
+      ShaftRepository.instance = new ShaftRepository();
     }
-    return Shaft.instance;
+    return ShaftRepository.instance;
   }
 
   async findOneAndUpdate(
@@ -123,7 +122,7 @@ class Shaft {
   }
 }
 
-class Flex {
+class FlexRepository {
   flexSchema = new Schema<IFlex>({
     type: {
       type: String,
@@ -133,17 +132,17 @@ class Flex {
   });
 
   private model: Model<IFlex, any, any>;
-  private static instance: Flex;
+  private static instance: FlexRepository;
 
   constructor() {
     this.model = model<IFlex>("Flex", this.flexSchema, "flexs");
   }
 
-  public static getInstance(): Flex {
-    if (!Flex.instance) {
-      Flex.instance = new Flex();
+  public static getInstance(): FlexRepository {
+    if (!FlexRepository.instance) {
+      FlexRepository.instance = new FlexRepository();
     }
-    return Flex.instance;
+    return FlexRepository.instance;
   }
 
   async findOneAndUpdate(
@@ -158,7 +157,7 @@ class Flex {
   }
 }
 
-class Variant {
+class VariantRepository {
   variantSchema = new Schema<IVariant>({
     golf: {
       type: Schema.Types.ObjectId,
@@ -188,17 +187,17 @@ class Variant {
   });
 
   private model: Model<IVariant, any, any>;
-  private static instance: Variant;
+  private static instance: VariantRepository;
 
   constructor() {
     this.model = model<IVariant>("Variant", this.variantSchema, "variants");
   }
 
-  public static getInstance(): Variant {
-    if (!Variant.instance) {
-      Variant.instance = new Variant();
+  public static getInstance(): VariantRepository {
+    if (!VariantRepository.instance) {
+      VariantRepository.instance = new VariantRepository();
     }
-    return Variant.instance;
+    return VariantRepository.instance;
   }
 
   async create(
@@ -215,7 +214,7 @@ class Variant {
   }
 }
 
-class Golf {
+class GolfRepository {
   golfSchema = new Schema<IProduct>({
     name: {
       type: String,
@@ -240,17 +239,17 @@ class Golf {
   });
 
   private model: Model<IProduct, any, any>;
-  private static instance: Golf;
+  private static instance: GolfRepository;
 
   private constructor() {
     this.model = model<IProduct>("Golf", this.golfSchema, "golfs");
   }
 
-  public static getInstance(): Golf {
-    if (!Golf.instance) {
-      Golf.instance = new Golf();
+  public static getInstance(): GolfRepository {
+    if (!GolfRepository.instance) {
+      GolfRepository.instance = new GolfRepository();
     }
-    return Golf.instance;
+    return GolfRepository.instance;
   }
 
   async create(
@@ -279,4 +278,4 @@ class Golf {
   }
 }
 
-export { Golf, Variant, Hand, Loft, Shaft, Flex };
+export { GolfRepository, VariantRepository, HandRepository, LoftRepository, ShaftRepository, FlexRepository };

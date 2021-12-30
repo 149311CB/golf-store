@@ -7,8 +7,7 @@ import {
 } from "mongoose";
 import { orderInterface } from "../types/orderType";
 
-// const Order = model<orderInterface>("Order", orderSchema, "orders");
-class Order {
+class OrderRepository {
   stateSchema = new Schema(
     {
       state: { type: String, required: true },
@@ -42,17 +41,17 @@ class Order {
   );
 
   model: Model<orderInterface, any, any>;
-  private static instance: Order;
+  private static instance: OrderRepository;
 
   private constructor() {
     this.model = model<orderInterface>("Order", this.orderSchema, "orders");
   }
 
-  public static getInstace(): Order {
-    if (!Order.instance) {
-      Order.instance = new Order();
+  public static getInstace(): OrderRepository {
+    if (!OrderRepository.instance) {
+      OrderRepository.instance = new OrderRepository();
     }
-    return Order.instance;
+    return OrderRepository.instance;
   }
 
   async create(order: orderInterface): Promise<orderInterface | null> {
@@ -79,4 +78,4 @@ class Order {
   }
 }
 
-export default Order;
+export default OrderRepository;

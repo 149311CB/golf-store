@@ -1,4 +1,4 @@
-import User from "../../../../models/userModel";
+import UserRepository from "../../../../repositories/UserRepository";
 import { generateRefreshToken } from "../../../../utils/generateToken";
 import { IAuthenticationStrategy } from "./AuthStrategy";
 import { LocalValidation } from "./LocalStrategy";
@@ -16,11 +16,11 @@ export class AuthRequest {
     const profile = await this._validateStrategy.authenticate();
     let user = profile as UserTypes;
     if (!(this._validateStrategy instanceof LocalValidation)) {
-      const exist = await User.getInstance().findOne({ email: user.email });
+      const exist = await UserRepository.getInstance().findOne({ email: user.email });
 
       if (exist) {
         exist.refreshToken = generateRefreshToken({ userId: exist._id })!;
-        await User.getInstance().updateInfo(exist);
+        await UserRepository.getInstance().updateInfo(exist);
         return exist;
       }
 
@@ -30,7 +30,7 @@ export class AuthRequest {
   }
 
   private static async createUser(user: any): Promise<UserTypes> {
-    const newUser = await User.getInstance().create(user);
+    const newUser = await UserRepository.getInstance().create(user);
     newUser.refreshToken = generateRefreshToken({ userId: newUser._id })!;
     await newUser.save();
     return newUser;

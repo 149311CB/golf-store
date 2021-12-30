@@ -1,6 +1,6 @@
 import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 
-class Category {
+class CategoryRepository {
   golfRef = new Schema({
     golf: {
       type: Schema.Types.ObjectId,
@@ -20,17 +20,17 @@ class Category {
   });
 
   private model: Model<any, any, any>;
-  private static instance: Category;
+  private static instance: CategoryRepository;
 
   private constructor() {
     this.model = model("Category", this.categorySchema, "categories");
   }
 
-  public static getInstance(): Category {
-    if (!Category.instance) {
-      Category.instance = new Category();
+  public static getInstance(): CategoryRepository {
+    if (!CategoryRepository.instance) {
+      CategoryRepository.instance = new CategoryRepository();
     }
-    return Category.instance;
+    return CategoryRepository.instance;
   }
 
   async all(
@@ -41,4 +41,4 @@ class Category {
   }
 }
 
-export { Category };
+export { CategoryRepository };

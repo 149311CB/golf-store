@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel";
+import UserRepository from "../repositories/UserRepository";
 import { NextFunction, Request, Response } from "express";
 
 const protect = asyncHandler(async (req, res, next) => {
@@ -12,7 +12,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const { userId, ...rest } = result;
       // if the user exist in token, use user
       if (userId) {
-        const user = await User.getInstance().findById(userId, "-password");
+        const user = await UserRepository.getInstance().findById(userId, "-password");
         req.body = { ...req.body, rest, user };
         return next();
       }
@@ -64,7 +64,7 @@ export async function jwtValidate(
         return res.status(400).json({ message: "invalid token" });
       }
 
-      const user = await User.getInstance().findById(decoded.userId);
+      const user = await UserRepository.getInstance().findById(decoded.userId);
       if (!user) {
         return res.status(401).json({ message: "UnAuthorized" });
       }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Employee from "../../models/employeeModel";
+import EmployeeRepository from "../../repositories/employeeModel";
 import Controller, { Methods } from "../../typings/Controller";
 import jwt from "jsonwebtoken";
 import {
@@ -33,7 +33,7 @@ export class EmployeeAuth extends Controller {
       }
       // const exist = await Employee.findOne({ email: email });
       // const employee = new Employee();
-      const exist = await Employee.getInstance().findByEmail(email);
+      const exist = await EmployeeRepository.getInstance().findByEmail(email);
 
       // @ts-ignore
       if (!exist || !(await exist.matchPassword(password))) {
@@ -42,7 +42,7 @@ export class EmployeeAuth extends Controller {
 
       const refreshToken = generateRefreshToken({ employeeId: exist._id });
       exist.refreshToken = refreshToken!;
-      await Employee.getInstance().updateInfo(exist);
+      await EmployeeRepository.getInstance().updateInfo(exist);
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
 
       return super.sendSuccess(200, res, null);
@@ -75,7 +75,7 @@ export class EmployeeAuth extends Controller {
 
       const { employeeId } = payload;
       // const employee = new Employee();
-      const exist = await Employee.getInstance().findById(employeeId);
+      const exist = await EmployeeRepository.getInstance().findById(employeeId);
 
       if (!exist || exist.refreshToken !== refreshToken) {
         return super.sendError(401, res, "UnAuthorized, invalid refresh token");
@@ -86,7 +86,7 @@ export class EmployeeAuth extends Controller {
         employeeId: exist._id,
       });
       exist.refreshToken = newRefreshToken!;
-      await Employee.getInstance().updateInfo(exist);
+      await EmployeeRepository.getInstance().updateInfo(exist);
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {

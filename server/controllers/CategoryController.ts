@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Category } from "../models/categoryModel";
+import { CategoryRepository } from "../repositories/CategoryRepository";
 import Controller, { Methods } from "../typings/Controller";
 
 export default class CategoryController extends Controller {
@@ -20,7 +20,7 @@ export default class CategoryController extends Controller {
       const { categoryList } = req.body;
       console.log(categoryList);
 
-      const categories = await Category.getInstance().all(
+      const categories = await CategoryRepository.getInstance().all(
         {
           name: { $in: categoryList },
         },

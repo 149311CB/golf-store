@@ -1,9 +1,7 @@
 import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 import { ICartInterface, IItemInterface } from "../types/cartType";
 
-// const Cart = model<ICartInterface>("Cart", cartSchema, "carts");
-
-class Cart {
+class CartRepository {
   itemSchema = new Schema<IItemInterface>({
     product: {
       type: Schema.Types.ObjectId,
@@ -33,17 +31,17 @@ class Cart {
   });
 
   model: Model<ICartInterface, any, any>;
-  private static instance: Cart;
+  private static instance: CartRepository;
 
   private constructor() {
     this.model = model<ICartInterface>("Cart", this.cartSchema, "carts");
   }
 
-  public static getInstance(): Cart {
-    if (!Cart.instance) {
-      Cart.instance = new Cart();
+  public static getInstance(): CartRepository {
+    if (!CartRepository.instance) {
+      CartRepository.instance = new CartRepository();
     }
-    return Cart.instance;
+    return CartRepository.instance;
   }
 
   async create(cart: ICartInterface): Promise<ICartInterface> {
@@ -77,4 +75,4 @@ class Cart {
   }
 }
 
-export default Cart;
+export default CartRepository;

@@ -75,6 +75,7 @@ const CheckoutForm = () => {
       type: "card",
       card: card,
     });
+
     console.log(paymentMethod);
 
     if (!paymentMethod || !paymentMethod.paymentMethod) {

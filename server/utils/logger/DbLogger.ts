@@ -1,4 +1,4 @@
-import LogRepository from "../../models/LogRepository";
+import LogRepository from "../../repositories/LogRepository";
 import LoggerBase from "./ILogger";
 import LoggerEventEmit from "./LoggerEventEmit";
 

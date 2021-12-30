@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import Cart from "../../models/cartModel";
-import Order from "../../models/orderModel";
+import CartRepository from "../../repositories/CatRepository";
+import OrderRepository from "../../repositories/OrderRepository";
 import Controller from "../../typings/Controller";
 import { orderInterface } from "../../types/orderType";
 import { StateManager } from "./OrderState";
@@ -29,11 +29,11 @@ export default class OrderController extends Controller {
         cancelledAt: cancelledAt,
       };
 
-      const createOrder = await Order.getInstace().create(
+      const createOrder = await OrderRepository.getInstace().create(
         neworder as orderInterface
       );
 
-      const exist = await Cart.getInstance().findById(cart);
+      const exist = await CartRepository.getInstance().findById(cart);
       if (exist) {
         exist.isActive = false;
         await exist.save();
@@ -53,7 +53,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await Order.getInstace().findById(id);
+      const exist = await OrderRepository.getInstace().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -80,7 +80,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await Order.getInstace().findById(id);
+      const exist = await OrderRepository.getInstace().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -103,7 +103,7 @@ export default class OrderController extends Controller {
   async shipOrder(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await Order.getInstace().findById(id);
+      const exist = await OrderRepository.getInstace().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -130,7 +130,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await Order.getInstace().findById(id);
+      const exist = await OrderRepository.getInstace().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -152,7 +152,7 @@ export default class OrderController extends Controller {
 
   async getAllOrder(_: Request, res: Response, __: NextFunction): Promise<any> {
     try {
-      const orders = await Order.getInstace().all({
+      const orders = await OrderRepository.getInstace().all({
         path: "cart",
         select: "products",
         populate: { path: "products.product" },
@@ -175,7 +175,7 @@ export default class OrderController extends Controller {
       return super.sendError(400, res, "id is required");
     }
     try {
-      const order = await Order.getInstace().findById(id as string, {
+      const order = await OrderRepository.getInstace().findById(id as string, {
         path: "cart",
         select: "products",
         populate: {

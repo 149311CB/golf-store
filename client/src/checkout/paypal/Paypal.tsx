@@ -80,7 +80,7 @@ const Paypal = () => {
                 },
               });
             }}
-            onApprove={async (_, actions) => {
+            onApprove={async (data, actions) => {
               const payload = await actions.order.capture();
               const order = generateOrder();
               order.details = {

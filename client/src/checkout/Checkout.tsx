@@ -36,7 +36,6 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
   const { token } = useContext(GlobalContext);
 
   const createOrder = async (order: OrderInterface) => {
-    console.log(order);
     if (order.state === "cancelled") {
       history.push("/cancelled");
     }
@@ -48,8 +47,6 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
         },
       })
       .then(({ data, status }) => {
-        console.log(data);
-        console.log(status);
         if (data && status === 201) {
           return history.push({
             pathname: "/success",

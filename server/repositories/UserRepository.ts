@@ -2,9 +2,7 @@ import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { UserTypes } from "../types/userTypes";
 
-// export default User;
-
-class User {
+class UserRepository {
   userSchema = new Schema<UserTypes>({
     firstName: {
       type: String,
@@ -49,7 +47,7 @@ class User {
   });
 
   private model: Model<UserTypes, any, any>;
-  private static instance: User;
+  private static instance: UserRepository;
   constructor() {
     this.userSchema.methods.matchPassword = async function (enteredPassword) {
       if (!this.password) {
@@ -71,11 +69,11 @@ class User {
     this.model = model("User", this.userSchema, "users");
   }
 
-  public static getInstance(): User {
-    if (!User.instance) {
-      User.instance = new User();
+  public static getInstance(): UserRepository {
+    if (!UserRepository.instance) {
+      UserRepository.instance = new UserRepository();
     }
-    return User.instance;
+    return UserRepository.instance;
   }
 
   async findById(
@@ -113,4 +111,4 @@ class User {
   }
 }
 
-export default User;
+export default UserRepository;

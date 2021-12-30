@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Cart from "../models/cartModel";
+import CartRepository from "../repositories/CatRepository";
 
 const calculatePrice = asyncHandler(async (req, res, next) => {
   const { cartId } = req.query;
@@ -7,7 +7,7 @@ const calculatePrice = asyncHandler(async (req, res, next) => {
   if (Array.isArray(cartId))
     return res.status(400).json({ message: "user id must be a string" });
 
-  const cart = await Cart.getInstance().findOne(
+  const cart = await CartRepository.getInstance().findOne(
     { _id: cartId, isActive: true },
     {
       path: "products.product",

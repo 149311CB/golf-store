@@ -1,4 +1,4 @@
-import User from "../../../../models/userModel";
+import UserRepository from "../../../../repositories/UserRepository";
 import { generateRefreshToken } from "../../../../utils/generateToken";
 import { IAuthenticationStrategy } from "./AuthStrategy";
 import { UserTypes } from "../../../../types/userTypes";
@@ -14,7 +14,7 @@ export class LocalValidation implements IAuthenticationStrategy {
 
   // Check if user exist
   async authenticate(): Promise<UserTypes | null> {
-    const user = await User.getInstance().findOne({ email: this.email });
+    const user = await UserRepository.getInstance().findOne({ email: this.email });
 
     // @ts-ignore
     if (!user || !(await user.matchPassword(this.password))) {

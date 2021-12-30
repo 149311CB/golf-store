@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../../models/userModel";
+import UserRepository from "../../repositories/UserRepository";
 import Controller, { IRoute } from "../../typings/Controller";
 import {
   COOKIES_OPTIONS,
@@ -109,12 +109,12 @@ class AuthController extends Controller implements IUserLogginDecorator {
   ): Promise<any> {
     try {
       const { user } = req;
-      const exist = await User.getInstance().findById(user._id);
+      const exist = await UserRepository.getInstance().findById(user._id);
 
       const token = generateToken({ userId: exist._id });
       const newRefreshToken = generateRefreshToken({ userId: exist._id });
       exist.refreshToken = newRefreshToken!;
-      await User.getInstance().updateInfo(exist);
+      await UserRepository.getInstance().updateInfo(exist);
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {
@@ -144,7 +144,7 @@ class AuthController extends Controller implements IUserLogginDecorator {
           .json({ message: "password not match confirmation" });
       }
 
-      const userExists = await User.getInstance().findOne({ email });
+      const userExists = await UserRepository.getInstance().findOne({ email });
 
       if (userExists) {
         res.status(400).json({ message: "user already exist" });
@@ -162,7 +162,7 @@ class AuthController extends Controller implements IUserLogginDecorator {
         emailVerification: false,
       };
 
-      const newUser = await User.getInstance().create(user);
+      const newUser = await UserRepository.getInstance().create(user);
       req.register = true;
       req.user = newUser;
 
@@ -189,7 +189,7 @@ class AuthController extends Controller implements IUserLogginDecorator {
     if (!req.user) {
       return res.status(401);
     }
-    const user = await User.getInstance().findById(req.user._id, select);
+    const user = await UserRepository.getInstance().findById(req.user._id, select);
     try {
       return res.status(200).json(user);
     } catch (error: any) {

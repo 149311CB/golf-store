@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Employee from "../../models/employeeModel";
+import EmployeeRepository from "../../repositories/employeeModel";
 import { EmployeeTypes } from "../../types/userTypes";
 import { HeaderExtract, TokenValidateBase } from "../auth/AuthenticateBase";
 import OrderController from "./OrderController";
@@ -24,7 +24,7 @@ export default class OrderProtect extends OrderController {
 
     const { employeeId } = service.validateToken(req, res);
 
-    const exist = await Employee.getInstance().findById(employeeId, {
+    const exist = await EmployeeRepository.getInstance().findById(employeeId, {
       path: "role",
       populate: { path: "permission" },
     });
