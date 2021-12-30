@@ -73,12 +73,8 @@ export class PendingState extends OrderState {
     throw new Error("Invalid operation");
   }
   public async confirmOrder(context: StateManager): Promise<void> {
-    // order.stateHistory = [...order.stateHistory, { state: "confirmed" }];
-    // order.state.state = "confirmed";
-    // await order.save();
     const confirmedState = new ConfirmedState();
     confirmedState.enterState(context);
-    // context.transitionToState(confirmedState);
   }
 }
 

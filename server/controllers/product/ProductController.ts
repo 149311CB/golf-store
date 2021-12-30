@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
 import { Flex, Golf, Hand, Loft, Shaft, Variant } from "../../models/golfModel";
 import Controller, { Methods } from "../../typings/Controller";
 
 export default class ProductController extends Controller {
   public path = "/api/products";
-  protected routes = [
+  public routes = [
     {
       path: "/golfs/:id",
       method: Methods.GET,
@@ -36,14 +35,17 @@ export default class ProductController extends Controller {
     _: NextFunction
   ): Promise<void> {
     try {
-      const golf = await Golf.findById(mongoose.Types.ObjectId(req.params.id));
+      const golf = await Golf.getInstance().findById(req.params.id);
       if (!golf) {
         super.sendError(404, res, "not found");
       }
 
-      const variants = await Variant.find({
-        golf: golf._id,
-      }).populate("hand shaft flex loft");
+      const variants = await Variant.getInstance().all(
+        {
+          golf: golf._id,
+        },
+        { path: "hand shaft flex loft" }
+      );
 
       super.sendSuccess(200, res, { golf, variants });
     } catch (error: any) {
@@ -58,7 +60,7 @@ export default class ProductController extends Controller {
     __: NextFunction
   ): Promise<void> {
     try {
-      const golfs = await Golf.find({});
+      const golfs = await Golf.getInstance().all();
 
       super.sendSuccess(200, res, golfs);
     } catch (error: any) {
@@ -74,7 +76,7 @@ export default class ProductController extends Controller {
     try {
       const { variants, golf } = req.body;
 
-      const created = await Golf.create(golf);
+      const created = await Golf.getInstance().create(golf);
 
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -85,7 +87,7 @@ export default class ProductController extends Controller {
         let flexId = null;
 
         if (loft) {
-          const updatedLoft = await Loft.findOneAndUpdate(
+          const updatedLoft = await Loft.getInstance().findOneAndUpdate(
             { type: loft.type },
             { ...loft },
             { new: true, upsert: true, useFindAndModify: false }
@@ -94,7 +96,7 @@ export default class ProductController extends Controller {
         }
 
         if (shaft) {
-          const updatedShaft = await Shaft.findOneAndUpdate(
+          const updatedShaft = await Shaft.getInstance().findOneAndUpdate(
             {
               name: shaft.name,
             },
@@ -105,16 +107,16 @@ export default class ProductController extends Controller {
         }
 
         if (flex) {
-          const updatedFlex = await Flex.findOneAndUpdate(
+          const updatedFlex = await Flex.getInstance().findOneAndUpdate(
             { type: flex.type },
             { ...shaft },
             { new: true, upsert: true, useFindAndModify: false }
           );
           flexId = updatedFlex._id;
         }
-        const existHand = await Hand.findOne({ side: hand.side });
+        const existHand = await Hand.getInstance().findOne({ side: hand.side });
 
-        await Variant.create({
+        await Variant.getInstance().create({
           golf: created._id,
           loft: loftId,
           shaft: shaftId,

@@ -16,11 +16,11 @@ export class AuthRequest {
     const profile = await this._validateStrategy.authenticate();
     let user = profile as UserTypes;
     if (!(this._validateStrategy instanceof LocalValidation)) {
-      const exist = await User.findOne({ email: user.email });
+      const exist = await User.getInstance().findOne({ email: user.email });
 
       if (exist) {
-        exist.refreshToken = generateRefreshToken({ userId: exist._id });
-        await exist.save()
+        exist.refreshToken = generateRefreshToken({ userId: exist._id })!;
+        await User.getInstance().updateInfo(exist);
         return exist;
       }
 
@@ -30,8 +30,8 @@ export class AuthRequest {
   }
 
   private static async createUser(user: any): Promise<UserTypes> {
-    const newUser = await User.create(user);
-    newUser.refreshToken = generateRefreshToken({ userId: newUser._id });
+    const newUser = await User.getInstance().create(user);
+    newUser.refreshToken = generateRefreshToken({ userId: newUser._id })!;
     await newUser.save();
     return newUser;
   }

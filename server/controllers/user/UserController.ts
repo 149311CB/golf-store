@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../../models/userModel";
-import Controller, { Methods } from "../../typings/Controller";
+import Controller, { IRoute } from "../../typings/Controller";
 import {
   COOKIES_OPTIONS,
   generateRefreshToken,
@@ -10,64 +10,11 @@ import { GoogleStrategy } from "./strategies/authentication/GoogleStrategy";
 import { LocalValidation } from "./strategies/authentication/LocalStrategy";
 import { AuthRequest } from "./strategies/authentication/AuthRequest";
 import { FacebookStrategy } from "./strategies/authentication/FacebookStrategy";
-import { jwtValidate } from "../../middlewares/authMiddleware";
+import { IUserLogginDecorator } from "./UserLogging";
 
-class AuthController extends Controller {
-  public path = "/api/user/auth";
-  protected routes = [
-    {
-      path: "/login",
-      method: Methods.POST,
-      handler: this.login,
-      localMiddlewares: [],
-    },
-    {
-      path: "/token/refresh",
-      method: Methods.GET,
-      handler: this.refreshTokens,
-      localMiddlewares: [],
-    },
-    {
-      path: "/register",
-      method: Methods.POST,
-      handler: this.register,
-      localMiddlewares: [],
-    },
-    {
-      path: "/login/google",
-      method: Methods.GET,
-      handler: this.google,
-      localMiddlewares: [],
-    },
-    {
-      path: "/login/google/callback",
-      method: Methods.GET,
-      handler: this.googleCallback,
-      localMiddlewares: [],
-    },
-    {
-      path: "/login/facebook",
-      method: Methods.GET,
-      handler: this.facebook,
-      localMiddlewares: [],
-    },
-    {
-      path: "/login/facebook/callback",
-      method: Methods.GET,
-      handler: this.facebookCallback,
-      localMiddlewares: [],
-    },
-    {
-      path: "/details",
-      method: Methods.GET,
-      handler: this.getuserDetails,
-      localMiddlewares: [jwtValidate],
-    },
-  ];
-
-  constructor() {
-    super();
-  }
+class AuthController extends Controller implements IUserLogginDecorator {
+  public path: string = "";
+  public routes: Array<IRoute> = [];
 
   async login(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
@@ -82,7 +29,8 @@ class AuthController extends Controller {
 
       res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
 
-      return super.sendSuccess(200, res, null);
+      super.sendSuccess(200, res, null);
+      // this.logger.info`${req.method}${req.originalUrl}${res.statusCode}`;
     } catch (error) {
       console.log(error);
       super.sendError(500, res);
@@ -160,32 +108,13 @@ class AuthController extends Controller {
     _: NextFunction
   ): Promise<any> {
     try {
-      // const { signedCookies = {} } = req;
-      // const { refresh_token: refreshToken } = signedCookies;
-      // if (!refreshToken) {
-      //   return super.sendError(401, res, "UnAuthorized");
-      // }
-
-      // const payload = jwt.verify(
-      //   refreshToken,
-      //   process.env.REFRESH_TOKEN_SECRET!
-      // );
-
-      // if (typeof payload === "string") {
-      //   return super.sendError(401, res, "UnAuthorized, token failed");
-      // }
-
       const { user } = req;
-      const exist = await User.findById(user._id);
-
-      // if (!user || user.refreshToken !== refreshToken) {
-      //   return super.sendError(401, res, "UnAuthorized, invalid refresh token");
-      // }
+      const exist = await User.getInstance().findById(user._id);
 
       const token = generateToken({ userId: exist._id });
       const newRefreshToken = generateRefreshToken({ userId: exist._id });
       exist.refreshToken = newRefreshToken!;
-      await exist.save()
+      await User.getInstance().updateInfo(exist);
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {
@@ -215,7 +144,7 @@ class AuthController extends Controller {
           .json({ message: "password not match confirmation" });
       }
 
-      const userExists = await User.findOne({ email });
+      const userExists = await User.getInstance().findOne({ email });
 
       if (userExists) {
         res.status(400).json({ message: "user already exist" });
@@ -233,7 +162,7 @@ class AuthController extends Controller {
         emailVerification: false,
       };
 
-      const newUser = await User.create(user);
+      const newUser = await User.getInstance().create(user);
       req.register = true;
       req.user = newUser;
 
@@ -260,7 +189,7 @@ class AuthController extends Controller {
     if (!req.user) {
       return res.status(401);
     }
-    const user = await User.findById(req.user._id).select(select);
+    const user = await User.getInstance().findById(req.user._id, select);
     try {
       return res.status(200).json(user);
     } catch (error: any) {

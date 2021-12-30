@@ -7,10 +7,13 @@ const calculatePrice = asyncHandler(async (req, res, next) => {
   if (Array.isArray(cartId))
     return res.status(400).json({ message: "user id must be a string" });
 
-  const cart = await Cart.findOne({ _id: cartId, isActive: true }).populate({
-    path: "products.product",
-    select: "price",
-  });
+  const cart = await Cart.getInstance().findOne(
+    { _id: cartId, isActive: true },
+    {
+      path: "products.product",
+      select: "price",
+    }
+  );
 
   let total = 0;
 

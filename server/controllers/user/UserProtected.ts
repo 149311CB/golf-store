@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../../models/userModel";
 
-import {
-  TokenValidateBase,
-  CookieExtraction,
-} from "../auth/AuthenticateBase";
+import { TokenValidateBase, CookieExtraction } from "../auth/AuthenticateBase";
 import AuthController from "./UserController";
 
 export class UserProtect extends AuthController {
+
+  // async login(req: Request, res: Response, next: NextFunction) {
+  //   await super.login(req, res, next);
+  // }
+
   async refreshTokens(
     req: Request,
     res: Response,
@@ -25,8 +27,8 @@ export class UserProtect extends AuthController {
 
       // get userId
       const { userId } = service.validateToken(req, res);
-      if(!userId) return
-      const user = await User.findById(userId);
+      if (!userId) return;
+      const user = await User.getInstance().findById(userId);
 
       // Compare token from request with current token
       if (!user || user.refreshToken !== token) {

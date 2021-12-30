@@ -5,6 +5,13 @@ import { HeaderExtract, TokenValidateBase } from "../auth/AuthenticateBase";
 import OrderController from "./OrderController";
 
 export default class OrderProtect extends OrderController {
+  constructor(){
+    super()
+    this.getEmployeeInfo = this.getEmployeeInfo.bind(this)
+    this.getAllOrder = this.getAllOrder.bind(this)
+    this.checkWritePermission = this.checkWritePermission.bind(this)
+    this.confirmOrder = this.confirmOrder.bind(this)
+  }
   async getEmployeeInfo(
     req: Request,
     res: Response

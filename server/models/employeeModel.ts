@@ -26,11 +26,11 @@ export class Role {
     },
   });
 
-  roleContext: Model<IRole, any, any>;
+  roleModel: Model<IRole, any, any>;
   private static instance: Role;
 
   private constructor() {
-    this.roleContext = model("Role", this.role, "roles");
+    this.roleModel = model("Role", this.role, "roles");
   }
 
   public static getInstance() {

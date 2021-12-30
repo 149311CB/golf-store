@@ -1,6 +1,5 @@
 import {
   Document,
-  FilterQuery,
   Model,
   model,
   PopulateOptions,
@@ -67,11 +66,10 @@ class Order {
     return await this.model.findById(id).populate(options);
   }
 
-  async find(
-    query: FilterQuery<orderInterface>,
+  async all(
     options?: PopulateOptions | Array<PopulateOptions>
   ): Promise<orderInterface & Document<any, any, orderInterface>> {
-    return await this.model.find(query).populate(options);
+    return await this.model.find().populate(options);
   }
 
   async updateInfo(

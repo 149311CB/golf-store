@@ -1,54 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import Cart from "../../models/cartModel";
 import Order from "../../models/orderModel";
-import Controller, { Methods } from "../../typings/Controller";
+import Controller from "../../typings/Controller";
 import { orderInterface } from "../../types/orderType";
 import { StateManager } from "./OrderState";
 
 export default class OrderController extends Controller {
-  public path = "/api/order";
-  protected routes = [
-    {
-      path: "/auth/create",
-      method: Methods.POST,
-      handler: this.createOrder.bind(this),
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/all",
-      method: Methods.GET,
-      handler: this.getAllOrder.bind(this),
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/details/:id",
-      method: Methods.GET,
-      handler: this.getOrderById.bind(this),
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/confirm/:id",
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/ship/:id",
-      method: Methods.PUT,
-      handler: this.shipOrder.bind(this),
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/complete/:id",
-      method: Methods.PUT,
-      handler: this.completeOrder.bind(this),
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/cancel/:id",
-      method: Methods.PUT,
-      handler: this.cancelOrder.bind(this),
-      localMiddlewares: [],
-    },
-  ];
+  public path = "";
+  public routes = []
 
   async createOrder(
     req: Request,
@@ -189,36 +148,15 @@ export default class OrderController extends Controller {
       console.log(error);
       return super.sendError(500, res);
     }
-    //   const { orderId } = req.body;
-    //   const exist = await Order.getInstace().findById(orderId);
-    //   if (!exist) {
-    //     return super.sendError(401, res, "order not found");
-    //   }
-    //   if (exist.state === "shipped") {
-    //     exist.state = "completed";
-    //     exist.stateHistory = [...exist.stateHistory, { state: "completed" }];
-    //     await Order.getInstace().updateInfo(exist);
-
-    //     return super.sendSuccess(200, res, null, "order cancelled");
-    //   } else {
-    //     return super.sendError(400, res, "order state not valid");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   return super.sendError(500, res);
-    // }
   }
 
   async getAllOrder(_: Request, res: Response, __: NextFunction): Promise<any> {
     try {
-      const orders = await Order.getInstace().find(
-        {},
-        {
-          path: "cart",
-          select: "products",
-          populate: { path: "products.product" },
-        }
-      );
+      const orders = await Order.getInstace().all({
+        path: "cart",
+        select: "products",
+        populate: { path: "products.product" },
+      });
 
       return super.sendSuccess(200, res, orders);
     } catch (error) {
@@ -245,6 +183,7 @@ export default class OrderController extends Controller {
           populate: { path: "flex hand loft shaft" },
         },
       });
+
       if (!order) {
         return super.sendError(404, res, "Order not found");
       }

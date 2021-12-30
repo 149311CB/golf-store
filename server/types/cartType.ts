@@ -1,5 +1,5 @@
 export interface IItemInterface {
-  _id: string;
+  _id?: string;
   product: any;
   // stock: number;
   variant: string;
@@ -7,8 +7,8 @@ export interface IItemInterface {
 }
 
 export interface ICartInterface {
-  _id: string;
+  _id?: string;
   products: IItemInterface[];
-  user: string;
+  user: string | null;
   isActive: boolean;
 }

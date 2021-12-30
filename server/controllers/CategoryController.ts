@@ -4,7 +4,7 @@ import Controller, { Methods } from "../typings/Controller";
 
 export default class CategoryController extends Controller {
   public path = "/api/category";
-  protected routes = [
+  public routes = [
     {
       path: "/list",
       method: Methods.POST,
@@ -18,11 +18,14 @@ export default class CategoryController extends Controller {
   async getCategoryList(req: Request, res: Response, _: NextFunction) {
     try {
       const { categoryList } = req.body;
-      console.log(categoryList)
+      console.log(categoryList);
 
-      const categories = await Category.find({
-        name: { $in: categoryList },
-      }).populate({ path: "products.golf" });
+      const categories = await Category.getInstance().all(
+        {
+          name: { $in: categoryList },
+        },
+        { path: "products.golf" }
+      );
 
       if (!categories) {
         super.sendError(404, res, "not found");

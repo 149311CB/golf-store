@@ -2,11 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import Cart from "../../models/cartModel";
 import Controller, { Methods } from "../../typings/Controller";
 import { jwtValidate } from "../../middlewares/authMiddleware";
-import { COOKIES_OPTIONS, generateRefreshToken } from "../../utils/generateToken";
+import {
+  COOKIES_OPTIONS,
+  generateRefreshToken,
+} from "../../utils/generateToken";
 
 export default class CartController extends Controller {
   public path = "/api/carts";
-  protected routes = [
+  public routes = [
     {
       path: "/auth/active",
       method: Methods.GET,
@@ -81,17 +84,19 @@ export default class CartController extends Controller {
       if (user) {
         // return 404
       }
-      const exist = await Cart.findOne({
-        isActive: true,
-        user: user._id,
-      }).populate({
-        path: "products.variant products.product",
-        populate: { path: "hand loft flex shaft" },
-      });
+      const exist = await Cart.getInstance().findOne(
+        {
+          isActive: true,
+          user: user._id,
+        },
+        {
+          path: "products.variant products.product",
+          populate: { path: "hand loft flex shaft" },
+        }
+      );
 
       if (!exist) {
         super.sendSuccess(200, res, null, "not found");
-        // return res.status(404).json({ message: "not found" });
       } else {
         const result = {
           _id: exist._id,
@@ -114,7 +119,7 @@ export default class CartController extends Controller {
   ): Promise<any> {
     try {
       const { cartId } = req;
-      const exist = await Cart.findById(cartId).populate({
+      const exist = await Cart.getInstance().findById(cartId, {
         path: "products.variant products.product",
         populate: { path: "hand loft flex shaft" },
       });
@@ -146,7 +151,7 @@ export default class CartController extends Controller {
     try {
       let exist;
       if (user) {
-        exist = await Cart.findOne({
+        exist = await Cart.getInstance().findOne({
           user: user._id,
           isActive: true,
         });
@@ -167,13 +172,12 @@ export default class CartController extends Controller {
 
         res.status(201).json({ cart });
       } else {
-        const newCart = new Cart({
+        const cart = await Cart.getInstance().create({
           user: user._id,
           products: [product],
           isActive: true,
         });
 
-        const cart = await newCart.save();
         res.status(201).json(cart);
       }
     } catch (error) {
@@ -185,7 +189,7 @@ export default class CartController extends Controller {
     try {
       const { cartId } = req;
 
-      const cart = await Cart.findOne({
+      const cart = await Cart.getInstance().findOne({
         _id: cartId,
         isActive: true,
       });
@@ -204,13 +208,12 @@ export default class CartController extends Controller {
         await cart.save();
         super.sendSuccess(200, res, null);
       } else {
-        const newCart = new Cart({
+        // const cart = await newCart.save();
+        const cart = await Cart.getInstance().create({
           user: null,
           products: [product],
           isActive: true,
         });
-
-        const cart = await newCart.save();
         const cartToken = generateRefreshToken({ cartId: cart._id });
         res.cookie("cart_token", cartToken, COOKIES_OPTIONS);
         return super.sendSuccess(200, res, null);
@@ -230,13 +233,16 @@ export default class CartController extends Controller {
     const { user } = req;
     const { productId } = req.body;
     try {
-      const exist = await Cart.findOne({
-        user: user._id,
-        isActive: true,
-      }).populate({
-        path: "products.variant products.product",
-        populate: { path: "hand loft flex shaft" },
-      });
+      const exist = await Cart.getInstance().findOne(
+        {
+          user: user._id,
+          isActive: true,
+        },
+        {
+          path: "products.variant products.product",
+          populate: { path: "hand loft flex shaft" },
+        }
+      );
 
       if (exist) {
         exist.products = exist.products.filter((product) => {
@@ -262,7 +268,7 @@ export default class CartController extends Controller {
     const { cartId } = req;
     const { productId } = req.body;
     try {
-      const exist = await Cart.findById(cartId).populate({
+      const exist = await Cart.getInstance().findById(cartId, {
         path: "products.variant products.product",
         populate: { path: "hand loft flex shaft" },
       });
@@ -294,7 +300,7 @@ export default class CartController extends Controller {
       return super.sendError(400, res, "required line item id and quantity");
     }
     try {
-      const cart = await Cart.findOne({ user: user._id, isActive: true });
+      const cart = await Cart.getInstance().findOne({ user: user._id, isActive: true });
       if (!cart) {
         return super.sendError(404, res, "cart not found");
       }
@@ -321,7 +327,7 @@ export default class CartController extends Controller {
       return super.sendError(400, res, "required line item id and quantity");
     }
     try {
-      const cart = await Cart.findById(cartId);
+      const cart = await Cart.getInstance().findById(cartId);
       if (!cart) {
         return super.sendError(404, res, "cart not found");
       }
@@ -344,7 +350,7 @@ export default class CartController extends Controller {
   async countItem(req: Request, res: Response, _: NextFunction): Promise<any> {
     const { user } = req;
     try {
-      const cart = await Cart.findOne({ user: user._id, isActive: true });
+      const cart = await Cart.getInstance().findOne({ user: user._id, isActive: true });
       if (!cart) {
         return super.sendSuccess(200, res, { count: 0 }, "cart not found");
       }

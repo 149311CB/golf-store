@@ -6,7 +6,7 @@ import {jwtValidate} from "../middlewares/authMiddleware";
 
 export default class PaymentController extends Controller {
   public path = "/api/payment";
-  protected routes = [
+  public routes = [
     {
       path: "/auth/stripe",
       method: Methods.GET,

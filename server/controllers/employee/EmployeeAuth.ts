@@ -10,7 +10,7 @@ import {
 
 export class EmployeeAuth extends Controller {
   public path = "/api/employee/";
-  protected routes = [
+  public routes = [
     {
       path: "/auth/login",
       method: Methods.POST,
