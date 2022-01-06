@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import ConfigureLogging from "../../../utils/logger/ConfigureLogging";
-import PublicCartController from "../PublicCartController";
+import UserCartController from "../UserCartController";
 
-export default class PublicCartProtect extends PublicCartController {
+export default class UserCartProtect extends UserCartController {
   constructor(logger: ConfigureLogging) {
     super(logger);
   }
@@ -12,7 +12,7 @@ export default class PublicCartProtect extends PublicCartController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    req.cartId = await super.getCartInfoFromCookie(req, res);
+    req.userId = await super.getUserFromHeader(req, res);
     return super.getActiveCart(req, res, next);
   }
 
@@ -21,7 +21,7 @@ export default class PublicCartProtect extends PublicCartController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    req.cartId = await super.getCartInfoFromCookie(req, res);
+    req.userId = await super.getUserFromHeader(req, res);
     return super.addToCart(req, res, next);
   }
 
@@ -30,7 +30,7 @@ export default class PublicCartProtect extends PublicCartController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    req.cartId = await super.getCartInfoFromCookie(req, res);
+    req.userId = await super.getUserFromHeader(req, res);
     return super.updateQty(req, res, next);
   }
 
@@ -39,7 +39,7 @@ export default class PublicCartProtect extends PublicCartController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    req.cartId = await super.getCartInfoFromCookie(req, res);
+    req.userId = await super.getUserFromHeader(req, res);
     return super.removeProduct(req, res, next);
   }
 
@@ -48,7 +48,7 @@ export default class PublicCartProtect extends PublicCartController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    req.cartId = await super.getCartInfoFromCookie(req, res);
+    req.userId = await super.getUserFromHeader(req, res);
     return super.countItem(req, res, next);
   }
 }

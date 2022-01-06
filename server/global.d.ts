@@ -1,6 +1,6 @@
-import {Document} from "mongoose";
+import { Document } from "mongoose";
 import { ICartInterface } from "./types/cartType";
-import { UserTypes } from "./types/userTypes";
+import { BasicInfo } from "./types/userTypes";
 
 declare global {
   namespace Express {

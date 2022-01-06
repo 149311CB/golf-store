@@ -26,7 +26,7 @@ const calculatePrice = asyncHandler(async (req, res, next) => {
     return next();
   }
 
-  return res.status(404).json({ message: "cart not found" });
+  return res.status(404).json({ message: "cart-badge not found" });
 });
 
 export { calculatePrice };

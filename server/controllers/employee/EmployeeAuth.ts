@@ -14,13 +14,13 @@ export class EmployeeAuth extends Controller {
     {
       path: "/auth/login",
       method: Methods.POST,
-      handler: this.login.bind(this),
+      handler: this.login,
       localMiddlewares: [],
     },
     {
       path: "/auth/token/refresh",
       method: Methods.GET,
-      handler: this.refreshToken.bind(this),
+      handler: this.refreshToken,
       localMiddlewares: [],
     },
   ];

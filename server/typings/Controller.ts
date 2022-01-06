@@ -23,7 +23,7 @@ export interface IRoute {
 }
 
 export default abstract class Controller {
-  public router: Router = Router();
+  public  router: Router = Router();
   public abstract path: string;
   public abstract readonly routes: Array<IRoute>;
 
@@ -34,16 +34,16 @@ export default abstract class Controller {
       }
       switch (route.method) {
         case Methods.GET:
-          this.router.get(route.path, route.handler);
+          this.router.get(route.path, route.handler.bind(this));
           break;
         case Methods.POST:
-          this.router.post(route.path, route.handler);
+          this.router.post(route.path, route.handler.bind(this));
           break;
         case Methods.PUT:
-          this.router.put(route.path, route.handler);
+          this.router.put(route.path, route.handler.bind(this));
           break;
         case Methods.DELETE:
-          this.router.delete(route.path, route.handler);
+          this.router.delete(route.path, route.handler.bind(this));
       }
     }
     return this.router;

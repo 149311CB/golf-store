@@ -9,13 +9,13 @@ export default class LoggerController extends Controller {
     {
       path: "/stream",
       method: Methods.GET,
-      handler: this.requestLog.bind(this),
+      handler: this.requestLog,
       localMiddlewares: [],
     },
     {
       path: "/all",
       method: Methods.GET,
-      handler: this.requestLogs.bind(this),
+      handler: this.requestLogs,
       localMiddlewares: [],
     },
   ];
