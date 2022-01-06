@@ -109,7 +109,7 @@ export class UserLoggingDecorator
       req.originalUrl,
       new Date(),
       res.statusCode,
-      res.statusMessage,
+      res.statusMessage || "unknown",
       req.headers["user-agent"] || "unknown",
       stopwatch,
       req.socket.remoteAddress || "unknown",
@@ -131,9 +131,10 @@ export class UserLoggingDecorator
       await handler(req, res, next);
       const end = process.hrtime();
       stopwatch = end[0] * 1e9 - start[0] * 1e9;
-      this.createLog(req, res, stopwatch, this.logger.info);
+      // this.createLog(req, res, stopwatch, this.logger.info);
     } catch (error: any) {
       this.createLog(req, res, stopwatch, this.logger.error, error.message);
+      super.sendError(401, res, error.message);
     }
   }
 

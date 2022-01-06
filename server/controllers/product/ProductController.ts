@@ -8,19 +8,19 @@ export default class ProductController extends Controller {
     {
       path: "/golfs/:id",
       method: Methods.GET,
-      handler: this.findGolfById,
+      handler: this.findGolfById.bind(this),
       localMiddlewares: [],
     },
     {
       path: "/golfs",
       method: Methods.GET,
-      handler: this.findAllGolf,
+      handler: this.findAllGolf.bind(this),
       localMiddlewares: [],
     },
     {
       path: "/golfs/create",
       method: Methods.POST,
-      handler: this.createGolf,
+      handler: this.createGolf.bind(this),
       localMiddlewares: [],
     },
   ];

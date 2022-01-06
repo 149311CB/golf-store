@@ -6,7 +6,7 @@ import Controller, { IRoute, Methods } from "../../typings/Controller";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import OrderController from "./OrderController";
 
-export interface IOrderLoggingDecorator extends Controller {
+export interface IOrderLoggingDecorator {
   createOrder(req: Request, res: Response, _: NextFunction): Promise<any>;
 
   confirmOrder(req: Request, res: Response, _: NextFunction): Promise<any>;
@@ -121,52 +121,52 @@ export default class OrderLoggingDecorator
   }
 
   async createOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.createOrder);
+    await this.requestHandler(req, res, next, this.orderController.createOrder);
   }
   async confirmOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.confirmOrder);
+    await this.requestHandler(req, res, next, this.orderController.confirmOrder);
   }
   async cancelOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.cancelOrder);
+    await this.requestHandler(req, res, next, this.orderController.cancelOrder);
   }
   async shipOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.shipOrder);
+    await this.requestHandler(req, res, next, this.orderController.shipOrder);
   }
   async completeOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.completeOrder);
+    await this.requestHandler(req, res, next, this.orderController.completeOrder);
   }
   async getAllOrder(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.getAllOrder);
+    await this.requestHandler(req, res, next, this.orderController.getAllOrder);
   }
   async getOrderById(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>,
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
     next: NextFunction
   ): Promise<any> {
-    this.requestHandler(req, res, next, this.orderController.getOrderById);
+    await this.requestHandler(req, res, next, this.orderController.getOrderById);
   }
 }

@@ -15,6 +15,7 @@ export default class ProductProtect extends ProductController {
         new HeaderExtract(),
         process.env.JWT_SECRET!
       );
+
       const { employeeId } = service.validateToken(req, res);
 
       const employee = await EmployeeRepository.getInstance().findById(employeeId);

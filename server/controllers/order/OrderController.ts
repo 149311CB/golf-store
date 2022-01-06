@@ -4,10 +4,11 @@ import OrderRepository from "../../repositories/OrderRepository";
 import Controller from "../../typings/Controller";
 import { orderInterface } from "../../types/orderType";
 import { StateManager } from "./OrderState";
+import { VariantRepository } from "../../repositories/GolfRepository";
 
 export default class OrderController extends Controller {
   public path = "";
-  public routes = []
+  public routes = [];
 
   async createOrder(
     req: Request,
@@ -29,7 +30,7 @@ export default class OrderController extends Controller {
         cancelledAt: cancelledAt,
       };
 
-      const createOrder = await OrderRepository.getInstace().create(
+      const createOrder = await OrderRepository.getInstance().create(
         neworder as orderInterface
       );
 
@@ -37,6 +38,17 @@ export default class OrderController extends Controller {
       if (exist) {
         exist.isActive = false;
         await exist.save();
+        if (createOrder?.state.state === "succeeded") {
+          // reduce stock by subtract stock for product's quantity
+          for (let index = 0; index < exist.products.length; index++) {
+            const product = exist.products[index];
+            const variant = await VariantRepository.getInstance().findById(
+              product.variant
+            );
+            variant.stock -= product.quantity;
+            await VariantRepository.getInstance().updateInfo(variant);
+          }
+        }
       }
 
       return res.status(201).json(createOrder);
@@ -53,7 +65,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await OrderRepository.getInstace().findById(id);
+      const exist = await OrderRepository.getInstance().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -80,7 +92,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await OrderRepository.getInstace().findById(id);
+      const exist = await OrderRepository.getInstance().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -103,7 +115,7 @@ export default class OrderController extends Controller {
   async shipOrder(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await OrderRepository.getInstace().findById(id);
+      const exist = await OrderRepository.getInstance().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -130,7 +142,7 @@ export default class OrderController extends Controller {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await OrderRepository.getInstace().findById(id);
+      const exist = await OrderRepository.getInstance().findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");
@@ -152,7 +164,7 @@ export default class OrderController extends Controller {
 
   async getAllOrder(_: Request, res: Response, __: NextFunction): Promise<any> {
     try {
-      const orders = await OrderRepository.getInstace().all({
+      const orders = await OrderRepository.getInstance().all({
         path: "cart",
         select: "products",
         populate: { path: "products.product" },
@@ -175,7 +187,7 @@ export default class OrderController extends Controller {
       return super.sendError(400, res, "id is required");
     }
     try {
-      const order = await OrderRepository.getInstace().findById(id as string, {
+      const order = await OrderRepository.getInstance().findById(id as string, {
         path: "cart",
         select: "products",
         populate: {

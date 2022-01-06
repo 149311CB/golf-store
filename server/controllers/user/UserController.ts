@@ -107,20 +107,15 @@ class AuthController extends Controller implements IUserLogginDecorator {
     res: Response,
     _: NextFunction
   ): Promise<any> {
-    try {
-      const { user } = req;
-      const exist = await UserRepository.getInstance().findById(user._id);
+    const { user } = req;
+    const exist = await UserRepository.getInstance().findById(user._id);
 
-      const token = generateToken({ userId: exist._id });
-      const newRefreshToken = generateRefreshToken({ userId: exist._id });
-      exist.refreshToken = newRefreshToken!;
-      await UserRepository.getInstance().updateInfo(exist);
-      res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
-      return super.sendSuccess(200, res, { token });
-    } catch (error) {
-      console.log(error);
-      return super.sendError(500, res);
-    }
+    const token = generateToken({ userId: exist._id });
+    const newRefreshToken = generateRefreshToken({ userId: exist._id });
+    exist.refreshToken = newRefreshToken!;
+    await UserRepository.getInstance().updateInfo(exist);
+    res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
+    return super.sendSuccess(200, res, { token });
   }
 
   async register(req: Request, res: Response, _: NextFunction): Promise<any> {
@@ -189,7 +184,10 @@ class AuthController extends Controller implements IUserLogginDecorator {
     if (!req.user) {
       return res.status(401);
     }
-    const user = await UserRepository.getInstance().findById(req.user._id, select);
+    const user = await UserRepository.getInstance().findById(
+      req.user._id,
+      select
+    );
     try {
       return res.status(200).json(user);
     } catch (error: any) {
