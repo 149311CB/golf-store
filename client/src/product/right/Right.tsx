@@ -127,31 +127,6 @@ const Right: React.FC<IProps> = ({ data }) => {
     setProperties();
   };
 
-  // Only run whenever data changed to initialized states
-  useEffect(() => {
-    if (!data.variants) return;
-
-    // Transform data and initialized states
-    transformData(data.variants);
-    // const instance = VariantStore.getInstance();
-    const variants: Variant[] = instance.variants;
-    setProperties();
-
-    // Set the first selected property using filterActive
-    const availableVariant: Variant | undefined = variants.find(
-      (variant: Variant) => {
-        return variant.stock > 0;
-      }
-    );
-
-    if (availableVariant !== undefined) {
-      // @ts-ignore
-      filterActive(new Hand(availableVariant.hand));
-    } else {
-      filterActive(null);
-    }
-  }, [data]);
-
   const addToCart = async (choosenProduct: any) => {
     let route = "/api/carts/add";
     if (token !== "-1") {
@@ -171,6 +146,32 @@ const Right: React.FC<IProps> = ({ data }) => {
       } catch (error) {}
     }
   };
+
+
+  // Only run whenever data changed to initialized states
+  useEffect(() => {
+    if (!data.variants) return;
+
+    // Transform data and initialized states
+    transformData(data.variants);
+    const instance = VariantStore.getInstance();
+    const variants: Variant[] = instance.variants;
+    setProperties();
+
+    // Set the first selected property using filterActive
+    const availableVariant: Variant | undefined = variants.find(
+      (variant: Variant) => {
+        return variant.stock > 0;
+      }
+    );
+
+    if (availableVariant !== undefined) {
+      // @ts-ignore
+      filterActive(new Hand(availableVariant.hand));
+    } else {
+      filterActive(null);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (fetchCount) {

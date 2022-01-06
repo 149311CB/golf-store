@@ -35,6 +35,9 @@ export class VariantStore {
 
 const transform = (value: IGolfProperty | any) => {
   let propertyName = value.constructor.name.toLowerCase() + "s";
+  if(propertyName === "flexs"){
+    propertyName = "flexes"
+  }
   var instance = VariantStore.getInstance();
   // Check if transformed data already have current property
   //@ts-ignore
