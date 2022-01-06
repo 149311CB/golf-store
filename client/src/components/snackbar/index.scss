@@ -1,0 +1,8 @@
+.toast {
+  opacity: 0;
+  position: fixed;
+  top: 17%;
+  right: 50%;
+  @include usingBorderRadiusMixin();
+  overflow: hidden;
+}

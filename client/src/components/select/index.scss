@@ -1,0 +1,37 @@
+.select {
+  position: relative;
+  border: 1px solid var(--border);
+  select {
+    @include transition();
+    border: 0;
+    text-align: center;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance: none;
+    background-color: var(--bg);
+    outline: none;
+    cursor: pointer;
+    background: url("../../assets/chevron-down\ white.svg") 96% / 45% no-repeat
+      var(--bg);
+    &:disabled {
+      background: url("../../assets/chevron-down\ disabled.svg") 96% / 45%
+        no-repeat var(--bg-dim);
+      cursor: default;
+      background-color: var(--bg-dim) !important;
+      &:active {
+        background: url("../../assets/chevron-down\ disabled.svg") 96% / 45%
+          no-repeat var(--bg-dim);
+        box-shadow: none;
+      }
+    }
+    &:hover {
+      box-shadow: var(--small-box-shadow);
+      background-color: var(--focus);
+    }
+    &:active {
+      background: url("../../assets/chevron-up 1.png") 96% / 45% no-repeat
+        var(--bg);
+      box-shadow: var(--small-inset-box-shadow);
+    }
+  }
+}

@@ -6,7 +6,7 @@ import { IGolfComponentsProps } from "../Right";
 import { VariantStore } from "../../../hooks/useTransformData";
 
 const instance = VariantStore.getInstance();
-const FLexs: React.FC<IGolfComponentsProps> = ({
+const Flexes: React.FC<IGolfComponentsProps> = ({
   values,
   onPropertyChange,
   groupStyle,
@@ -42,4 +42,4 @@ const FLexs: React.FC<IGolfComponentsProps> = ({
   );
 };
 
-export default FLexs;
+export default Flexes;

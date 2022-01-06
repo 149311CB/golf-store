@@ -1,25 +1,27 @@
-.right{
+.right {
   min-width: 380px;
-  .container{
+  .container {
     padding-left: 6.6rem;
     padding-right: 1.8rem;
   }
-  
-  .shaft{
+
+  .shaft {
     display: flex;
     justify-content: space-between;
-    align-items:center;
-    .name{
+    align-items: center;
+    .name {
       word-wrap: break-word;
       width: 80%;
     }
   }
 
-  .image-container{
-      img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-      }
+  .image-container {
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
   }
 }
+
+

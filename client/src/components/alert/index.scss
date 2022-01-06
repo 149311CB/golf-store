@@ -1,0 +1,27 @@
+.alert{
+  width: 100%;
+  height: 100%;
+  padding: 0.6rem 0.6rem;
+  position: relative;
+  &.error{
+    background-color: var(--text-danger);
+    color: var(--text);
+  }
+  .close-btn{
+    padding: 0 3px;
+    text-align: center;
+    margin-left: 1.2rem;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    &:hover{
+      box-shadow: 2px 2px 5px hsl(354, 70%, 30%),
+    -2px -2px 5px hsl(354, 70%, 90%);
+    }
+    &:active{
+      box-shadow: inset 2px 2px 5px hsl(354, 70%, 30%),
+    inset -2px -2px 5px hsl(354, 70%, 90%);
+
+    }
+  }
+}

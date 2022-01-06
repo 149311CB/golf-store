@@ -11,18 +11,20 @@
   &.border {
     border: 1px solid var(--border);
   }
-  &:active {
-    @include usingInsetBoxShadowMixin();
-  }
 
   &:hover {
     background: var(--focus);
     @include usingBoxShadowMixin(primary);
   }
 
+  &:active {
+    @include usingInsetBoxShadowMixin();
+  }
+
   &.disabled {
-    // color: var(--text-dim) !important;
     background: var(--bg-dim) !important;
+    color: var(--text-dim);
+    cursor: default;
     &:active {
       box-shadow: none !important;
     }
@@ -35,7 +37,7 @@
     border: 1px solid hsla(0, 100%, 96%, 0.2);
     color: var(--text-dark-standout);
     font-size: 1rem;
-    font-family: brutal-medium;
+    font-family: brutal-medium, sans-serif;
     &:hover {
       box-shadow: 2px 2px 5px hsl(0, 0%, 18%), -2px -2px 5px hsl(0, 0%, 35%);
     }

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { CheckoutContext } from "../Checkout";
-import { client } from "../../utils/client";
-import { OrderInterface } from "../../types/types";
-import { useHistory } from "react-router-dom";
-import { GlobalContext } from "../../App";
+import {useContext, useEffect, useState} from "react";
+import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
+import {CheckoutContext} from "../Checkout";
+import {client} from "../../utils/client";
+import {OrderInterface} from "../../types/types";
+import {useHistory} from "react-router-dom";
+import {GlobalContext} from "../../App";
 
 const Paypal = () => {
   const {
@@ -24,7 +24,7 @@ const Paypal = () => {
   const { token } = useContext(GlobalContext);
 
   const generateOrder = (): OrderInterface => {
-    const order = new OrderInterface({
+    return new OrderInterface({
       cart: cartId,
       state: null,
       paymentMethod: "paypal",
@@ -32,7 +32,6 @@ const Paypal = () => {
       paidAt: null,
       cancelledAt: null,
     });
-    return order;
   };
 
   useEffect(() => {
@@ -80,7 +79,7 @@ const Paypal = () => {
                 },
               });
             }}
-            onApprove={async (data, actions) => {
+            onApprove={async (_, actions) => {
               const payload = await actions.order.capture();
               const order = generateOrder();
               order.details = {
@@ -88,7 +87,7 @@ const Paypal = () => {
                 name: payload.payer.name,
               };
               order.paidAt = new Date(payload.create_time);
-              order.state = "succeed";
+              order.state = "succeeded";
               handleSuccess(order);
             }}
             onError={async (error) => {
@@ -100,7 +99,7 @@ const Paypal = () => {
               order.cancelledAt = new Date(Date.now());
               handleCancelled(order);
             }}
-            disabled={processing && !clientId ? true : false}
+            disabled={processing && !clientId}
           />
         </PayPalScriptProvider>
       )}

@@ -1,15 +1,19 @@
-import React, { CSSProperties, useContext, useEffect, useState } from "react";
-import { transformData, VariantStore } from "../../hooks/useTransformData";
-import { Variant, Hand, IGolfProperty } from "../../types/Golfs";
-import { filterActive, filterDisabled } from "../../hooks/useFilterData";
-import { Iterator, MapIterator } from "../../utils/iterator";
+import React, {CSSProperties, useContext, useEffect, useState} from "react";
+import {transformData, VariantStore} from "../../hooks/useTransformData";
+import {Hand, IGolfProperty, Variant} from "../../types/Golfs";
+import {filterActive, filterDisabled} from "../../hooks/useFilterData";
+import {Iterator, MapIterator} from "../../utils/iterator";
 import Button from "../../components/button/Button";
 import Hands from "./hands/Hands";
 import Lofts from "./lofts/Lofts";
-import FLexs from "./flexs/FLexs";
+import Flexes from "./flexs/Flexes";
 import Shafts from "./shafts/Shafts";
-import { client } from "../../utils/client";
-import { GlobalContext } from "../../App";
+import {client} from "../../utils/client";
+import {GlobalContext} from "../../App";
+import GroupControls from "../../components/group-controls/GroupControls";
+import Select from "../../components/select/Select";
+import Snackbar from "../../components/snackbar/Snackbar";
+import Alert from "../../components/alert/Alert";
 
 interface IProps {
   data: any;
@@ -53,18 +57,21 @@ const verifyChoosenProduct = (instance: VariantStore): any => {
   return null;
 };
 
-const createChoosenProduct = (golf: any, instance: VariantStore): any => {
+const createChosenProduct = (
+  golf: any,
+  instance: VariantStore,
+  qty: number
+): any => {
   const choosen = verifyChoosenProduct(instance);
   if (choosen !== null) {
     const products = {
       product: golf._id,
       variant: choosen._id,
-      quantity: 1,
+      quantity: qty,
     };
-    const choosenProduct = {
+    return {
       product: products,
     };
-    return choosenProduct;
   }
   // replace this with warning message
   return null;
@@ -72,26 +79,32 @@ const createChoosenProduct = (golf: any, instance: VariantStore): any => {
 
 let instance = VariantStore.getInstance();
 const Right: React.FC<IProps> = ({ data }) => {
+  const [open, setOpen] = useState(false);
   const [hands, setHands] = useState<Iterator>();
   const [lofts, setLofts] = useState<Iterator>();
-  const [flexs, setFlexs] = useState<Iterator>();
+  const [flexes, setFlexes] = useState<Iterator>();
   const [shafts, setShafts] = useState<Iterator>();
   const [render, setRender] = useState(false);
-  const [choosenProduct, setChoosenProduct] = useState(null);
-  const { token } = useContext(GlobalContext);
+  const [chosenProduct, setChosenProduct] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const [stock, setStock] = useState(0);
+  const [qty, setQty] = useState(1);
+  const [options, setOptions] = useState<number[]>([]);
+  const [toast, setToast] = useState(false);
+  const { token, fetchCount } = useContext(GlobalContext);
 
   // manages states
   const setProperties = () => {
     const {
       hands: transformedHands,
       lofts: transformedLofts,
-      flexs: transformedFlexs,
+      flexes: transformedFlexes,
       shafts: transformedShafts,
     } = instance.transformedData;
 
     setHands(new MapIterator(transformedHands));
     setLofts(new MapIterator(transformedLofts));
-    setFlexs(new MapIterator(transformedFlexs));
+    setFlexes(new MapIterator(transformedFlexes));
     setShafts(new MapIterator(transformedShafts));
     setRender((r) => !r);
   };
@@ -104,6 +117,13 @@ const Right: React.FC<IProps> = ({ data }) => {
 
     // @ts-ignore
     instance.choosenVariant[propertyName] = property;
+    const choosen = verifyChoosenProduct(instance);
+    if (choosen) {
+      setDisabled(false);
+      setStock(choosen.stock);
+    } else {
+      setDisabled(true);
+    }
     setProperties();
   };
 
@@ -133,27 +153,38 @@ const Right: React.FC<IProps> = ({ data }) => {
   }, [data]);
 
   const addToCart = async (choosenProduct: any) => {
+    let route = "/api/carts/add";
+    if (token !== "-1") {
+      route = "/api/carts/auth/add";
+    }
     if (token) {
-      await client.post("/api/carts/auth/add", choosenProduct, {
-        headers: {
-          // "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else {
-      const { data } = await client.post("/api/carts/add", choosenProduct, {
-        credentials: "include",
-      });
-      if (data.guestToken) {
-        localStorage.setItem("guestToken", data.guestToken);
-      }
+      try {
+        const { status } = await client.post(route, choosenProduct, {
+          credentials:"include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (status === 400) {
+          setOpen(true);
+        }
+      } catch (error) {}
     }
   };
-  // useEffect(() => {
-  //   if (choosenProduct !== null) {
-  //     addToCart();
-  //   }
-  // }, [choosenProduct, token]);
+
+  useEffect(() => {
+    if (fetchCount) {
+      fetchCount();
+    }
+  }, [fetchCount]);
+
+  useEffect(() => {
+    const list: number[] = [];
+    for (let index = 0; index < stock; index++) {
+      list.push(index);
+    }
+    setOptions(list);
+  }, [stock]);
 
   return (
     <div className={"right"}>
@@ -170,8 +201,8 @@ const Right: React.FC<IProps> = ({ data }) => {
           groupStyle={groupStyle}
           optionStyle={optionStyle}
         />
-        <FLexs
-          values={flexs}
+        <Flexes
+          values={flexes}
           onPropertyChange={onPropertyChange}
           groupStyle={groupStyle}
           optionStyle={optionStyle}
@@ -182,24 +213,51 @@ const Right: React.FC<IProps> = ({ data }) => {
           groupStyle={groupStyle}
           optionStyle={optionStyle}
         />
-        <Button
-          className={"add-to-cart-btn"}
-          border="border"
-          style={{
-            marginTop: "1.3rem",
-            padding: "1rem 0",
-            width: "100%",
-            fontWeight: "bold",
-          }}
-          disabled={!data.golf || !instance}
-          onClick={() => {
-            const choosen = createChoosenProduct(data.golf, instance);
-            setChoosenProduct(choosen);
-            addToCart(choosen);
-          }}
+        <GroupControls borderStyle={"round"} style={{ marginTop: "1.2rem" }}>
+          <Select
+            disabled={disabled}
+            style={{ width: "25%" }}
+            onChange={(e) => {
+              setQty(parseInt(e.target.value));
+            }}
+          >
+            {options.length <= 0 ? (
+              <option>0</option>
+            ) : (
+              options.map((option) => (
+                <option key={option}>{option + 1}</option>
+              ))
+            )}
+          </Select>
+          <Button
+            className={"add-to-cart-badge-btn"}
+            border="border"
+            borderRadius="none"
+            boxShadow="none"
+            style={{
+              padding: "1rem 0",
+              width: "100%",
+              fontWeight: "bold",
+            }}
+            disabled={disabled}
+            onClick={() => {
+              const chosen = createChosenProduct(data.golf, instance, qty);
+              setChosenProduct(chosen);
+              addToCart(chosen);
+            }}
+          >
+            Add to cart
+          </Button>
+        </GroupControls>
+        <Snackbar
+          open={open}
+          closeHandler={setOpen}
+          borderRadius={"all"}
+          boxShadow={"small"}
+          timeout={3000}
         >
-          Add to cart
-        </Button>
+          <Alert type={"error"}>You can not add more of this item</Alert>
+        </Snackbar>
       </div>
     </div>
   );

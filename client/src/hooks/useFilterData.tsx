@@ -34,7 +34,7 @@ const changeActive = () => {
     //@ts-ignore
     const loft = instance.transformedData.lofts.get(variant.loft?._id);
     // @ts-ignore
-    const flex = instance.transformedData.flexs.get(variant.flex?._id);
+    const flex = instance.transformedData.flexes.get(variant.flex?._id);
     // @ts-ignore
     const shaft = instance.transformedData.shafts.get(variant.shaft?._id);
 
@@ -57,7 +57,7 @@ const changeActive = () => {
     //@ts-ignore
     const loft = instance.transformedData.lofts.get(variant.loft?._id);
     // @ts-ignore
-    const flex = instance.transformedData.flexs.get(variant.flex?._id);
+    const flex = instance.transformedData.flexes.get(variant.flex?._id);
     // @ts-ignore
     const shaft = instance.transformedData.shafts.get(variant.shaft?._id);
 

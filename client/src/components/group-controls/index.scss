@@ -1,0 +1,16 @@
+.group-control {
+  display: flex;
+  /* border: 1px solid red; */
+  &.round {
+    border-radius: 0.6rem;
+    & > :first-child {
+      border-top-left-radius: 0.6rem;
+      border-bottom-left-radius: 0.6rem;
+      border-right: 0;
+    }
+    & > :last-child {
+      border-top-right-radius: 0.6rem;
+      border-bottom-right-radius: 0.6rem;
+    }
+  }
+}

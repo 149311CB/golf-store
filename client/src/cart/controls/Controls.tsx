@@ -21,7 +21,7 @@ const Controls: React.FC<{
       newQty += 1;
     }
     let route = "/api/carts/quantity/update";
-    if (token) {
+    if (token !== "-1") {
       route = "/api/carts/auth/quantity/update";
     }
     await client.post(
@@ -53,7 +53,7 @@ const Controls: React.FC<{
             });
           }}
         >
-          <i className="fas fa-minus"></i>
+          <i className="fas fa-minus"/>
         </Button>
         <input value={quantity} type={"number"} min={0} onChange={() => {}} />
         <Button
@@ -67,7 +67,7 @@ const Controls: React.FC<{
             });
           }}
         >
-          <i className="fas fa-plus"></i>
+          <i className="fas fa-plus"/>
         </Button>
       </div>
       <Button

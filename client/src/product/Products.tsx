@@ -1,3 +1,4 @@
+import React from "react";
 import Left from "./left/Left";
 import Center from "./center/Center";
 import Right from "./right/Right";
@@ -24,10 +25,10 @@ const Products: React.FC<RouterProps> = ({ history }) => {
         <div>loading...</div>
       ) : (
         <div className={"product"}>
-          <Left data={data.data} reviews={[]} />
+          <Left data={data && data.data} reviews={[]} />
           <div className={"other-side"}>
-            <Center data={data.data} />
-            <Right data={data.data} />
+            <Center data={data && data.data} />
+            {data && <Right data={data && data.data} /> }
           </div>
         </div>
       )}

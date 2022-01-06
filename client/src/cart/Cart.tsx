@@ -33,7 +33,7 @@ const initialized = (products: any) => {
 };
 
 const Cart = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
   const history = useHistory();
@@ -76,9 +76,9 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    if (loading) return;
+    if (!token) return;
     let route = "/api/carts/active";
-    if (token) {
+    if (token !== "-1") {
       route = "/api/carts/auth/active";
     }
     const fetchData = async () => {
@@ -91,7 +91,7 @@ const Cart = () => {
 
       if (data.data) {
         const { products: fetchProducts, _id, user, isActive } = data.data;
-        if (!fetchProducts || fetchProducts === undefined) return;
+        if (!fetchProducts) return;
         if (user) {
           setCartMeta({ _id, user, isActive });
         } else {
@@ -126,7 +126,7 @@ const Cart = () => {
             disabled={cartMeta === null || loading}
             onClick={() => proceedToCheckout()}
           >
-            Proceed to checkout <i className="fas fa-angle-double-right"></i>
+            Proceed to checkout <i className="fas fa-angle-double-right" />
           </Button>
         </div>
       </div>

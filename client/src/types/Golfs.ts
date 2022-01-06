@@ -89,13 +89,13 @@ export class Variant {
 export class TransformedData {
   hands: Map<string, Hand>;
   lofts: Map<string, Loft>;
-  flexs: Map<string, Flex>;
+  flexes: Map<string, Flex>;
   shafts: Map<string, Shaft>;
 
   constructor() {
     this.hands = new Map();
     this.lofts = new Map();
-    this.flexs = new Map();
+    this.flexes = new Map();
     this.shafts = new Map();
   }
 

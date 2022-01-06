@@ -26,6 +26,10 @@
   box-sizing: border-box;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -41,7 +45,7 @@
 }
 
 main {
-  min-height: 90vh;
+  /* min-height: 90vh; */
   // padding: 1.2rem;
   // border: 1px solid red;
   font-size: 0.813rem;
@@ -74,8 +78,8 @@ main {
     2px 0 $spread $shadow-dark, -2px 0 $spread $shadow-dark;
 }
 
-@mixin transition {
-  transition: box-shadow 150ms ease-out, background 200ms ease-out;
+@mixin transition($box-shadow: 150ms, $background: 200ms, $delay: 0s) {
+  transition: box-shadow $box-shadow ease-out $delay, background $background ease-out;
 }
 
 @keyframes disabledBrightnessFilterKeyframes {
@@ -100,7 +104,7 @@ main {
   transition-timing-function: ease-out;
 }
 
-@mixin usingBoxShadowMixin($type) {
+@mixin usingBoxShadowMixin($type: "primary") {
   @if $type == "primary" {
     &.box-shadow-none {
       box-shadow: none;
@@ -193,7 +197,7 @@ main {
 }
 
 #login-form {
-  font-family: "brutal-regular";
+  font-family: "brutal-regular", sans-serif;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

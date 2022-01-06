@@ -1,31 +1,40 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import {createContext, useCallback, useEffect, useState} from "react";
 import Header from "./header/Header";
-import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import Product from "./product/Products";
 import Homepage from "./homepage/Homepage";
 import Checkout from "./checkout/Checkout";
 import Cart from "./cart/Cart";
 import Error from "./error/Error";
 import PaymentSuccess from "./checkout/success/PaymentSuccess";
-import { client } from "./utils/client";
+import {client} from "./utils/client";
 
 export const GlobalContext = createContext<any>({});
 const refreshToken = async () => {
-  const { data } = await client.get("/api/user/auth/token/refresh", {
-    credentials: "include",
-  });
-  return data.data;
+  try {
+    return await client.get("/api/user/auth/token/refresh", {
+      credentials: "include",
+    });
+  } catch (error) {
+    console.log(error);
+    return { ok: false, data: null };
+  }
 };
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
-  console.log(token)
 
   const getToken = useCallback(() => {
-    refreshToken().then((data) => {
-      if(!data) return
-      const { token } = data
-      setToken(token);
+    refreshToken().then(({ ok, data }) => {
+      if (ok) {
+        if (!data || !data.data) {
+          setToken("-1");
+        }
+        const { token } = data.data;
+        setToken(token);
+      } else {
+        setToken("-1");
+      }
     });
   }, []);
 
@@ -44,9 +53,9 @@ function App() {
           <main>
             <Route path={"/"} component={Homepage} exact />
             <Route path={"/product/:id"} component={Product} exact />
-            <Route path={"/cart/"} component={Cart} exact />
+            <Route path={"/cart-badge/"} component={Cart} exact />
             <Route path={"/checkout"} component={Checkout} exact />
-            {/* <Route path={"/error"} component={Error} exact /> */}
+            <Route path={"/error"} component={Error} exact />
             <Route path={"/success"} component={PaymentSuccess} exact />
 
             {/* <Redirect to={"/error"}/> */}

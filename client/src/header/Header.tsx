@@ -2,7 +2,7 @@ import { ReactComponent as Logo } from "../assets/Logo.svg";
 import Navbar from "./nav/Navbar";
 import NavLink from "./nav/NavLink";
 import Search from "./search/Search";
-import Cart from "./cart/Cart";
+import CartBadge from "./cart-badge/CartBadge";
 import AuthModal from "../user/auth/AuthModal";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../App";
@@ -30,9 +30,9 @@ const Header = () => {
       </Navbar>
       <div className={"left-col"}>
         <Search />
-        <Cart />
+        <CartBadge />
         <div className={"header-user"}>
-          <i className="fas fa-user pop" onClick={() => setIsOpen(true)}></i>
+          <i className="fas fa-user pop" onClick={() => setIsOpen(true)}/>
         </div>
         <AuthModal isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
