@@ -108,7 +108,7 @@ class AuthController extends Controller implements IUserLogginDecorator {
     _: NextFunction
   ): Promise<any> {
     const { user } = req;
-    const exist = await UserRepository.getInstance().findById(user._id);
+    const exist = await UserRepository.getInstance().findById(user._id!);
 
     const token = generateToken({ userId: exist._id });
     const newRefreshToken = generateRefreshToken({ userId: exist._id });
@@ -185,7 +185,7 @@ class AuthController extends Controller implements IUserLogginDecorator {
       return res.status(401);
     }
     const user = await UserRepository.getInstance().findById(
-      req.user._id,
+      req.user._id!,
       select
     );
     try {

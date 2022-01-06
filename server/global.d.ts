@@ -14,9 +14,3 @@ declare global {
     }
   }
 }
-
-// declare namespace e {
-//   export interface Request {
-//     user: userTypes;
-//   }
-// }
