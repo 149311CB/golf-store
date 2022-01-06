@@ -61,7 +61,7 @@ class LoftRepository {
   private static instance: LoftRepository;
 
   constructor() {
-    this.model = model<ILoft>("Lofts", this.loftSchema, "lofts");
+    this.model = model<ILoft>("Loft", this.loftSchema, "lofts");
   }
 
   public static getInstance(): LoftRepository {
@@ -190,6 +190,10 @@ class VariantRepository {
   private static instance: VariantRepository;
 
   constructor() {
+    HandRepository.getInstance();
+    LoftRepository.getInstance();
+    ShaftRepository.getInstance();
+    FlexRepository.getInstance();
     this.model = model<IVariant>("Variant", this.variantSchema, "variants");
   }
 
@@ -211,6 +215,17 @@ class VariantRepository {
     options?: PopulateOptions | Array<PopulateOptions>
   ): Promise<IVariant & Document<any, any, IVariant>> {
     return await this.model.find(query).populate(options);
+  }
+
+  async findById(
+    id: string,
+    options?: PopulateOptions | Array<PopulateOptions>
+  ): Promise<IVariant & Document<any, any, IVariant>> {
+    return await this.model.findById(id).populate(options);
+  }
+
+  async updateInfo(variant: any): Promise<IVariant> {
+    return await variant.save();
   }
 }
 
@@ -278,4 +293,11 @@ class GolfRepository {
   }
 }
 
-export { GolfRepository, VariantRepository, HandRepository, LoftRepository, ShaftRepository, FlexRepository };
+export {
+  GolfRepository,
+  VariantRepository,
+  HandRepository,
+  LoftRepository,
+  ShaftRepository,
+  FlexRepository,
+};

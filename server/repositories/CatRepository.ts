@@ -1,5 +1,6 @@
 import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 import { ICartInterface, IItemInterface } from "../types/cartType";
+import { GolfRepository, VariantRepository } from "./GolfRepository";
 
 class CartRepository {
   itemSchema = new Schema<IItemInterface>({
@@ -34,7 +35,9 @@ class CartRepository {
   private static instance: CartRepository;
 
   private constructor() {
-    this.model = model<ICartInterface>("Cart", this.cartSchema, "carts");
+    GolfRepository.getInstance();
+    VariantRepository.getInstance();
+    this.model = model<ICartInterface>("CartBadge", this.cartSchema, "carts");
   }
 
   public static getInstance(): CartRepository {

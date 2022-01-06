@@ -18,7 +18,7 @@ class OrderRepository {
     {
       cart: {
         type: Schema.Types.ObjectId,
-        ref: "Cart",
+        ref: "CartBadge",
         required: true,
       },
       state: {
@@ -47,7 +47,7 @@ class OrderRepository {
     this.model = model<orderInterface>("Order", this.orderSchema, "orders");
   }
 
-  public static getInstace(): OrderRepository {
+  public static getInstance(): OrderRepository {
     if (!OrderRepository.instance) {
       OrderRepository.instance = new OrderRepository();
     }

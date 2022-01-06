@@ -1,4 +1,5 @@
 import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
+import { GolfRepository } from "./GolfRepository";
 
 class CategoryRepository {
   golfRef = new Schema({
@@ -23,6 +24,7 @@ class CategoryRepository {
   private static instance: CategoryRepository;
 
   private constructor() {
+    GolfRepository.getInstance();
     this.model = model("Category", this.categorySchema, "categories");
   }
 

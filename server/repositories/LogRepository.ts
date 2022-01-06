@@ -14,6 +14,8 @@ class LogRepository {
     access_resource: { type: String, required: true },
     cookies: { type: Object, required: true },
     error: { type: String, required: false },
+    token: { type: String, required: false },
+    payload: { type: Object, required: false },
   });
 
   model: Model<Log, any, any>;
@@ -42,7 +44,7 @@ class LogRepository {
   }
 
   async countDocuments() {
-    return await this.model.countDocuments();
+    return this.model.countDocuments();
   }
 
   async all(
