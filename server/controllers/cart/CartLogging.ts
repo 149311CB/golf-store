@@ -2,30 +2,30 @@ import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { Log } from "../../types/BasicLogging";
-import Controller, { IRoute } from "../../typings/Controller";
+import { IRoute } from "../../typings/Controller";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import { CartController } from "./CartController";
 import PublicCartController from "./PublicCartController";
 
-export interface ICartController {
-  getActiveCart(req: Request, res: Response, _: NextFunction): Promise<any>;
+// export interface ICartController {
+//   getActiveCart(req: Request, res: Response, _: NextFunction): Promise<any>;
 
-  addToCart(req: Request, res: Response, _: NextFunction): Promise<any>;
+//   addToCart(req: Request, res: Response, _: NextFunction): Promise<any>;
 
-  removeProduct(req: Request, res: Response, _: NextFunction): Promise<any>;
+//   removeProduct(req: Request, res: Response, _: NextFunction): Promise<any>;
 
-  updateQty(req: Request, res: Response, _: NextFunction): Promise<any>;
+//   updateQty(req: Request, res: Response, _: NextFunction): Promise<any>;
 
-  countItem(req: Request, res: Response, _: NextFunction): Promise<any>;
-}
+//   countItem(req: Request, res: Response, _: NextFunction): Promise<any>;
+// }
 
-export abstract class CartDecorator
-  extends Controller
-  implements ICartController
-{
-  cartController: ICartController;
-  protected constructor(cartController: ICartController) {
-    super();
+export abstract class CartDecorator extends CartController {
+  cartController: CartController;
+  protected constructor(
+    cartController: CartController,
+    logger: ConfigureLogging
+  ) {
+    super(logger);
     this.cartController = cartController;
   }
   async getActiveCart(
@@ -71,7 +71,7 @@ export default class CartLoggingDecorator extends CartDecorator {
 
   logger: ConfigureLogging;
   constructor(cartController: PublicCartController, logger: ConfigureLogging) {
-    super(cartController);
+    super(cartController, logger);
     this.logger = logger;
     if (this.cartController instanceof CartController) {
       this.routes = this.cartController.routes;
@@ -132,7 +132,7 @@ export default class CartLoggingDecorator extends CartDecorator {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    await super.addToCart(req, res, next);
+    await this.requestHandler(req, res, next, super.addToCart);
   }
 
   async removeProduct(
@@ -140,7 +140,7 @@ export default class CartLoggingDecorator extends CartDecorator {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    await super.removeProduct(req, res, next);
+    await this.requestHandler(req, res, next, super.removeProduct);
   }
 
   async updateQty(
@@ -148,7 +148,7 @@ export default class CartLoggingDecorator extends CartDecorator {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    await super.updateQty(req, res, next);
+    await this.requestHandler(req, res, next, super.updateQty);
   }
 
   async countItem(
@@ -158,5 +158,4 @@ export default class CartLoggingDecorator extends CartDecorator {
   ): Promise<any> {
     await this.requestHandler(req, res, next, super.countItem);
   }
-
 }

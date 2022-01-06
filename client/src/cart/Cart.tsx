@@ -43,7 +43,7 @@ const Cart = () => {
     setLoading(true);
 
     let route = "/api/carts/remove";
-    if (token) {
+    if (token !== "-1") {
       route = "/api/carts/auth/remove";
     }
     await client.post(

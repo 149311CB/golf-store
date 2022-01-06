@@ -5,12 +5,8 @@ import CartRepository from "../../repositories/CatRepository";
 import { VariantRepository } from "../../repositories/GolfRepository";
 import { Methods } from "../../typings/Controller";
 import { CartController } from "./CartController";
-import { ICartController } from "./CartLogging";
 
-export default class UserCartController
-  extends CartController
-  implements ICartController
-{
+export default class UserCartController extends CartController {
   public path = "";
   public routes = [
     {
@@ -103,7 +99,8 @@ export default class UserCartController
         }
         existItem.quantity = existItem.quantity + product.quantity;
       } else {
-        if (variant.stock < product.quantity) { return super.sendError(400, res, "quantity exceeded");
+        if (variant.stock < product.quantity) {
+          return super.sendError(400, res, "quantity exceeded");
         }
         exist.products.push({ ...product });
       }
