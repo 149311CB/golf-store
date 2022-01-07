@@ -11,14 +11,18 @@ export class ConfigureLogging {
 
   // This should be for string base logging only
   log(level: ILevel) {
-    return (strings: TemplateStringsArray, ...expressions: any[]): void => {
-      return this.loggers.forEach((logger: LoggerBase) => {
+    return async (
+      strings: TemplateStringsArray,
+      ...expressions: any[]
+    ): Promise<void> => {
+      for (let index = 0; index < this.loggers.length; index++) {
+        const logger = this.loggers[index];
         if (!logger.isAllowed(level)) {
-          return null;
+          return;
         }
 
-        return logger.log(strings, expressions, level, getLocation(4));
-      });
+        await logger.log(strings, expressions, level, getLocation(4));
+      }
     };
   }
 

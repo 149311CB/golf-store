@@ -3,43 +3,11 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import CartRepository from "../../repositories/CatRepository";
 import { VariantRepository } from "../../repositories/GolfRepository";
-import { Methods } from "../../typings/Controller";
 import { CartController } from "./CartController";
 
 export default class UserCartController extends CartController {
   public path = "";
-  public routes = [
-    {
-      path: "/auth/active",
-      method: Methods.GET,
-      handler: this.getActiveCart,
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/add",
-      method: Methods.POST,
-      handler: this.addToCart,
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/remove",
-      method: Methods.POST,
-      handler: this.removeProduct,
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/quantity/update",
-      method: Methods.POST,
-      handler: this.updateQty,
-      localMiddlewares: [],
-    },
-    {
-      path: "/auth/count",
-      method: Methods.GET,
-      handler: this.countItem,
-      localMiddlewares: [],
-    },
-  ];
+  public routes = [];
 
   async getActiveCart(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
@@ -181,6 +149,7 @@ export default class UserCartController extends CartController {
     _: NextFunction
   ): Promise<any> {
     const { userId } = req;
+    console.log(userId)
     const cart = await CartRepository.getInstance().findOne({
       user: userId,
       isActive: true,

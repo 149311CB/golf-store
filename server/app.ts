@@ -9,7 +9,7 @@ import PaymentController from "./controllers/PaymentController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
-import UserOrderProtect from "./controllers/order/UserOrderProtect";
+import UserOrderProtect from "./controllers/order/protects/UserOrderProtect";
 import PublicCartProtect from "./controllers/cart/protect/PublicCartProtect";
 import ConfigureLogging from "./utils/logger/ConfigureLogging";
 import FileLogger from "./utils/logger/FileLogger";
@@ -19,10 +19,11 @@ import LoggerController from "./controllers/logger/LoggerController";
 import { UserLoggingDecorator } from "./controllers/user/UserLogging";
 import DbLogger from "./utils/logger/DbLogger";
 import OrderLoggingDecorator from "./controllers/order/decorators/log/UserOrderLogging";
-import CartLoggingDecorator from "./controllers/cart/CartLogging";
 import UserCartProtect from "./controllers/cart/protect/UserCartProtect";
 import EmployeeOrderDecorator from "./controllers/order/decorators/log/EmployeeOrderDecorator";
 import EmployeeOrderController from "./controllers/order/EmployeeOrderController";
+import {UserCartLoggingDecorator} from "./controllers/cart/decorators/UserCartLoggingDecorator";
+import {PublicCartLoggingDecorator} from "./controllers/cart/decorators/PublicCartLoggingDecorator";
 
 // .env initialized
 dotenv.config();
@@ -63,8 +64,8 @@ const logger = new ConfigureLogging([
 const controllers: Array<Controller> = [
   new ProductProtect(),
   new CategoryController(),
-  new CartLoggingDecorator(new PublicCartProtect(logger), logger),
-  new CartLoggingDecorator(new UserCartProtect(logger), logger),
+  new PublicCartLoggingDecorator(new PublicCartProtect(logger), logger),
+  new UserCartLoggingDecorator(new UserCartProtect(logger), logger),
   new UserLoggingDecorator(new UserProtect(logger), logger),
   new PaymentController(),
   new OrderLoggingDecorator(new UserOrderProtect(logger), logger),

@@ -1,13 +1,13 @@
-import {createContext, useCallback, useEffect, useState} from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import Header from "./header/Header";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Product from "./product/Products";
 import Homepage from "./homepage/Homepage";
 import Checkout from "./checkout/Checkout";
 import Cart from "./cart/Cart";
 import Error from "./error/Error";
 import PaymentSuccess from "./checkout/success/PaymentSuccess";
-import {client} from "./utils/client";
+import { client } from "./utils/client";
 
 export const GlobalContext = createContext<any>({});
 const refreshToken = async () => {
@@ -53,10 +53,10 @@ function App() {
           <main>
             <Route path={"/"} component={Homepage} exact />
             <Route path={"/product/:id"} component={Product} exact />
-            <Route path={"/cart-badge/"} component={Cart} exact />
-            <Route path={"/checkout"} component={Checkout} exact />
-            <Route path={"/error"} component={Error} exact />
-            <Route path={"/success"} component={PaymentSuccess} exact />
+             <Route path={"/cart-badge/"} component={Cart} exact />
+             <Route path={"/checkout"} component={Checkout} exact />
+             <Route path={"/error"} component={Error} exact />
+             <Route path={"/success"} component={PaymentSuccess} exact />
 
             {/* <Redirect to={"/error"}/> */}
             {/*<Route path={"/"} component={NewModels} exact />*/}

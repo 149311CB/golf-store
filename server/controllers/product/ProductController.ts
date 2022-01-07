@@ -33,11 +33,11 @@ export default class ProductController extends Controller {
     req: Request,
     res: Response,
     _: NextFunction
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const golf = await GolfRepository.getInstance().findById(req.params.id);
       if (!golf) {
-        super.sendError(404, res, "not found");
+        return super.sendError(404, res, "not found");
       }
 
       const variants = await VariantRepository.getInstance().all(

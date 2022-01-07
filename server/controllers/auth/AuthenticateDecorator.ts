@@ -16,7 +16,7 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     this.logger = logger;
   }
 
-  createLog(
+  async createLog(
     req: Request,
     res: Response,
     stopwatch: number,
@@ -24,7 +24,7 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     payload: jwt.JwtPayload,
     error: any
   ) {
-    this.logger.error`${new Log(
+    await this.logger.error`${new Log(
       req.method,
       req.originalUrl,
       new Date(),
@@ -40,21 +40,22 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     )}`;
   }
 
-  validateToken(req: Request, res: Response): jwt.JwtPayload {
+  async validateToken(req: Request, res: Response): Promise<jwt.JwtPayload> {
     let stopwatch = 0;
     let payload = {};
     const token = this.tokenValidateBase.extractToken(req);
     try {
       payload = this.tokenValidateBase.validateToken(req, res);
-      // this.createLog(req, res, stopwatch, token, payload, null);
       return payload;
     } catch (error: any) {
-      this.createLog(req, res, stopwatch, token, payload, error.message);
+      await this.createLog(req, res, stopwatch, token, payload, error.message);
 
       if (this.tokenValidateBase.passReqToHandler) {
         return {};
       }
-      return res.status(401).json({ message: error.message });
+      res.status(401).json({ message: error.message });
+      throw new Error(error.message);
     }
   }
 }
+

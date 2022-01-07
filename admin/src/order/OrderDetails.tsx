@@ -180,7 +180,7 @@ const OrderDetails: React.FC<RouteComponentProps> = ({ match }) => {
     <Box sx={{ p: 3 }}>
       <Box className={"order-info"} sx={{ display: "flex", gap: "1.2rem" }}>
         <Paper
-          className={"state-info"}
+          className={"states-info"}
           elevation={3}
           sx={{
             p: 2,
@@ -216,7 +216,7 @@ const OrderDetails: React.FC<RouteComponentProps> = ({ match }) => {
             </span>
           </Typography>
           {stateHistory.length > 1 && (
-            <Box className={"state-history"}>
+            <Box className={"states-history"}>
               <Timeline position={"left"} sx={{ p: 0 }}>
                 {stateHistory
                   .slice(0)

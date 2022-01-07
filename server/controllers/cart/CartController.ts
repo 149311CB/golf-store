@@ -26,7 +26,7 @@ export abstract class CartController extends Controller {
       ),
       this.logger
     );
-    const { cartId } = service.validateToken(req, res);
+    const { cartId } = await service.validateToken(req, res);
     return cartId;
   }
 
@@ -36,7 +36,7 @@ export abstract class CartController extends Controller {
       new TokenValidateBase(headerExtraction, process.env.JWT_SECRET!),
       this.logger
     );
-    const { userId } = service.validateToken(req, res);
+    const { userId } = await service.validateToken(req, res);
     return userId;
   }
 

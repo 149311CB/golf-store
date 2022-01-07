@@ -1,4 +1,4 @@
-import { IRoute, Methods } from "../../typings/Controller";
+import { IRoute } from "../../typings/Controller";
 import { NextFunction, Request, Response } from "express";
 import CartRepository from "../../repositories/CatRepository";
 import { VariantRepository } from "../../repositories/GolfRepository";
@@ -11,38 +11,7 @@ import { CartController } from "./CartController";
 // @access: guest
 export default class PublicCartController extends CartController {
   public path = "";
-  public routes: IRoute[] = [
-    {
-      path: "/active",
-      method: Methods.GET,
-      handler: this.getActiveCart,
-      localMiddlewares: [],
-    },
-    {
-      path: "/add",
-      method: Methods.POST,
-      handler: this.addToCart,
-      localMiddlewares: [],
-    },
-    {
-      path: "/remove",
-      method: Methods.POST,
-      handler: this.removeProduct,
-      localMiddlewares: [],
-    },
-    {
-      path: "/quantity/update",
-      method: Methods.POST,
-      handler: this.updateQty,
-      localMiddlewares: [],
-    },
-    {
-      path: "/count",
-      method: Methods.GET,
-      handler: this.countItem,
-      localMiddlewares: [],
-    },
-  ];
+  public routes: IRoute[] = [];
 
   async getActiveCart(
     req: Request,
@@ -179,4 +148,3 @@ export default class PublicCartController extends CartController {
     return super.sendSuccess(200, res, { count: cart.products.length });
   }
 }
-

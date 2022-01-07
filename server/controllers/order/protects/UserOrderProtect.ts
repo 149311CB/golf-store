@@ -1,9 +1,9 @@
 import {Request, Response} from "express";
-import EmployeeRepository from "../../repositories/employeeModel";
-import {EmployeeTypes} from "../../types/userTypes";
-import ConfigureLogging from "../../utils/logger/ConfigureLogging";
-import {HeaderExtract, TokenValidateBase} from "../auth/AuthenticateBase";
-import UserOrderController from "./UserOrderController";
+import EmployeeRepository from "../../../repositories/employeeModel";
+import {EmployeeTypes} from "../../../types/userTypes";
+import ConfigureLogging from "../../../utils/logger/ConfigureLogging";
+import {HeaderExtract, TokenValidateBase} from "../../auth/AuthenticateBase";
+import UserOrderController from "../UserOrderController";
 
 export default class UserOrderProtect extends UserOrderController {
   constructor(logger:ConfigureLogging){

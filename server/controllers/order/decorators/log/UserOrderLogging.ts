@@ -1,15 +1,26 @@
-import {IRoute} from "../../../../typings/Controller";
+import { IRoute, Methods } from "../../../../typings/Controller";
 import ConfigureLogging from "../../../../utils/logger/ConfigureLogging";
 import UserOrderController from "../../UserOrderController";
-import {OrderLoggingDecorator} from "./OrderLoggingDecorator";
+import { OrderLoggingDecorator } from "./OrderLoggingDecorator";
 
 export default class UserOrderLoggingDecorator extends OrderLoggingDecorator {
-  public path: string = "/api/order";
-  public routes: IRoute[] = [];
+  public routes: IRoute[] = [
+    {
+      path: "/auth/create",
+      method: Methods.POST,
+      handler: this.createOrder,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/details/:id",
+      method: Methods.GET,
+      handler: this.getOrderById,
+      localMiddlewares: [],
+    },
+  ];
 
   constructor(orderController: UserOrderController, logger: ConfigureLogging) {
     super(orderController, logger);
-    this.routes = this.orderController.routes
   }
 
   // createLog(

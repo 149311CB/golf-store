@@ -1,15 +1,44 @@
 import { NextFunction, Request, Response } from "express";
-import UserOrderLoggingDecorator from "./UserOrderLogging";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import EmployeeOrderController from "../../EmployeeOrderController";
 import ConfigureLogging from "../../../../utils/logger/ConfigureLogging";
-import { IRoute } from "../../../../typings/Controller";
-import {OrderLoggingDecorator} from "./OrderLoggingDecorator";
+import { IRoute, Methods } from "../../../../typings/Controller";
+import { OrderLoggingDecorator } from "./OrderLoggingDecorator";
 
 export default class EmployeeOrderDecorator extends OrderLoggingDecorator {
-  public path: string = "/api/order";
-  public routes: IRoute[] = [];
+  public routes: IRoute[] = [
+    {
+      path: "/auth/all",
+      method: Methods.GET,
+      handler: this.getAllOrder,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/confirm/:id",
+      method: Methods.PUT,
+      handler: this.confirmOrder,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/ship/:id",
+      method: Methods.PUT,
+      handler: this.shipOrder,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/complete/:id",
+      method: Methods.PUT,
+      handler: this.completeOrder,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/cancel/:id",
+      method: Methods.PUT,
+      handler: this.cancelOrder,
+      localMiddlewares: [],
+    },
+  ];
   orderController: EmployeeOrderController;
   constructor(
     orderController: EmployeeOrderController,
@@ -17,7 +46,6 @@ export default class EmployeeOrderDecorator extends OrderLoggingDecorator {
   ) {
     super(orderController, logger);
     this.orderController = orderController;
-    this.routes = this.orderController.routes;
   }
   async confirmOrder(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
@@ -65,4 +93,3 @@ export default class EmployeeOrderDecorator extends OrderLoggingDecorator {
     await this.requestHandler(req, res, next, this.orderController.getAllOrder);
   }
 }
-

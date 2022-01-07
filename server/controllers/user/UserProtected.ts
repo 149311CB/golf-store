@@ -11,7 +11,7 @@ export class UserProtect extends AuthController {
   constructor(logger: ConfigureLogging) {
     super();
     this.logger = logger;
-    this.refreshTokens = this.refreshTokens.bind(this)
+    this.refreshTokens = this.refreshTokens.bind(this);
   }
 
   async refreshTokens(
@@ -32,10 +32,10 @@ export class UserProtect extends AuthController {
     const token = cookieExtraction.extract(req);
 
     // get userId
-    const { userId } = service.validateToken(req, res);
+    const { userId } = await service.validateToken(req, res);
     if (!userId) {
-      throw new Error("UnAthorized, token failed")
-    };
+      throw new Error("UnAthorized, token failed");
+    }
     const user = await UserRepository.getInstance().findById(userId);
 
     // Compare token from request with current token

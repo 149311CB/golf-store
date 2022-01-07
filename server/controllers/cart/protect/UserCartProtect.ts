@@ -13,7 +13,7 @@ export default class UserCartProtect extends UserCartController {
     next: NextFunction
   ): Promise<any> {
     req.userId = await super.getUserFromHeader(req, res);
-    return super.getActiveCart(req, res, next);
+    await super.getActiveCart(req, res, next);
   }
 
   async addToCart(
@@ -22,7 +22,7 @@ export default class UserCartProtect extends UserCartController {
     next: NextFunction
   ): Promise<any> {
     req.userId = await super.getUserFromHeader(req, res);
-    return super.addToCart(req, res, next);
+    await super.addToCart(req, res, next);
   }
 
   async updateQty(
@@ -31,7 +31,7 @@ export default class UserCartProtect extends UserCartController {
     next: NextFunction
   ): Promise<any> {
     req.userId = await super.getUserFromHeader(req, res);
-    return super.updateQty(req, res, next);
+    await super.updateQty(req, res, next);
   }
 
   async removeProduct(
@@ -40,7 +40,7 @@ export default class UserCartProtect extends UserCartController {
     next: NextFunction
   ): Promise<any> {
     req.userId = await super.getUserFromHeader(req, res);
-    return super.removeProduct(req, res, next);
+    await super.removeProduct(req, res, next);
   }
 
   async countItem(
@@ -49,6 +49,6 @@ export default class UserCartProtect extends UserCartController {
     next: NextFunction
   ): Promise<any> {
     req.userId = await super.getUserFromHeader(req, res);
-    return super.countItem(req, res, next);
+    await super.countItem(req, res, next);
   }
 }

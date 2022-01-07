@@ -18,6 +18,7 @@ class LogRepository {
     token: { type: String, required: false },
     payload: { type: Object, required: false },
     location: { type: String, required: false },
+    info: { type: String, required: false },
   });
 
   model: Model<Log, any, any>;
