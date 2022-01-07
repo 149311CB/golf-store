@@ -33,7 +33,7 @@ const initialized = (products: any) => {
 };
 
 const Cart = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
   const history = useHistory();

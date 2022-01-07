@@ -31,8 +31,6 @@ export class EmployeeAuth extends Controller {
       if (!email || !password) {
         return super.sendError(400, res, "required email and password");
       }
-      // const exist = await Employee.findOne({ email: email });
-      // const employee = new Employee();
       const exist = await EmployeeRepository.getInstance().findByEmail(email);
 
       // @ts-ignore
@@ -74,7 +72,6 @@ export class EmployeeAuth extends Controller {
       }
 
       const { employeeId } = payload;
-      // const employee = new Employee();
       const exist = await EmployeeRepository.getInstance().findById(employeeId);
 
       if (!exist || exist.refreshToken !== refreshToken) {

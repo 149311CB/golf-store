@@ -9,7 +9,7 @@ import PaymentController from "./controllers/PaymentController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
-import OrderProtect from "./controllers/order/OrderProtect";
+import UserOrderProtect from "./controllers/order/UserOrderProtect";
 import PublicCartProtect from "./controllers/cart/protect/PublicCartProtect";
 import ConfigureLogging from "./utils/logger/ConfigureLogging";
 import FileLogger from "./utils/logger/FileLogger";
@@ -18,9 +18,11 @@ import TemplateBuilder from "./utils/logger/TemplateBuilder";
 import LoggerController from "./controllers/logger/LoggerController";
 import { UserLoggingDecorator } from "./controllers/user/UserLogging";
 import DbLogger from "./utils/logger/DbLogger";
-import OrderLoggingDecorator from "./controllers/order/OrderLogging";
+import OrderLoggingDecorator from "./controllers/order/decorators/log/UserOrderLogging";
 import CartLoggingDecorator from "./controllers/cart/CartLogging";
 import UserCartProtect from "./controllers/cart/protect/UserCartProtect";
+import EmployeeOrderDecorator from "./controllers/order/decorators/log/EmployeeOrderDecorator";
+import EmployeeOrderController from "./controllers/order/EmployeeOrderController";
 
 // .env initialized
 dotenv.config();
@@ -63,9 +65,10 @@ const controllers: Array<Controller> = [
   new CategoryController(),
   new CartLoggingDecorator(new PublicCartProtect(logger), logger),
   new CartLoggingDecorator(new UserCartProtect(logger), logger),
-  new UserLoggingDecorator(new UserProtect(), logger),
+  new UserLoggingDecorator(new UserProtect(logger), logger),
   new PaymentController(),
-  new OrderLoggingDecorator(new OrderProtect(), logger),
+  new OrderLoggingDecorator(new UserOrderProtect(logger), logger),
+  new EmployeeOrderDecorator(new EmployeeOrderController(logger),logger),
   new EmployeeAuth(),
   new LoggerController(),
 ];

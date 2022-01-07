@@ -102,9 +102,9 @@ export class UserLoggingDecorator
     res: Response,
     stopwatch: number,
     handler: Function,
-    error?: string
+    error?: string,
   ) {
-    handler`${new Log(
+    handler`This is an error log ${new Log(
       req.method,
       req.originalUrl,
       new Date(),
@@ -115,7 +115,7 @@ export class UserLoggingDecorator
       req.socket.remoteAddress || "unknown",
       "users",
       req.cookies,
-      error
+      error,
     )}`;
   }
 
@@ -131,10 +131,14 @@ export class UserLoggingDecorator
       await handler(req, res, next);
       const end = process.hrtime();
       stopwatch = end[0] * 1e9 - start[0] * 1e9;
-      // this.createLog(req, res, stopwatch, this.logger.info);
     } catch (error: any) {
-      this.createLog(req, res, stopwatch, this.logger.error, error.message);
-      super.sendError(401, res, error.message);
+      this.createLog(
+        req,
+        res,
+        stopwatch,
+        this.logger.error,
+        error.message,
+      );
     }
   }
 

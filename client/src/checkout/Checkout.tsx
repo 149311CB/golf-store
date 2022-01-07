@@ -13,16 +13,16 @@ export const CheckoutContext = createContext<CheckoutInterface>({
   success: false,
   cancelled: false,
   handleProcessing: () => {
-    return "Unknown processing state";
+    return "Unknown processing states";
   },
   handleError: () => {
     return "Unknown error";
   },
   handleSuccess: () => {
-    return "Unknown success state";
+    return "Unknown success states";
   },
   handleCancelled: () => {
-    return "Unknown cancelled state";
+    return "Unknown cancelled states";
   },
 });
 

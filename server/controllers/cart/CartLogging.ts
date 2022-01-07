@@ -5,7 +5,6 @@ import { Log } from "../../types/BasicLogging";
 import { IRoute } from "../../typings/Controller";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import { CartController } from "./CartController";
-import PublicCartController from "./PublicCartController";
 
 // export interface ICartController {
 //   getActiveCart(req: Request, res: Response, _: NextFunction): Promise<any>;
@@ -21,13 +20,14 @@ import PublicCartController from "./PublicCartController";
 
 export abstract class CartDecorator extends CartController {
   cartController: CartController;
-  protected constructor(
+  constructor(
     cartController: CartController,
     logger: ConfigureLogging
   ) {
     super(logger);
     this.cartController = cartController;
   }
+
   async getActiveCart(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -69,13 +69,9 @@ export default class CartLoggingDecorator extends CartDecorator {
   public path = "/api/carts";
   public routes: IRoute[] = [];
 
-  logger: ConfigureLogging;
-  constructor(cartController: PublicCartController, logger: ConfigureLogging) {
+  constructor(cartController: CartController, logger: ConfigureLogging) {
     super(cartController, logger);
-    this.logger = logger;
-    if (this.cartController instanceof CartController) {
-      this.routes = this.cartController.routes;
-    }
+    this.routes = this.cartController.routes;
   }
 
   createLog(
@@ -115,7 +111,6 @@ export default class CartLoggingDecorator extends CartDecorator {
       stopwatch = end[0] * 1e9 - start[0] * 1e9;
     } catch (error: any) {
       this.createLog(req, res, stopwatch, this.logger.error, error.message);
-      super.sendError(res.statusCode, res);
     }
   }
 

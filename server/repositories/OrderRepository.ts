@@ -6,6 +6,7 @@ import {
   Schema,
 } from "mongoose";
 import { orderInterface } from "../types/orderType";
+import CartRepository from "./CatRepository";
 
 class OrderRepository {
   stateSchema = new Schema(
@@ -44,6 +45,7 @@ class OrderRepository {
   private static instance: OrderRepository;
 
   private constructor() {
+    CartRepository.getInstance()
     this.model = model<orderInterface>("Order", this.orderSchema, "orders");
   }
 
