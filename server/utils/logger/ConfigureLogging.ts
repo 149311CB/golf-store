@@ -1,8 +1,6 @@
-import LoggerBase from "./ILogger";
+import LoggerBase from "./LoggerBase";
 import { getLocation } from "./Location";
 import { ILevel } from "./ILevel";
-import DbLogger from "./DbLogger";
-import StreamLogger from "./StreamLogger";
 
 export class ConfigureLogging {
   loggers: Array<LoggerBase>;
@@ -11,6 +9,7 @@ export class ConfigureLogging {
     this.loggers = loggers;
   }
 
+  // This should be for string base logging only
   log(level: ILevel) {
     return (strings: TemplateStringsArray, ...expressions: any[]): void => {
       return this.loggers.forEach((logger: LoggerBase) => {
@@ -18,28 +17,7 @@ export class ConfigureLogging {
           return null;
         }
 
-        if (logger instanceof DbLogger || logger instanceof StreamLogger) {
-          return logger.log(expressions);
-        }
-
-        // TODO: I don't like reduce
-        const content = strings.reduce((prev, curr, index) => {
-          // NOTICE: This is the default format in the config, not the format in the template
-          const formatted = logger.format(expressions[index] || "");
-
-          return `${prev}${curr}${formatted}`;
-        }, "");
-
-        // NOTICE: This will trigger the function returned by create template,
-        // which will trigger format defined in template and return a string of messages
-        const message = logger.getMessage({
-          level,
-          message: content,
-          date: new Date(),
-          location: getLocation(4),
-        });
-
-        return logger.log({ level, message });
+        return logger.log(strings, expressions, level, getLocation(4));
       });
     };
   }

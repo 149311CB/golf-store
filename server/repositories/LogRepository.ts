@@ -3,6 +3,7 @@ import { Log } from "../types/BasicLogging";
 
 class LogRepository {
   logSchema = new Schema<Log>({
+    level: { type: String, required: false },
     method: { type: String, required: true },
     route: { type: String, required: true },
     date: { type: Date, required: true },
@@ -13,9 +14,10 @@ class LogRepository {
     user_ip: { type: String, required: true },
     access_resource: { type: String, required: true },
     cookies: { type: Object, required: true },
-    error: { type: String, required: false },
+    message: { type: String, required: false },
     token: { type: String, required: false },
     payload: { type: Object, required: false },
+    location: { type: String, required: false },
   });
 
   model: Model<Log, any, any>;

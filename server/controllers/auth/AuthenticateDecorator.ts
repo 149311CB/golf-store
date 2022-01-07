@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { TokenLog } from "../../types/BasicLogging";
+import { Log } from "../../types/BasicLogging";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import { TokenValidateBase } from "./AuthenticateBase";
 
@@ -24,7 +24,7 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     payload: jwt.JwtPayload,
     error: any
   ) {
-    this.logger.error`${new TokenLog(
+    this.logger.error`${new Log(
       req.method,
       req.originalUrl,
       new Date(),
@@ -35,9 +35,8 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
       req.socket.remoteAddress || "unknown",
       "orders",
       req.cookies,
-      token || "",
-      payload,
-      error
+      error,
+      { token, payload }
     )}`;
   }
 
@@ -47,10 +46,11 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     const token = this.tokenValidateBase.extractToken(req);
     try {
       payload = this.tokenValidateBase.validateToken(req, res);
-      this.createLog(req, res, stopwatch, token, payload, null);
+      // this.createLog(req, res, stopwatch, token, payload, null);
       return payload;
     } catch (error: any) {
-      this.createLog(req, res, stopwatch, token, payload, error);
+      this.createLog(req, res, stopwatch, token, payload, error.message);
+
       if (this.tokenValidateBase.passReqToHandler) {
         return {};
       }

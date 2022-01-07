@@ -1,6 +1,7 @@
 import colors from "colors/safe";
-import LoggerBase, { LoggerConfig } from "./ILogger";
+import LoggerBase, { LoggerConfig } from "./LoggerBase";
 import { inspect } from "util";
+import { ILevel } from "./ILevel";
 
 interface Config extends LoggerConfig {
   colorize?: boolean;
@@ -42,10 +43,15 @@ class ConsoleLogger extends LoggerBase<Config> {
     return console.log.bind(console);
   }
 
-  public log({ message, level }: { message: string; level: string }) {
-    let msg = message;
+  public log(
+    strings: TemplateStringsArray,
+    expression: any,
+    level: ILevel,
+    location: string
+  ) {
+    let msg = this.getMessage(strings, expression, level, location);
 
-    const logToConsole = this.getConsoleMethod(level);
+    const logToConsole = this.getConsoleMethod(this.config.level!);
 
     if (this.config.colorize) {
       // @ts-ignore

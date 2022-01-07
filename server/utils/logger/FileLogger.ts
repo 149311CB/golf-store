@@ -1,6 +1,7 @@
 import fs from "fs";
 import { inspect } from "util";
-import LoggerBase, { LoggerConfig } from "./ILogger";
+import { ILevel } from "./ILevel";
+import LoggerBase, { LoggerConfig } from "./LoggerBase";
 
 interface Config extends LoggerConfig {
   path: string;
@@ -23,10 +24,16 @@ class FileLogger extends LoggerBase<Config> {
     return String(value);
   }
 
-  public log({ message, level }: { message: string; level: string }) {
-    this.fileStream.write(`${message}\n`);
+  public log(
+    strings: TemplateStringsArray,
+    expression: any[],
+    level: ILevel,
+    location: string
+  ) {
+    const result = this.getMessage(strings, expression, level, location);
+    this.fileStream.write(`${__dirname}/${result}\n`);
 
-    return message;
+    return strings;
   }
 }
 

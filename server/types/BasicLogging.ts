@@ -1,7 +1,6 @@
-import jwt from "jsonwebtoken";
-
 export class Log {
   _id?: string;
+  level?: string;
   method: string;
   route: string;
   date: Date;
@@ -12,8 +11,10 @@ export class Log {
   user_ip: string;
   access_resource: string;
   cookies: Object;
-  at?: string;
-  error?: string;
+  location?: string;
+  message?: string;
+  info?: string;
+  payload?: any;
   constructor(
     method: string,
     route: string,
@@ -25,8 +26,11 @@ export class Log {
     user_ip: string,
     access_resource: string,
     cookies: Object,
-    error?: string,
-    at?: string,
+    info?: string, // This should be add by the user
+    payload?: any, // This should be too
+    level?: string,// This should be add automatically by logger itself
+    location?: string, // This should be too
+    message?: string, // This should be too
     _id?: string
   ) {
     this._id = _id;
@@ -40,47 +44,10 @@ export class Log {
     this.user_ip = user_ip;
     this.access_resource = access_resource;
     this.cookies = cookies;
-    this.error = error;
-    this.at = at;
-  }
-}
-
-export class TokenLog extends Log {
-  token: string;
-  payload: jwt.JwtPayload;
-  constructor(
-    method: string,
-    route: string,
-    date: Date,
-    statusCode: number,
-    statusText: string,
-    agent: string,
-    duration: number,
-    user_ip: string,
-    access_resource: string,
-    cookies: Object,
-    token: string,
-    payload: jwt.JwtPayload,
-    error?: string,
-    at?: string,
-    _id?: string
-  ) {
-    super(
-      method,
-      route,
-      date,
-      statusCode,
-      statusText,
-      agent,
-      duration,
-      user_ip,
-      access_resource,
-      cookies,
-      error,
-      at,
-      _id
-    );
-    this.token = token;
+    this.message = message;
+    this.location = location;
+    this.level = level;
+    this.info = info;
     this.payload = payload;
   }
 }
