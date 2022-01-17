@@ -2,20 +2,21 @@ import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 import { GolfRepository } from "./GolfRepository";
 
 class CategoryRepository {
-  golfRef = new Schema({
-    golf: {
-      type: Schema.Types.ObjectId,
-      ref: "Golf",
-      required: true,
-    },
-  });
+  // golfRef = new Schema({
+  //   golfs: {
+  //     type: Schema.Types.ObjectId,
+  //     ref: "Golf",
+  //     required: true,
+  //   },
+  // });
   categorySchema = new Schema({
     name: {
       type: String,
       required: true,
     },
     products: {
-      type: [this.golfRef],
+      type: [Schema.Types.ObjectId],
+      ref: "Golf",
       required: true,
     },
   });

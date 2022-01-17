@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "__v": 0,
+  "type": "regular"
+},{
+  "_id": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "__v": 0,
+  "type": "stiff"
+},{
+  "_id": {
+    "$oid": "61da7ea68d775fcb2ea155ce"
+  },
+  "type": "x-stiff",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85ec8d775fcb2ea16073"
+  },
+  "type": "senior",
+  "__v": 0
+}]

@@ -18,13 +18,12 @@ export default class CategoryController extends Controller {
   async getCategoryList(req: Request, res: Response, _: NextFunction) {
     try {
       const { categoryList } = req.body;
-      console.log(categoryList);
 
       const categories = await CategoryRepository.getInstance().all(
         {
           name: { $in: categoryList },
         },
-        { path: "products.golf" }
+        { path: "products" }
       );
 
       if (!categories) {

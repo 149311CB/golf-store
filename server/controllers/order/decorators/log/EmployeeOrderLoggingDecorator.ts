@@ -6,7 +6,7 @@ import ConfigureLogging from "../../../../utils/logger/ConfigureLogging";
 import { IRoute, Methods } from "../../../../typings/Controller";
 import { OrderLoggingDecorator } from "./OrderLoggingDecorator";
 
-export default class EmployeeOrderDecorator extends OrderLoggingDecorator {
+export default class EmployeeOrderLoggingDecorator extends OrderLoggingDecorator {
   public routes: IRoute[] = [
     {
       path: "/auth/all",

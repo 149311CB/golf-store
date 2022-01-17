@@ -1,28 +1,36 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { GlobalContext } from "../../App";
+import Button from "../../components/button/Button";
+import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { client } from "../../utils/client";
 
 const CartBadge = () => {
   const [count, setCount] = useState(0);
   const value = useContext(GlobalContext);
+  const addToCartMenuRef = useOnClickOutside();
   const { token } = value;
+  const history = useHistory();
 
-  const fetchCount = useCallback(async () => {
-    let route = "/api/carts/count";
-    if (token !== "-1") {
-      route = "/api/carts/auth/count";
-    }
-    const { data } = await client.get(route, {
-      credentials: "include",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (data && data.data) {
-      setCount(data.data.count);
-    }
-  }, [token]);
+  const fetchCount = useCallback(
+    async (display = false) => {
+      if (display) addToCartMenuRef.current.style.display = "block";
+      let route = "/api/carts/count";
+      if (token !== "-1") {
+        route = "/api/carts/auth/count";
+      }
+      const { data } = await client.get(route, {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (data && data.data) {
+        setCount(data.data.count);
+      }
+    },
+    [token, addToCartMenuRef]
+  );
 
   useEffect(() => {
     value.fetchCount = fetchCount;
@@ -34,7 +42,7 @@ const CartBadge = () => {
     <Link
       to={"/cart-badge"}
       className={"cart pop"}
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", position: "relative" }}
     >
       <i className="fas fa-shopping-cart fa-sm"></i>
       {count > 0 && (
@@ -45,6 +53,22 @@ const CartBadge = () => {
           {count}
         </div>
       )}
+      <div
+        className={"add-to-cart-menu box-shadow-small border-radius-all"}
+        ref={addToCartMenuRef}
+      >
+        <p>An item has been add to your cart</p>
+        <Button
+          type={"primary"}
+          border={"border"}
+          style={{ width: "100%", marginTop: "0.6rem" }}
+          onClick={() => {
+            history.push("/cart");
+          }}
+        >
+          View cart
+        </Button>
+      </div>
     </Link>
   );
 };

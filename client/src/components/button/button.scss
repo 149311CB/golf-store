@@ -32,16 +32,33 @@
       box-shadow: none !important;
     }
   }
+
   &.secondary {
     background: var(--bg-standout);
     border: 1px solid hsla(0, 100%, 96%, 0.2);
-    color: var(--text-dark-standout);
     font-size: 1rem;
     font-family: brutal-medium, sans-serif;
     &:hover {
-      box-shadow: 2px 2px 5px hsl(0, 0%, 18%), -2px -2px 5px hsl(0, 0%, 35%);
+      box-shadow: 3px 3px 6px hsl(0, 0%, 18%), -3px -3px 6px hsl(0, 0%, 35%);
+    }
+
+    &:active {
+      box-shadow: inset 3px 3px 6px hsl(0, 0%, 18%),
+        inset -3px -3px 6px hsl(0, 0%, 35%);
     }
 
     padding: 0.9rem;
+  }
+
+  &.primary{
+    color: var(--text-standout);
+  }
+
+  &.danger{
+    color: var(--text-danger);
+  }
+
+  &.none{
+    color: var(--text);
   }
 }

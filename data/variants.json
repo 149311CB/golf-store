@@ -1,0 +1,358 @@
+[{
+  "_id": {
+    "$oid": "61da82d7a89798661e73834e"
+  },
+  "golf": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "loft": {
+    "$oid": "61da7ea68d775fcb2ea155ca"
+  },
+  "shaft": {
+    "$oid": "61da7ea68d775fcb2ea155cc"
+  },
+  "flex": {
+    "$oid": "61da7ea68d775fcb2ea155ce"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 4,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da82d7a89798661e738354"
+  },
+  "golf": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da7ea68d775fcb2ea155cc"
+  },
+  "flex": {
+    "$oid": "61da7ea68d775fcb2ea155ce"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da82d8a89798661e73835a"
+  },
+  "golf": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da7ea78d775fcb2ea155d8"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da82d8a89798661e738360"
+  },
+  "golf": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da7ea78d775fcb2ea155d8"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da82d8a89798661e738366"
+  },
+  "golf": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da7ea78d775fcb2ea155d8"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e73841f"
+  },
+  "golf": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da85ec8d775fcb2ea16062"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e738425"
+  },
+  "golf": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da85ec8d775fcb2ea16062"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e73842b"
+  },
+  "golf": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da85ec8d775fcb2ea16062"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e738431"
+  },
+  "golf": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da85ec8d775fcb2ea16062"
+  },
+  "flex": {
+    "$oid": "61da85ec8d775fcb2ea16073"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e738437"
+  },
+  "golf": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da85ec8d775fcb2ea16078"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8827a89798661e738466"
+  },
+  "golf": {
+    "$oid": "61da8827a89798661e738460"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da88278d775fcb2ea1621a"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 4,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8827a89798661e73846c"
+  },
+  "golf": {
+    "$oid": "61da8827a89798661e738460"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da88278d775fcb2ea16220"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8827a89798661e738472"
+  },
+  "golf": {
+    "$oid": "61da8827a89798661e738460"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da88278d775fcb2ea16226"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8827a89798661e738478"
+  },
+  "golf": {
+    "$oid": "61da8827a89798661e738460"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da88278d775fcb2ea1622c"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8d00a89798661e7384a4"
+  },
+  "golf": {
+    "$oid": "61da8d00a89798661e73849e"
+  },
+  "loft": {
+    "$oid": "614e1c50cb12eea38afb52e9"
+  },
+  "shaft": {
+    "$oid": "61da8d008d775fcb2ea16555"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 4,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8d00a89798661e7384aa"
+  },
+  "golf": {
+    "$oid": "61da8d00a89798661e73849e"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da8d008d775fcb2ea1655b"
+  },
+  "flex": {
+    "$oid": "614e1c50cb12eea38afb5312"
+  },
+  "hand": {
+    "$oid": "617f9adf6103b46f7661a87a"
+  },
+  "stock": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8d00a89798661e7384b0"
+  },
+  "golf": {
+    "$oid": "61da8d00a89798661e73849e"
+  },
+  "loft": {
+    "$oid": "61da7ea78d775fcb2ea155dd"
+  },
+  "shaft": {
+    "$oid": "61da8d008d775fcb2ea16555"
+  },
+  "flex": {
+    "$oid": "614e1c51cb12eea38afb535b"
+  },
+  "hand": {
+    "$oid": "617f9ac66103b46f7661a879"
+  },
+  "stock": 3,
+  "__v": 0
+}]

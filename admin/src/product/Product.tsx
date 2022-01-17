@@ -1,17 +1,17 @@
 import { Box, Typography, darken } from "@mui/material";
-import {
-  Link,
-  Switch,
-  Route,
-  useRouteMatch,
-} from "react-router-dom";
+import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
 import React from "react";
+import ProductList from "./ProductList";
+import ProductDetails from "./ProductDetails";
 
 const Product = () => {
   const { url } = useRouteMatch();
   return (
     <Box>
       <Switch>
+        <Route path={`${url}/:id`} exact>
+          <ProductDetails />
+        </Route>
         <Route path={`${url}`} exact={true}>
           <Link to={"/products/create"} style={{ textDecoration: "none" }}>
             <Typography
@@ -30,9 +30,7 @@ const Product = () => {
               Create Product
             </Typography>
           </Link>
-        </Route>
-        <Route>
-
+          <ProductList />
         </Route>
       </Switch>
     </Box>

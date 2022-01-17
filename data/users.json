@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": "610844bf701a78827a321fa6"
+  },
+  "email": "an.nickhcm2000@gmail.com",
+  "firstName": "Vi",
+  "isActive": true,
+  "lastName": "Nguyen Hung",
+  "password": "$2a$10$n83kaOUWGLQ2DXlBARSDpedFN/DEYSD2tH6vX32kteYKr1KWokyRO",
+  "phoneNumber": "0965423357",
+  "emailVerification": "false",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTA4NDRiZjcwMWE3ODgyN2EzMjFmYTYiLCJpYXQiOjE2Mzk1MzcxODAsImV4cCI6MTY0MjEyOTE4MH0.9zPsNzmq4DPoeiKqILx9OnUiITiyGv73R_Y1_dimRHE"
+},{
+  "_id": {
+    "$oid": "618e5ee651b7f56c81362574"
+  },
+  "email": "an.nickhcm2000v2@gmail.com",
+  "firstName": "Nick",
+  "isActive": true,
+  "lastName": "Nguyen",
+  "password": "$2a$10$Jg5onW6g2/bP.3q00aOEXuYLgVYoDslgIFTHamdH.zJUEGUHnamwm",
+  "phoneNumber": "0965493574",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61b95a3e261e177f9db11e0f"
+  },
+  "isActive": false,
+  "emailVerification": "false",
+  "firstName": "xstk2000",
+  "lastName": "v2",
+  "email": "xstk2000@gmail.com",
+  "googleId": "114881225218311007125",
+  "__v": 0,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWI5NWEzZTI2MWUxNzdmOWRiMTFlMGYiLCJpYXQiOjE2NDE3NzU3ODAsImV4cCI6MTY0NDM2Nzc4MH0.i0Slj4lYNOcDB4kAh4M99TMLQwvTX6Gj9CkaAKbwqq8",
+  "password": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWJjOGI1MzZhMjgxYzVjZmYxMjdmOTQiLCJpYXQiOjE2Mzk3NDY3MTIsImV4cCI6MTY0MjMzODcxMn0.ggBwjA_gwlTgFMWmkuHwhTweGMEENt9uzz2ZrNFViAM",
+  "avatar": "https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/avatar.svg?alt=media&token=ba3ea983-3133-41d9-88c4-002deffd991a"
+},{
+  "_id": {
+    "$oid": "61bc8b536a281c5cff127f94"
+  },
+  "isActive": false,
+  "emailVerification": "false",
+  "firstName": "nick",
+  "lastName": "Nguyen",
+  "email": "testemail@example.com",
+  "phoneNumber": "093412341234",
+  "password": "$2a$10$cEIveLsY2nLYugzL4lX.lO5yqbxlgtr8whbAmQNB39h7rtYyz8Wva",
+  "__v": 0,
+  "refreshToken": "",
+  "avatar": "https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/avatar.svg?alt=media&token=ba3ea983-3133-41d9-88c4-002deffd991a"
+}]

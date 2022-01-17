@@ -18,7 +18,7 @@ export abstract class OrderLoggingDecorator extends OrderDecorator {
       req.originalUrl,
       new Date(),
       res.statusCode,
-      res.statusMessage,
+      res.statusMessage || "unknown",
       req.headers["user-agent"] || "unknown",
       stopwatch,
       req.socket.remoteAddress || "unknown",
@@ -65,5 +65,13 @@ export abstract class OrderLoggingDecorator extends OrderDecorator {
       next,
       this.orderController.getOrderById
     );
+  }
+
+  async getAllOrder(
+    req: Request<ParamsDictionary, any, any, ParsedQs>,
+    res: Response,
+    next: NextFunction
+  ) {
+    await this.requestHandler(req, res, next, this.orderController.getAllOrder);
   }
 }

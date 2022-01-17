@@ -164,10 +164,10 @@ const OrderDetails: React.FC<RouteComponentProps> = ({ match }) => {
     const fetchData = async () => {
       const {
         data: { data },
-      } = await client.get(`/api/order/auth/details/${id}`, {
+      } = await client.get(`/api/order/auth/user/detail/${id}`, {
+        credentials: "include",
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(data);
       setCurrentState(data.state);
       setStateHistory(data.stateHistory);
       setPaymentMethod(data.paymentMethod);

@@ -131,7 +131,7 @@ class FlexRepository {
     },
   });
 
-  private model: Model<IFlex, any, any>;
+  public model: Model<IFlex, any, any>;
   private static instance: FlexRepository;
 
   constructor() {
@@ -154,6 +154,13 @@ class FlexRepository {
     return await this.model
       .findOneAndUpdate(filter, update, options)
       .populate(populate);
+  }
+
+  async all(
+    filter: FilterQuery<IFlex> = {},
+    populate?: PopulateOptions | Array<PopulateOptions>
+  ): Promise<IFlex & Document<any, any, IFlex>> {
+    return await this.model.find(filter).populate(populate);
   }
 }
 
@@ -204,6 +211,13 @@ class VariantRepository {
     return VariantRepository.instance;
   }
 
+  public static getModel(): Model<IVariant, any, any> {
+    if (!VariantRepository.instance) {
+      VariantRepository.instance = new VariantRepository();
+    }
+    return VariantRepository.instance.model;
+  }
+
   async create(
     order: IVariant
   ): Promise<IVariant | Document<any, any, IVariant>> {
@@ -213,7 +227,7 @@ class VariantRepository {
   async all(
     query: any,
     options?: PopulateOptions | Array<PopulateOptions>
-  ): Promise<IVariant & Document<any, any, IVariant>> {
+  ): Promise<(IVariant & Document<any, any, IVariant>)[]> {
     return await this.model.find(query).populate(options);
   }
 
@@ -267,6 +281,13 @@ class GolfRepository {
     return GolfRepository.instance;
   }
 
+  public static getModel(): Model<IProduct, any, any> {
+    if (!GolfRepository.instance) {
+      GolfRepository.instance = new GolfRepository();
+    }
+    return GolfRepository.instance.model;
+  }
+
   async create(
     order: IProduct
   ): Promise<IProduct | Document<any, any, IProduct>> {
@@ -281,9 +302,10 @@ class GolfRepository {
   }
 
   async all(
-    options?: PopulateOptions | Array<PopulateOptions>
-  ): Promise<IProduct & Document<any, any, IProduct>> {
-    return await this.model.find().populate(options);
+    options?: PopulateOptions | Array<PopulateOptions>,
+    limit?: number
+  ): Promise<(IProduct & Document<any, any, IProduct>)[]> {
+    return await this.model.find({}).limit(2).populate(options);
   }
 
   async updateInfo(

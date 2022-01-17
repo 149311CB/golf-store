@@ -29,8 +29,15 @@ const Shafts: React.FC<IGolfComponentsProps> = ({
               visualDisabled={value.visualDisabled}
               disabled={value.disabled}
               value={value}
+              style={{ display: "flex", alignItems: "center", gap: "0.9rem" }}
             >
-              {value.name}
+              <div
+                style={{ width: "50px" }}
+                className={"image-container box-shadow-small"}
+              >
+                <img src={value.image} alt="" style={{ width: "100%" }} />
+              </div>
+              <p style={{ marginBottom: "0.3rem" }}>{value.name}</p>
             </Option>
           ),
           (a: any, b: any) => {

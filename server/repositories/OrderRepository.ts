@@ -1,10 +1,5 @@
-import {
-  Document,
-  Model,
-  model,
-  PopulateOptions,
-  Schema,
-} from "mongoose";
+import { FilterQuery } from "mongoose";
+import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
 import { orderInterface } from "../types/orderType";
 import CartRepository from "./CatRepository";
 
@@ -37,6 +32,8 @@ class OrderRepository {
         type: Date,
       },
       stateHistory: [this.stateSchema],
+      shipping: { type: String, required: true },
+      total: { type: Number, required: true },
     },
     { timestamps: true }
   );
@@ -45,7 +42,7 @@ class OrderRepository {
   private static instance: OrderRepository;
 
   private constructor() {
-    CartRepository.getInstance()
+    CartRepository.getInstance();
     this.model = model<orderInterface>("Order", this.orderSchema, "orders");
   }
 
@@ -68,9 +65,16 @@ class OrderRepository {
   }
 
   async all(
-    options?: PopulateOptions | Array<PopulateOptions>
-  ): Promise<orderInterface & Document<any, any, orderInterface>> {
-    return await this.model.find().populate(options);
+    query: FilterQuery<orderInterface> = {},
+    options?: PopulateOptions | Array<PopulateOptions>,
+    sort?: any,
+    limit?: number
+  ): Promise<(orderInterface & Document<any, any, orderInterface>)[]> {
+    return await this.model
+      .find(query)
+      .sort(sort)
+      .limit(limit)
+      .populate(options);
   }
 
   async updateInfo(

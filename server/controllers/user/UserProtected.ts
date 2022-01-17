@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../repositories/UserRepository";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 
-import { TokenValidateBase, CookieExtraction } from "../auth/AuthenticateBase";
+import {
+  TokenValidateBase,
+  CookieExtraction,
+  HeaderExtract,
+} from "../auth/AuthenticateBase";
 import { TokenValidateDecorator } from "../auth/AuthenticateDecorator";
 import AuthController from "./UserController";
 
@@ -12,6 +16,23 @@ export class UserProtect extends AuthController {
     super();
     this.logger = logger;
     this.refreshTokens = this.refreshTokens.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
+    this.getuserDetails = this.getuserDetails.bind(this);
+    this.logout = this.logout.bind(this)
+  }
+
+  async getUserInfo(req: Request, res: Response): Promise<any> {
+    const headerExtraction = new HeaderExtract();
+    const service = new TokenValidateDecorator(
+      new TokenValidateBase(headerExtraction, process.env.JWT_SECRET!),
+      this.logger
+    );
+    const { userId } = await service.validateToken(req, res);
+    const user = await UserRepository.getInstance().findById(userId);
+    if (!user) {
+      return super.sendError(401, res, "UnAthorized, invalid token");
+    }
+    return user;
   }
 
   async refreshTokens(
@@ -45,5 +66,19 @@ export class UserProtect extends AuthController {
 
     req.user = user;
     return super.refreshTokens(req, res, next);
+  }
+
+  async getuserDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    req.user = await this.getUserInfo(req, res);
+    return super.getuserDetails(req, res, next);
+  }
+
+  async logout(req: Request, res: Response, next: NextFunction): Promise<any> {
+    req.user = await this.getUserInfo(req, res);
+    return super.logout(req, res, next);
   }
 }

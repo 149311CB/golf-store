@@ -31,7 +31,9 @@ const Home = () => {
 
   return (
     <div className={"homepage"}>
-      <div className={"carousel"}></div>
+      <div className={"carousel box-shadow-small"}>
+        <p id={"carousel-text"}>TaylorMade</p>
+      </div>
       {data &&
         data.map((category: any) => (
           <Category products={category.products} key={category._id} />

@@ -1,0 +1,50 @@
+.checkout {
+  margin: 3rem auto;
+  width: 80%;
+  display: flex;
+  align-items: flex-start;
+  gap: 2.1rem;
+  .paypal-button-tagline {
+    display: none !important;
+  }
+  .product-wrapper:last-child {
+    hr {
+      display: none;
+    }
+  }
+  .cart-summary {
+    width: 40%;
+  }
+  & > * {
+    @include usingBoxShadowMixin();
+    @include usingBorderRadiusMixin();
+  }
+  .payment-methods-container {
+    padding: 1.2rem;
+    width: 60%;
+  }
+}
+
+.payment-success {
+  @include usingBoxShadowMixin();
+  @include usingBorderRadiusMixin();
+  margin: 3rem auto;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.8rem;
+  a {
+    display: inline-block;
+    padding: 0.6rem;
+    color: var(--text-standout);
+    text-decoration: none;
+    @include usingBorderRadiusMixin();
+    &:hover {
+      @include usingBoxShadowMixin();
+    }
+    &:active{
+      @include usingInsetBoxShadowMixin();
+    }
+  }
+}

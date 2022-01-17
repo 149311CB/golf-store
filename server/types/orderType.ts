@@ -10,4 +10,5 @@ export interface orderInterface {
   paidAt: Date;
   cancelledAt: Date;
   stateHistory: any[];
+  shipping: string;
 }

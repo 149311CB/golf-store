@@ -1,6 +1,6 @@
 import {IUserInfoAdapter} from "./IUserInfoAdapter";
-import {UserTypes} from "../../../../../types/userTypes";
-import {IPublicProfile} from "../FacebookStrategy";
+import {UserTypes} from "../../../../types/userTypes";
+import {IPublicProfile} from "../strategies/FacebookStrategy";
 
 export class FacebookAdapter implements IUserInfoAdapter {
     publicProfile: IPublicProfile;

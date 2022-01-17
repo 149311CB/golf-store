@@ -8,6 +8,7 @@ import Cart from "./cart/Cart";
 import Error from "./error/Error";
 import PaymentSuccess from "./checkout/success/PaymentSuccess";
 import { client } from "./utils/client";
+import AccountManager from "./user/manage/AccountManager";
 
 export const GlobalContext = createContext<any>({});
 const refreshToken = async () => {
@@ -16,7 +17,6 @@ const refreshToken = async () => {
       credentials: "include",
     });
   } catch (error) {
-    console.log(error);
     return { ok: false, data: null };
   }
 };
@@ -53,10 +53,11 @@ function App() {
           <main>
             <Route path={"/"} component={Homepage} exact />
             <Route path={"/product/:id"} component={Product} exact />
-             <Route path={"/cart-badge/"} component={Cart} exact />
-             <Route path={"/checkout"} component={Checkout} exact />
-             <Route path={"/error"} component={Error} exact />
-             <Route path={"/success"} component={PaymentSuccess} exact />
+            <Route path={"/cart-badge/"} component={Cart} exact />
+            <Route path={"/checkout"} component={Checkout} exact />
+            <Route path={"/error"} component={Error} exact />
+            <Route path={"/success"} component={PaymentSuccess} exact />
+            <Route path={"/account"} component={AccountManager} />
 
             {/* <Redirect to={"/error"}/> */}
             {/*<Route path={"/"} component={NewModels} exact />*/}

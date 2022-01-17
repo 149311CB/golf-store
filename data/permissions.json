@@ -1,0 +1,12 @@
+[{
+  "_id": {
+    "$oid": "61c007412f331f7d0420de0b"
+  },
+  "resources": [
+    {
+      "name": "all",
+      "read": true,
+      "write": true
+    }
+  ]
+}]

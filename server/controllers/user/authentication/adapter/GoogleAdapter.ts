@@ -1,6 +1,6 @@
 import {IUserInfoAdapter} from "./IUserInfoAdapter";
-import {UserTypes} from "../../../../../types/userTypes";
-import {IUserProfile} from "../GoogleStrategy";
+import {UserTypes} from "../../../../types/userTypes";
+import {IUserProfile} from "../strategies/GoogleStrategy";
 
 export class GoogleAdapter implements IUserInfoAdapter {
     userProfile: IUserProfile;

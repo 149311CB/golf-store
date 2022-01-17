@@ -25,7 +25,6 @@ const TableToolbar: React.FC<{ selectCount: number; deleteHandler: Function }> =
     return (
       <Toolbar
         sx={{
-          border: "1px solid red",
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -69,7 +68,6 @@ const OrderList = () => {
   const [orderBy, setOrderBy] = useState("date");
   const [selected, setSelected] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  console.log(orders)
 
   const toggleSelectAll = () => {
     const newSelected: string[] = [];

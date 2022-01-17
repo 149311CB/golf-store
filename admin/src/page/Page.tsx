@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../sidebar/Sidebar";
 import Product from "../product/Product";
-import EnhancedTable from "../order/EnhancedTable";
 import Order from "../order/Order";
 import Logs from "../logs/Logs";
 
@@ -16,9 +15,6 @@ const Page = () => {
         <Switch>
           <Route path={"/products"}>
             <Product />
-          </Route>
-          <Route path={"/users"}>
-            <EnhancedTable />
           </Route>
           <Route path={"/orders"}>
             <Order />

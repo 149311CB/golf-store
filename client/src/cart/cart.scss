@@ -1,3 +1,5 @@
+@import "./address";
+
 main {
   $padding: 0.6rem 1.2rem;
   .cart {
@@ -8,12 +10,18 @@ main {
     display: flex;
     justify-content: space-between;
     gap: 6rem;
-  }
-
-  .product-list {
-    box-shadow: var(--medium-box-shadow);
-    width: 70%;
-    border-radius: 0.6rem;
+    .product-list {
+      box-shadow: var(--medium-box-shadow);
+      width: 70%;
+      border-radius: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      .product-wrapper:last-child{
+        hr{
+          display: none;
+        }
+      }
+    }
   }
 
   .left-col {
@@ -119,4 +127,9 @@ main {
   padding: 0.5px;
   background: var(--border);
   margin: 0 0.3rem;
+}
+
+.add-address-btn {
+  font-weight: 600;
+  color: var(--text-standout);
 }

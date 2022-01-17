@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 import { Log } from "../../types/BasicLogging";
 import Controller, { IRoute, Methods } from "../../typings/Controller";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
@@ -27,6 +29,8 @@ export interface IUserLogginDecorator extends Controller {
   register(req: Request, res: Response, next: NextFunction): Promise<any>;
 
   getuserDetails(req: Request, res: Response, next: NextFunction): Promise<any>;
+
+  logout(req: Request, res: Response, next: NextFunction): Promise<any>;
 }
 
 export class UserLoggingDecorator
@@ -84,6 +88,12 @@ export class UserLoggingDecorator
       handler: this.getuserDetails,
       localMiddlewares: [],
     },
+    {
+      path: "/logout",
+      method: Methods.GET,
+      handler: this.logout,
+      localMiddlewares: [],
+    },
   ];
 
   userController: IUserLogginDecorator;
@@ -96,13 +106,12 @@ export class UserLoggingDecorator
     this.userController = userController;
     this.logger = logger;
   }
-
   createLog(
     req: Request,
     res: Response,
     stopwatch: number,
     handler: Function,
-    error?: string,
+    error?: string
   ) {
     handler`This is an error log ${new Log(
       req.method,
@@ -115,7 +124,7 @@ export class UserLoggingDecorator
       req.socket.remoteAddress || "unknown",
       "users",
       req.cookies,
-      error,
+      error
     )}`;
   }
 
@@ -132,13 +141,7 @@ export class UserLoggingDecorator
       const end = process.hrtime();
       stopwatch = end[0] * 1e9 - start[0] * 1e9;
     } catch (error: any) {
-      this.createLog(
-        req,
-        res,
-        stopwatch,
-        this.logger.error,
-        error.message,
-      );
+      this.createLog(req, res, stopwatch, this.logger.error, error.message);
     }
   }
 
@@ -216,5 +219,13 @@ export class UserLoggingDecorator
       next,
       this.userController.getuserDetails
     );
+  }
+
+  async logout(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>,
+    next: NextFunction
+  ): Promise<any> {
+    await this.requestHandler(req, res, next, this.userController.logout);
   }
 }

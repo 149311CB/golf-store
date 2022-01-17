@@ -1,95 +1,69 @@
-[
-    {
-        "_id": "614c8fb5e8b7580921b1e978",
-        "hand": [
-            {
-                "name": "left"
-            },
-            {
-                "name": "right"
-            }
-        ],
-        "images": [
-            "https://i.ebayimg.com/images/g/gaMAAOSw4cBgZxd8/s-l640.jpg",
-            "https://i.ebayimg.com/images/g/q7sAAOSw3RlgLGKf/s-l640.jpg",
-            "https://i.ebayimg.com/images/g/QyYAAOSw7fJgLFJw/s-l640.jpg",
-            "https://i.ebayimg.com/images/g/tZ4AAOSwyVBgLFJz/s-l640.jpg",
-            "https://i.ebayimg.com/images/g/7VsAAOSwFE1gLFJy/s-l640.jpg",
-            "https://i.ebayimg.com/images/g/je0AAOSw3e9gLFJ3/s-l640.jpg"
-        ],
-        "name": "SIM2 Driver",
-        "longname": "NEW 2021 TaylorMade SIM2 MAX Driver",
-        "price": 529,
-        "stock": 10,
-        "sku": "SKU # DW-JJI63",
-        "description": "First we reshaped the driver, then we reconstructed it. Completely rebuilding the driver from the ground up to give you both forgiveness and distance.",
-        "__v": 0,
-        "variants": [
-            {
-                "_id": "614c8fb5e8b7580921b1e97a",
-                "options": [
-                    {
-                        "_id": "614c8fb5e8b7580921b1e97b",
-                        "loft": {
-                            "_id": "614c8fb5e8b7580921b1e97c",
-                            "type": 9
-                        },
-                        "shaft": {
-                            "_id": "614c8fb5e8b7580921b1e97d",
-                            "name": "Mitsubishi Tensei AV Raw Blue 60 Graphite",
-                            "image": "https://lh3.googleusercontent.com/Iq-uoHlbdTveZjSHjLd9XJjIN_IpYp6bqr9IIRtkE7iSSThYr2hmxoEvsu8C7EErdpYDrb44Xl3myhEQpBQzx_muDb-pwhoCdiFvqZPrXdYcVWfDMY5VmpYwh49tMinyg47kRphM=s34-p-k"
-                        },
-                        "flex": {
-                            "_id": "614c8fb5e8b7580921b1e97e",
-                            "type": "Regular"
-                        },
-                        "stock": 3
-                    },
-                    {
-                        "_id": "614c8fb5e8b7580921b1e97f",
-                        "loft": {
-                            "_id": "614c8fb5e8b7580921b1e980",
-                            "type": 10
-                        },
-                        "shaft": {
-                            "_id": "614c8fb5e8b7580921b1e981",
-                            "name": "Project X HZRDUS Smoke RDX Black 70 Graphite",
-                            "image": "https://lh3.googleusercontent.com/zie3113I9GPsbHIclc66JP4jF5t1OzhEhnVxislw0yqj3L1PbfXmCOQN7OlxNC7CSZy127eWUDxmI8f0cLFjhgAOeTlakjlWsoGTNrGWRQXDJTaY_gLz_MbyH7wzh2tZclWL2Swt=s32-p-k"
-                        },
-                        "stock": 5
-                    },
-                    {
-                        "_id": "614c8fb5e8b7580921b1e982",
-                        "flex": {
-                            "_id": "614c8fb5e8b7580921b1e983",
-                            "type": "Stiff"
-                        },
-                        "stock": 2
-                    },
-                    {
-                        "_id": "614c8fb5e8b7580921b1e984",
-                        "flex": {
-                            "_id": "614c8fb5e8b7580921b1e985",
-                            "type": "X-stiff"
-                        },
-                        "stock": 2
-                    },
-                    {
-                        "_id": "614c8fb5e8b7580921b1e986",
-                        "loft": {
-                            "_id": "614c8fb5e8b7580921b1e987",
-                            "type": 9
-                        },
-                        "flex": {
-                            "_id": "614c8fb5e8b7580921b1e988",
-                            "type": "X-stiff"
-                        },
-                        "stock": 1
-                    }
-                ],
-                "golf": "614c8fb5e8b7580921b1e978",
-                "__v": 0
-            }
-        ]
-    }
-]
+[{
+  "_id": {
+    "$oid": "61da82d7a89798661e738345"
+  },
+  "images": [
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167246/1-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167246/f-callout-167246.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167246/2-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167246/3-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167246/4-f.jpg"
+  ],
+  "description": "The TaylorMade Stealth PLUS driver is designed for players who want to optimize their distance and forgiveness while also having more control over their shot shape and trajectory. A sliding weight track unique to the PLUS model gives players more ability to fine-tune their driver performance, a feature usually preferred by more skilled players who want that workability off the tee.",
+  "longname": "",
+  "name": "P790 Irons",
+  "price": 1299.99,
+  "sku": "SKU # DW-JJI63",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da85eca89798661e738419"
+  },
+  "images": [
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167247/1-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167247/f-callout-167247.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167247/2-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167247/3-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P167247/4-f.jpg"
+  ],
+  "description": "The TaylorMade Stealth driver is designed for high-MOI performance and is the best fit for all players looking to optimize distance and forgiveness. It also offers a light amount of draw bias for the golfer who prefers to have a little bit of that built-in, without going into a draw-specific model.",
+  "longname": "",
+  "name": "TaylorMade Men's Stealth Driver",
+  "price": 579.99,
+  "sku": "SKU # DW-JJI63",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8827a89798661e738460"
+  },
+  "images": [
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P152581/1-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P152581/f-tech-152581.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P152581/f-2.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P152581/f-3.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P152581/f-4.jpg"
+  ],
+  "description": "G425 MAX elevates the moment of inertia to PING’s highest level in history. Forgiveness comes mainly from a 26-gram tungsten movable weight, made possible by weight savings from advancements in the driver’s dragonfly crown technology.",
+  "longname": "",
+  "name": "PING Men's G425 MAX Driver",
+  "price": 579.99,
+  "sku": "SKU # DW-JJI63",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da8d00a89798661e73849e"
+  },
+  "images": [
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P163031/1-f-v.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P163031/2-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P163031/3-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P163031/4-f.jpg",
+    "https://www.tgw.com/wcsstore/CatalogAssetStore/Attachment/images/products/golf/P163031/5-f.jpg"
+  ],
+  "description": "With 40% more tungsten and advanced Max Impact Technology, the new T300 can improve your launch, distance and shot making while providing maximum forgiveness. All in a premium chrome head with the size and shape to give you the confidence to play your best golf.",
+  "longname": "",
+  "name": "Titleist Men's 2021 T300 Golf Irons",
+  "price": 999,
+  "sku": "SKU # DW-JJI63",
+  "__v": 0
+}]

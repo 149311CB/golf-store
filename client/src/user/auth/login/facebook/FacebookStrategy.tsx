@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../../../components/button/Button";
+import { ReactComponent as FacebookIcon } from "../../../../assets/facebook-rounded-logo.svg";
 
 const FacebookStrategy: React.FC<{ isRegister?: boolean }> = ({
   isRegister = false,
@@ -8,7 +9,27 @@ const FacebookStrategy: React.FC<{ isRegister?: boolean }> = ({
     window.open("https://localhost:5001/api/user/auth/login/facebook");
   };
   return (
-    <Button onClick={login}>
+    <Button
+      className={"secondary"}
+      onClick={login}
+      style={{
+        color: "hsl(214, 89%, 52%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.9rem",
+      }}
+    >
+      <span
+        className={"login-facebook-icon"}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          paddingBottom: "0.1rem",
+        }}
+      >
+        <FacebookIcon />
+      </span>
       {!isRegister ? "Login" : "Register"} with Facebook
     </Button>
   );

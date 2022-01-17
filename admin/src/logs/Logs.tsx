@@ -12,12 +12,35 @@ import {
 import React, { useEffect, useState } from "react";
 import { client } from "../utils/client";
 
+const columns = [
+  {
+    id: "_id",
+    name: "Id",
+  },
+  {
+    id: "method",
+    name: "Method",
+  },
+  {
+    id: "route",
+    name: "Route",
+  },
+  {
+    id: "date",
+    name: "Date",
+  },
+  {
+    id: "location",
+    name: "Location",
+  },
+];
 const Logs = () => {
   const [data, setData] = useState<any[]>([]);
   const [streamLog, setStreamLog] = useState<any[]>([]);
   const [paginations, setPagination] = useState<any>();
   const [currentPage, setCurrentPage] = useState(0);
 
+  console.log(data);
   const clickToCopy = (e: any) => {
     const content = e.target.textContent.slice(
       1,
@@ -34,7 +57,7 @@ const Logs = () => {
   };
 
   const handleChangePage = (_: any, page: number) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
   };
 
   useEffect(() => {
@@ -45,7 +68,7 @@ const Logs = () => {
       const {
         latest: { logs, ...rest },
       } = data;
-      console.log(logs)
+      console.log(logs);
       setData(logs);
       setPagination(rest);
     };
@@ -64,30 +87,31 @@ const Logs = () => {
             <TableRow>
               {data &&
                 data.length > 0 &&
-                Object.keys(data[0]).map((key) => (
-                  <TableCell key={key}>{key}</TableCell>
+                columns.map((column: any) => (
+                  <TableCell key={column.id}>{column.name}</TableCell>
                 ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {data &&
-              data
-                .map((log) => (
-                  <TableRow key={log._id}>
-                    {Object.keys(log).map((key) => {
-                      if (key === "date") {
-                        return (
-                          <TableCell key={log._id + key}>
-                            {new Date(log[key]).toLocaleString()}
-                          </TableCell>
-                        );
-                      }
+              data.map((log) => (
+                <TableRow key={log._id}>
+                  {columns.map((column: any) => {
+                    if (column.id === "date") {
                       return (
-                        <TableCell key={log._id + key}>{log[key]}</TableCell>
+                        <TableCell key={log._id + column}>
+                          {new Date(log[column.id]).toLocaleString()}
+                        </TableCell>
                       );
-                    })}
-                  </TableRow>
-                ))}
+                    }
+                    return (
+                      <TableCell key={log._id + column}>
+                        {log[column.id]}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

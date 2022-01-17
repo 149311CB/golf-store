@@ -1,0 +1,110 @@
+#order-table {
+  @include usingBoxShadowMixin();
+  @include usingBorderRadiusMixin();
+  border-collapse: collapse;
+  width: 100%;
+  thead {
+    border-bottom: 1px solid var(--standout);
+    tr {
+      &:hover {
+        background-color: var(--bg);
+      }
+    }
+  }
+  th {
+    padding: 0.6rem 1.2rem;
+    border-left: 1px solid var(--standout);
+    &:first-child {
+      border-left: none;
+    }
+  }
+  tr {
+    @include transition(150ms, 50ms, 0s);
+    &:hover {
+      background-color: hsl(0, 0%, 30%);
+    }
+    td {
+      padding: 0.6rem;
+      border-left: 1px solid var(--standout);
+      &:first-child {
+        border-left: none;
+      }
+    }
+    border-bottom: 1px solid var(--bg-dim);
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.view-order-link {
+  text-decoration: none;
+  color: var(--text-standout);
+}
+
+h1 {
+  /* padding-bottom: 0.6rem; */
+  font-family: "Open Sans", sans-serif;
+  padding-bottom: 0.3rem;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid var(--standout);
+  margin: 0 -1.2rem 1.2rem -1.2rem;
+}
+
+.order-info {
+  display: flex;
+  gap: 2.1rem;
+  & > * {
+    width: 100%;
+    @include usingBoxShadowMixin();
+    @include usingBorderRadiusMixin();
+    padding: 0.6rem;
+    h2 {
+      font-family: "Open Sans", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding-bottom: 0.3rem;
+    }
+  }
+}
+
+.payment-method {
+  p {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.2rem;
+  }
+}
+
+.order-details {
+  .product-list-container {
+    h2 {
+      font-family: "Open Sans", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding-bottom: 0.3rem;
+    }
+    margin-top: 1.2rem;
+    width: 100%;
+    padding: 0.6rem;
+    @include usingBoxShadowMixin();
+    @include usingBorderRadiusMixin();
+    .product-container {
+      display: flex;
+      gap: 1.2rem;
+      h3 {
+        padding-bottom: 0.6rem;
+        font-weight: 600;
+      }
+      .image-container {
+        width: 30%;
+      }
+    }
+    .spec{
+      font-size: 0.875rem;
+    }
+  }
+}

@@ -1,18 +1,10 @@
-import {NextFunction, Request, Response} from "express";
-import {ParamsDictionary} from "express-serve-static-core";
-import {ParsedQs} from "qs";
-import {Log} from "../../../types/BasicLogging";
-import ConfigureLogging from "../../../utils/logger/ConfigureLogging";
-import {CartController} from "../CartController";
-import {CartDecorator} from "./CartDecorator";
+import { NextFunction, Request, Response } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+import { Log } from "../../../types/BasicLogging";
+import { CartDecorator } from "./CartDecorator";
 
 export default abstract class CartLoggingDecorator extends CartDecorator {
-  public path = "/api/carts";
-
-  constructor(cartController: CartController, logger: ConfigureLogging) {
-    super(cartController, logger);
-  }
-
   createLog(
     req: Request,
     res: Response,
@@ -48,6 +40,7 @@ export default abstract class CartLoggingDecorator extends CartDecorator {
       await handler(req, res, next);
       const end = process.hrtime();
       stopwatch = end[0] * 1e9 - start[0] * 1e9;
+      this.logger.info`${req.method} ${req.originalUrl}`;
     } catch (error: any) {
       this.createLog(req, res, stopwatch, this.logger.error, error.message);
     }
@@ -90,8 +83,6 @@ export default abstract class CartLoggingDecorator extends CartDecorator {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    console.log("decorator");
     await this.requestHandler(req, res, next, super.countItem);
   }
 }
-

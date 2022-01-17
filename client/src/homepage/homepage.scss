@@ -10,23 +10,27 @@
     h2 {
       font-weight: 400;
       margin-bottom: 1rem;
+      font-weight: 600;
     }
     .item-list {
-      gap: "0.9rem";
       display: grid;
+      gap: 2.1rem;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      justify-content: space-between;
+      h3 {
+        font-weight: 600;
+        font-size: 1rem;
+      }
     }
   }
 
   .carousel {
     width: 80%;
     margin: 4rem auto;
-    height: 70vh;
     border-radius: 1rem;
-    border: 1px solid var(--border);
-    background: var(--standout);
-    box-shadow: var(--medium-box-shadow);
+    /* border: 1px solid var(--border); */
+    /* background: var(--standout); */
+    /* box-shadow: var(--medium-box-shadow); */
+    @include usingInsetBoxShadowMixin();
   }
 
   .card {
@@ -56,7 +60,7 @@
   }
 
   .image-container {
-    height: 65%;
+    height: 70%;
     margin: 0 auto;
     @include transition;
     img {
@@ -73,4 +77,12 @@
   .category {
     padding-bottom: 3rem;
   }
+}
+
+#carousel-text {
+  padding: 7rem 0;
+  text-align: center;
+  font-size: 10rem;
+  color: #2e2e2e;
+  text-shadow: 3px 3px 6px #222222, -3px -3px 6px #3a3a3a;
 }

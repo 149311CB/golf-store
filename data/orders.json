@@ -1,16 +1,689 @@
-[
-  {
-    "cart": {
-      "$oid": "6144e51d4e255dd305a1ab43"
+[{
+  "_id": {
+    "$oid": "61da9e7aa89798661e738854"
+  },
+  "cart": {
+    "$oid": "61da8361a89798661e7383a4"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61da9e7aa89798661e738855"
     },
-    "state": "success",
-    "paymentMethod": [
-      {
-        "method": "stripe",
-        "detail": "4242"
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:36:10.788Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:36:10.788Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61da9e7aa89798661e738856"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:36:10.788Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:36:10.788Z"
       }
-    ],
-    "date": "2020-07-06T20:36:59.414Z",
-    "timestamps": ""
-  }
-]
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:57.333Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 187998,
+  "createdAt": {
+    "$date": "2022-01-09T08:36:10.788Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:36:10.788Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da9f09a89798661e73889d"
+  },
+  "cart": {
+    "$oid": "61da9efea89798661e738883"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61da9f09a89798661e73889e"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:38:33.585Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:38:33.585Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61da9f09a89798661e73889f"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:38:33.585Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:38:33.585Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:57.507Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 57999,
+  "createdAt": {
+    "$date": "2022-01-09T08:38:33.585Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:38:33.585Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61da9f1fa89798661e7388d1"
+  },
+  "cart": {
+    "$oid": "61da9f16a89798661e7388b7"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61da9f1fa89798661e7388d2"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:38:55.462Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:38:55.462Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61da9f1fa89798661e7388d3"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:38:55.462Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:38:55.462Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:57.530Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 99900,
+  "createdAt": {
+    "$date": "2022-01-09T08:38:55.462Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:38:55.462Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61daa039a89798661e738905"
+  },
+  "cart": {
+    "$oid": "61daa02fa89798661e7388eb"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61daa039a89798661e738906"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:43:37.035Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:43:37.035Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61daa039a89798661e738907"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:43:37.036Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:43:37.036Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:57.811Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 57999,
+  "createdAt": {
+    "$date": "2022-01-09T08:43:37.036Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:43:37.036Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61daa21ca89798661e7389d7"
+  },
+  "cart": {
+    "$oid": "61daa064a89798661e738925"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61daa21ca89798661e7389d8"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:51:40.411Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:51:40.411Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61daa21ca89798661e7389d9"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:51:40.411Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:51:40.411Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:58.293Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 129999,
+  "createdAt": {
+    "$date": "2022-01-09T08:51:40.411Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:51:40.411Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61daa26ba89798661e738a13"
+  },
+  "cart": {
+    "$oid": "61daa261a89798661e7389f9"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61daa26ba89798661e738a14"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:52:59.654Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:52:59.654Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61daa26ba89798661e738a15"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:52:59.654Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:52:59.654Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:58.373Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 99900,
+  "createdAt": {
+    "$date": "2022-01-09T08:52:59.654Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:52:59.654Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61daa2c0a89798661e738a4f"
+  },
+  "cart": {
+    "$oid": "61daa2b1a89798661e738a35"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61daa2c0a89798661e738a50"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:54:24.004Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:54:24.004Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61daa2c0a89798661e738a51"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:54:24.004Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:54:24.004Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:58.456Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 129999,
+  "createdAt": {
+    "$date": "2022-01-09T08:54:24.004Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:54:24.004Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61daa2d9a89798661e738a87"
+  },
+  "cart": {
+    "$oid": "61daa2cca89798661e738a69"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61daa2d9a89798661e738a88"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T08:54:49.050Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T08:54:49.050Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61daa2d9a89798661e738a89"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T08:54:49.050Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T08:54:49.050Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:01:58.482Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 129999,
+  "createdAt": {
+    "$date": "2022-01-09T08:54:49.051Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T08:54:49.051Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61dac41ba89798661e738e00"
+  },
+  "cart": {
+    "$oid": "61daa341a89798661e738a9b"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61dac41ba89798661e738e01"
+    },
+    "state": "pending",
+    "createdAt": {
+      "$date": "2022-01-09T11:16:43.811Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T11:16:43.811Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61dac41ba89798661e738e02"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T11:16:43.811Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T11:16:43.811Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:02:06.992Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 447996,
+  "createdAt": {
+    "$date": "2022-01-09T11:16:43.811Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T11:16:43.811Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61db1a2e8710c0168a33b5f1"
+  },
+  "cart": {
+    "$oid": "61be979d2dd8484a7c298a47"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61db1a2e8710c0168a33b5f2"
+    },
+    "state": "completed",
+    "createdAt": {
+      "$date": "2022-01-09T17:23:58.784Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-09T17:46:44.941Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61db1a2e8710c0168a33b5f3"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-09T17:23:58.784Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T17:23:58.784Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db1f7f9a3f1c2d36338277"
+      },
+      "state": "confirmed",
+      "createdAt": {
+        "$date": "2022-01-09T17:46:39.729Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T17:46:39.729Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db1f819a3f1c2d36338284"
+      },
+      "state": "shipped",
+      "createdAt": {
+        "$date": "2022-01-09T17:46:41.374Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T17:46:41.374Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db1f849a3f1c2d36338291"
+      },
+      "state": "completed",
+      "createdAt": {
+        "$date": "2022-01-09T17:46:44.941Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-09T17:46:44.941Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:02:29.030Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 187998,
+  "createdAt": {
+    "$date": "2022-01-09T17:23:58.784Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-09T17:46:44.942Z"
+  },
+  "__v": 3
+},{
+  "_id": {
+    "$oid": "61db8188c0fba4672d60c8d9"
+  },
+  "cart": {
+    "$oid": "61db1bf7d5654324809ca8df"
+  },
+  "state": {
+    "_id": {
+      "$oid": "61db8188c0fba4672d60c8da"
+    },
+    "state": "completed",
+    "createdAt": {
+      "$date": "2022-01-10T00:44:56.322Z"
+    },
+    "updatedAt": {
+      "$date": "2022-01-10T00:45:12.481Z"
+    }
+  },
+  "paymentMethod": {
+    "method": "stripe",
+    "details": {
+      "exprMonth": 4,
+      "exprYear": 2024,
+      "type": "credit",
+      "brand": "visa",
+      "last4": "4242"
+    }
+  },
+  "stateHistory": [
+    {
+      "_id": {
+        "$oid": "61db8188c0fba4672d60c8db"
+      },
+      "state": "pending",
+      "createdAt": {
+        "$date": "2022-01-10T00:44:56.322Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-10T00:44:56.322Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db8193c0fba4672d60c908"
+      },
+      "state": "confirmed",
+      "createdAt": {
+        "$date": "2022-01-10T00:45:07.806Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-10T00:45:07.806Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db8195c0fba4672d60c915"
+      },
+      "state": "shipped",
+      "createdAt": {
+        "$date": "2022-01-10T00:45:09.539Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-10T00:45:09.539Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "61db8198c0fba4672d60c922"
+      },
+      "state": "completed",
+      "createdAt": {
+        "$date": "2022-01-10T00:45:12.482Z"
+      },
+      "updatedAt": {
+        "$date": "2022-01-10T00:45:12.482Z"
+      }
+    }
+  ],
+  "paidAt": {
+    "$date": "1970-01-20T00:02:55.488Z"
+  },
+  "cancelledAt": null,
+  "shipping": "sin city,New York, NY, 18000",
+  "total": 115998,
+  "createdAt": {
+    "$date": "2022-01-10T00:44:56.322Z"
+  },
+  "updatedAt": {
+    "$date": "2022-01-10T00:45:12.482Z"
+  },
+  "__v": 3
+}]

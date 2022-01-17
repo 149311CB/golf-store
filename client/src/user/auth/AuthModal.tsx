@@ -20,8 +20,29 @@ const AuthModal: React.FC<{ isOpen: boolean; setIsOpen: Function }> = ({
       }}
     >
       <Login />
-      <GoogleStrategy />
-      <FacebookStrategy />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.9rem",
+          paddingTop: "0.6rem",
+          paddingBottom: "0.6rem",
+        }}
+      >
+        <span style={{ width: "100%" }}>
+          <hr style={{ borderBottom: "0.5px solid hsl(0, 0%, 40%)" }} />
+        </span>
+        <span style={{ fontFamily: "Open Sans", fontSize: "0.875rem" }}>
+          Or
+        </span>
+        <span style={{ width: "100%" }}>
+          <hr style={{ borderBottom: "0.5px solid hsl(0, 0%, 40%)" }} />
+        </span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+        <GoogleStrategy />
+        <FacebookStrategy />
+      </div>
     </Modal>
   );
 };

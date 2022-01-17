@@ -1,4 +1,11 @@
-import { Document, Model, model, PopulateOptions, Schema } from "mongoose";
+import {
+  Document,
+  FilterQuery,
+  Model,
+  model,
+  PopulateOptions,
+  Schema,
+} from "mongoose";
 import { ICartInterface, IItemInterface } from "../types/cartType";
 import { GolfRepository, VariantRepository } from "./GolfRepository";
 
@@ -66,9 +73,10 @@ class CartRepository {
   }
 
   async all(
+    query: FilterQuery<ICartInterface> = {},
     options?: PopulateOptions | Array<PopulateOptions>
-  ): Promise<ICartInterface & Document<any, any, ICartInterface>> {
-    return await this.model.find().populate(options);
+  ): Promise<(ICartInterface & Document<any, any, ICartInterface>)[]> {
+    return await this.model.find(query).populate(options);
   }
 
   async updateInfo(

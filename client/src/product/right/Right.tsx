@@ -1,15 +1,15 @@
-import React, {CSSProperties, useContext, useEffect, useState} from "react";
-import {transformData, VariantStore} from "../../hooks/useTransformData";
-import {Hand, IGolfProperty, Variant} from "../../types/Golfs";
-import {filterActive, filterDisabled} from "../../hooks/useFilterData";
-import {Iterator, MapIterator} from "../../utils/iterator";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
+import { transformData, VariantStore } from "../../hooks/useTransformData";
+import { Hand, IGolfProperty, Variant } from "../../types/Golfs";
+import { filterActive, filterDisabled } from "../../hooks/useFilterData";
+import { Iterator, MapIterator } from "../../utils/iterator";
 import Button from "../../components/button/Button";
 import Hands from "./hands/Hands";
 import Lofts from "./lofts/Lofts";
 import Flexes from "./flexs/Flexes";
 import Shafts from "./shafts/Shafts";
-import {client} from "../../utils/client";
-import {GlobalContext} from "../../App";
+import { client } from "../../utils/client";
+import { GlobalContext } from "../../App";
 import GroupControls from "../../components/group-controls/GroupControls";
 import Select from "../../components/select/Select";
 import Snackbar from "../../components/snackbar/Snackbar";
@@ -135,18 +135,19 @@ const Right: React.FC<IProps> = ({ data }) => {
     if (token) {
       try {
         const { status } = await client.post(route, choosenProduct, {
-          credentials:"include",
+          credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         if (status === 400) {
           setOpen(true);
+        } else {
+          fetchCount(true);
         }
       } catch (error) {}
     }
   };
-
 
   // Only run whenever data changed to initialized states
   useEffect(() => {

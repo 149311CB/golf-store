@@ -44,6 +44,11 @@ class UserRepository {
       type: String,
       required: false,
     },
+    avatar: {
+      type: String,
+      default:
+        "https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/avatar.svg?alt=media&token=ba3ea983-3133-41d9-88c4-002deffd991a",
+    },
   });
 
   private model: Model<UserTypes, any, any>;

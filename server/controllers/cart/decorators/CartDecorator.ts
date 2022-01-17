@@ -49,7 +49,6 @@ export abstract class CartDecorator extends CartController {
         res: Response,
         next: NextFunction
     ): Promise<any> {
-        console.log("base decorator");
         await this.cartController.countItem(req, res, next);
     }
 }

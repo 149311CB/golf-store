@@ -16,6 +16,7 @@ interface IButton {
     | "top-right"
     | "bottom-right";
   boxShadow?: "none" | "x-small" | "small" | "medium";
+  type?: "none" | "primary" | "danger";
   style?: React.CSSProperties;
   onClick?: Function;
   disabled?: boolean;
@@ -28,6 +29,7 @@ const Button: React.FC<IButton> = ({
   borderRadius = "all",
   boxShadow = "small",
   style,
+  type = "none",
   onClick,
   disabled = false,
 }) => {
@@ -38,7 +40,7 @@ const Button: React.FC<IButton> = ({
       border-radius-${borderRadius} 
       ${className} 
       box-shadow-${boxShadow} 
-      ${border}`}
+      ${border} ${type}`}
       style={style}
       onClick={(e) => {
         return !disabled && onClick ? onClick(e) : null;

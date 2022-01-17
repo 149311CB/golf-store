@@ -1,9 +1,9 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import EmployeeRepository from "../../repositories/employeeModel";
-import {EmployeeTypes} from "../../types/userTypes";
+import { EmployeeTypes } from "../../types/userTypes";
 import Controller from "../../typings/Controller";
 import ConfigureLogging from "../../utils/logger/ConfigureLogging";
-import {HeaderExtract, TokenValidateBase} from "../auth/AuthenticateBase";
+import { HeaderExtract, TokenValidateBase } from "../auth/AuthenticateBase";
 
 export default abstract class OrderController extends Controller {
   logger: ConfigureLogging;
@@ -26,7 +26,7 @@ export default abstract class OrderController extends Controller {
 
     return await EmployeeRepository.getInstance().findById(employeeId, {
       path: "role",
-      populate: {path: "permission"},
+      populate: { path: "permission" },
     });
   }
 
@@ -45,6 +45,11 @@ export default abstract class OrderController extends Controller {
     next: NextFunction
   ): Promise<any>;
   abstract getOrderById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any>;
+  abstract getAllOrder(
     req: Request,
     res: Response,
     next: NextFunction

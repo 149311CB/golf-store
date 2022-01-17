@@ -1,0 +1,51 @@
+@import "./orders";
+
+#account-page {
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  gap: 3rem;
+  #sidebar {
+    width: 25%;
+  }
+
+  #main-page {
+    padding: 0.6rem 1.2rem;
+    @include usingBoxShadowMixin(primary);
+    @include usingBorderRadiusMixin();
+    width: 75%;
+  }
+}
+
+#sidebar {
+  @include usingBoxShadowMixin(primary);
+  @include usingBorderRadiusMixin();
+  padding: 0.6rem 1.2rem;
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    a {
+      @include transition();
+      @include usingBorderRadiusMixin();
+      &:hover {
+        @include usingBoxShadowMixin();
+      }
+      &.active {
+        @include usingInsetBoxShadowMixin();
+      }
+      &:active {
+        @include usingInsetBoxShadowMixin();
+      }
+      width: 100%;
+      display: inline-block;
+      padding: 1.2rem 0.6rem;
+      font-family: "Open Sans", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text);
+    }
+  }
+}

@@ -9,7 +9,7 @@ import PaymentController from "./controllers/PaymentController";
 import { EmployeeAuth } from "./controllers/employee/EmployeeAuth";
 import ProductProtect from "./controllers/product/ProtectedProxy";
 import { UserProtect } from "./controllers/user/UserProtected";
-import UserOrderProtect from "./controllers/order/protects/UserOrderProtect";
+import EmployeeOrderProtect from "./controllers/order/protects/EmployeeOrderProtect";
 import PublicCartProtect from "./controllers/cart/protect/PublicCartProtect";
 import ConfigureLogging from "./utils/logger/ConfigureLogging";
 import FileLogger from "./utils/logger/FileLogger";
@@ -20,31 +20,39 @@ import { UserLoggingDecorator } from "./controllers/user/UserLogging";
 import DbLogger from "./utils/logger/DbLogger";
 import OrderLoggingDecorator from "./controllers/order/decorators/log/UserOrderLogging";
 import UserCartProtect from "./controllers/cart/protect/UserCartProtect";
-import EmployeeOrderDecorator from "./controllers/order/decorators/log/EmployeeOrderDecorator";
-import EmployeeOrderController from "./controllers/order/EmployeeOrderController";
-import {UserCartLoggingDecorator} from "./controllers/cart/decorators/UserCartLoggingDecorator";
-import {PublicCartLoggingDecorator} from "./controllers/cart/decorators/PublicCartLoggingDecorator";
+import EmployeeOrderLoggingDecorator from "./controllers/order/decorators/log/EmployeeOrderLoggingDecorator";
+import { UserCartLoggingDecorator } from "./controllers/cart/decorators/UserCartLoggingDecorator";
+import { PublicCartLoggingDecorator } from "./controllers/cart/decorators/PublicCartLoggingDecorator";
+import UserOrderProtect from "./controllers/order/protects/UserOrderProtect";
+import AddressProtect from "./controllers/address/AddressProtect";
+import ConsoleLogger from "./utils/logger/ConsoleLogger";
 
 // .env initialized
 dotenv.config();
 
 const app: Application = express();
-// const database: Mongoose = new Mongoose();
 
 // middleware to use in all routes
 const globalMiddlewares: Array<RequestHandler> = [
   json(),
   cors({
-    origin: "https://localhost:3000",
+    origin: ["https://localhost:3000", "https://localhost:3001"],
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
   }),
   cookieParser(process.env.COOKIE_SECRET),
 ];
 
-// initialized new instance of Server
-const server: Server = new Server(app, 5001);
 const logger = new ConfigureLogging([
+  new ConsoleLogger({
+    level: "info",
+    template: new TemplateBuilder()
+      .addLevel()
+      .addText(" ")
+      .addMessage()
+      .addText(" ")
+      .build(),
+  }),
   new FileLogger({
     level: "info",
     path: path.join(__dirname, "/logs"),
@@ -53,32 +61,31 @@ const logger = new ConfigureLogging([
       .addText(" ")
       .addMessage()
       .addText(" ")
-      .addDate()
       .build(),
   }),
   new DbLogger({
-    level: "info",
+    level: "error",
   }),
 ]);
 
 const controllers: Array<Controller> = [
-  new ProductProtect(),
+  new ProductProtect(logger),
   new CategoryController(),
   new PublicCartLoggingDecorator(new PublicCartProtect(logger), logger),
   new UserCartLoggingDecorator(new UserCartProtect(logger), logger),
   new UserLoggingDecorator(new UserProtect(logger), logger),
   new PaymentController(),
   new OrderLoggingDecorator(new UserOrderProtect(logger), logger),
-  new EmployeeOrderDecorator(new EmployeeOrderController(logger),logger),
+  new EmployeeOrderLoggingDecorator(new EmployeeOrderProtect(logger), logger),
   new EmployeeAuth(),
   new LoggerController(),
+  new AddressProtect(logger),
 ];
 
-Promise.resolve()
-  .then(() => server.connectDatabase())
-  .then(() => {
-    server.loadMiddlewares(globalMiddlewares);
-    server.loadControllers(controllers);
-    // Run http server
-    server.run();
-  });
+// initialized new instance of Server
+const server: Server = new Server(app, 5001, controllers, globalMiddlewares);
+
+Promise.resolve().then(() => {
+  // Run http server
+  server.run();
+});

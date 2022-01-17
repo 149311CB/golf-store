@@ -12,9 +12,15 @@ export default class UserOrderLoggingDecorator extends OrderLoggingDecorator {
       localMiddlewares: [],
     },
     {
-      path: "/auth/details/:id",
+      path: "/auth/user/detail/:id",
       method: Methods.GET,
       handler: this.getOrderById,
+      localMiddlewares: [],
+    },
+    {
+      path: "/auth/user/all",
+      method: Methods.GET,
+      handler: this.getAllOrder,
       localMiddlewares: [],
     },
   ];
@@ -22,46 +28,6 @@ export default class UserOrderLoggingDecorator extends OrderLoggingDecorator {
   constructor(orderController: UserOrderController, logger: ConfigureLogging) {
     super(orderController, logger);
   }
-
-  // createLog(
-  //   req: Request,
-  //   res: Response,
-  //   stopwatch: number,
-  //   handler: Function,
-  //   error?: string
-  // ) {
-  //   handler`${new Log(
-  //     req.method,
-  //     req.originalUrl,
-  //     new Date(),
-  //     res.statusCode,
-  //     res.statusMessage,
-  //     req.headers["user-agent"] || "unknown",
-  //     stopwatch,
-  //     req.socket.remoteAddress || "unknown",
-  //     "orders",
-  //     req.cookies,
-  //     error
-  //   )}`;
-  // }
-
-  // async requestHandler(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  //   handler: (req: Request, res: Response, next: NextFunction) => Promise<any>
-  // ) {
-  //   let stopwatch = 0;
-  //   try {
-  //     const start = process.hrtime();
-  //     await handler(req, res, next);
-  //     const end = process.hrtime();
-  //     stopwatch = end[0] * 1e9 - start[0] * 1e9;
-  //     this.createLog(req, res, stopwatch, this.logger.info);
-  //   } catch (error: any) {
-  //     this.createLog(req, res, stopwatch, this.logger.error, error.message);
-  //   }
-  // }
 
   // async createOrder(
   //   req: Request<ParamsDictionary, any, any, ParsedQs>,

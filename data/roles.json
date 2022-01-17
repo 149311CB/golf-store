@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "61c039406e6eb3ec1c4daa6b"
+  },
+  "name": "admin",
+  "permissions": [
+    {
+      "resource": "all",
+      "read": true,
+      "write": true
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "61c03dbd6e6eb3ec1c4daa77"
+  },
+  "name": "order management",
+  "permissions": [
+    {
+      "resource": "order",
+      "read": true,
+      "write": true
+    }
+  ]
+}]

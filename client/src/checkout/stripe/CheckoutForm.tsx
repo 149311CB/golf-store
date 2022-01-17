@@ -4,15 +4,17 @@ import { CheckoutContext } from "../Checkout";
 import { client } from "../../utils/client";
 import { OrderInterface } from "../../types/types";
 import { GlobalContext } from "../../App";
+import Button from "../../components/button/Button";
+import { StripeCardElementOptions } from "@stripe/stripe-js";
 
-const cardStyle = {
+const cardStyle: StripeCardElementOptions = {
   style: {
     base: {
-      fontSize: "16px",
-      color: "#424770",
       "::placeholder": {
-        color: "#aab7c4",
+        color: "white",
       },
+      color:"white",
+      backgroundColor: "#2e2e2e",
     },
     invalid: {
       color: "#9e2146",
@@ -31,6 +33,7 @@ const CheckoutForm = () => {
     handleError,
     handleSuccess,
     handleCancelled,
+    shipping,
   } = useContext(CheckoutContext);
 
   const stripe = useStripe();
@@ -76,8 +79,6 @@ const CheckoutForm = () => {
       card: card,
     });
 
-    console.log(paymentMethod);
-
     if (!paymentMethod || !paymentMethod.paymentMethod) {
       return handleError("invalid card");
     }
@@ -96,6 +97,8 @@ const CheckoutForm = () => {
         details: null,
         paidAt: null,
         cancelledAt: null,
+        shipping,
+        total: payload.paymentIntent.amount,
       });
       if (payload.paymentIntent.status === "canceled") {
         order.cancelledAt = new Date(payload.paymentIntent.created);
@@ -121,9 +124,14 @@ const CheckoutForm = () => {
       style={{ color: "white" }}
     >
       <CardElement id="card-element" options={cardStyle} />
-      <button type="submit" disabled={!stripe || processing}>
+      <Button
+        type={"primary"}
+        disabled={!stripe || processing}
+        style={{ width: "100%", fontWeight: 600, marginTop: "1.2rem" }}
+        border={"border"}
+      >
         Pay
-      </button>
+      </Button>
     </form>
   );
 };

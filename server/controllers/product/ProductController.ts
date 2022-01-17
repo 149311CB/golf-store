@@ -1,5 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { FlexRepository, GolfRepository, HandRepository, LoftRepository, ShaftRepository, VariantRepository } from "../../repositories/GolfRepository";
+import {
+  FlexRepository,
+  GolfRepository,
+  HandRepository,
+  LoftRepository,
+  ShaftRepository,
+  VariantRepository,
+} from "../../repositories/GolfRepository";
+import { IVariant } from "../../types/productTypes";
 import Controller, { Methods } from "../../typings/Controller";
 
 export default class ProductController extends Controller {
@@ -21,6 +29,12 @@ export default class ProductController extends Controller {
       path: "/golfs/create",
       method: Methods.POST,
       handler: this.createGolf,
+      localMiddlewares: [],
+    },
+    {
+      path: "/flex/all",
+      method: Methods.GET,
+      handler: this.getAllFlex,
       localMiddlewares: [],
     },
   ];
@@ -55,17 +69,31 @@ export default class ProductController extends Controller {
   }
 
   async findAllGolf(
-    _: Request,
+    req: Request,
     res: Response,
     __: NextFunction
   ): Promise<void> {
-    try {
-      const golfs = await GolfRepository.getInstance().all();
+    const { variant } = req.query;
+    const populate =
+      variant === "deep" ? { path: "flex shaft hand loft" } : { path: "" };
+    const golfs = await GolfRepository.getInstance().all();
+    const variants = await VariantRepository.getInstance().all(
+      {
+        golf: { $in: golfs },
+      },
+      populate
+    );
 
-      super.sendSuccess(200, res, golfs);
-    } catch (error: any) {
-      super.sendError(500, error.message);
-    }
+    const result = golfs.map((golf) => {
+      const v: IVariant[] = [];
+      variants.forEach((variant) => {
+        if (variant.golf.toString() == golf._id.toString()) {
+          v.push(variant);
+        }
+      });
+      return { variants: v, golf };
+    });
+    super.sendSuccess(200, res, result);
   }
 
   async createGolf(
@@ -74,6 +102,7 @@ export default class ProductController extends Controller {
     _: NextFunction
   ): Promise<void> {
     try {
+
       const { variants, golf } = req.body;
 
       const created = await GolfRepository.getInstance().create(golf);
@@ -87,34 +116,39 @@ export default class ProductController extends Controller {
         let flexId = null;
 
         if (loft) {
-          const updatedLoft = await LoftRepository.getInstance().findOneAndUpdate(
-            { type: loft.type },
-            { ...loft },
-            { new: true, upsert: true, useFindAndModify: false }
-          );
+          const updatedLoft =
+            await LoftRepository.getInstance().findOneAndUpdate(
+              { type: loft.type },
+              { ...loft },
+              { new: true, upsert: true, useFindAndModify: false }
+            );
           loftId = updatedLoft._id;
         }
 
         if (shaft) {
-          const updatedShaft = await ShaftRepository.getInstance().findOneAndUpdate(
-            {
-              name: shaft.name,
-            },
-            { ...shaft },
-            { new: true, upsert: true, useFindAndModify: false }
-          );
+          const updatedShaft =
+            await ShaftRepository.getInstance().findOneAndUpdate(
+              {
+                name: shaft.name,
+              },
+              { ...shaft },
+              { new: true, upsert: true, useFindAndModify: false }
+            );
           shaftId = updatedShaft._id;
         }
 
         if (flex) {
-          const updatedFlex = await FlexRepository.getInstance().findOneAndUpdate(
-            { type: flex.type },
-            { ...shaft },
-            { new: true, upsert: true, useFindAndModify: false }
-          );
+          const updatedFlex =
+            await FlexRepository.getInstance().findOneAndUpdate(
+              { type: flex.type },
+              { ...shaft },
+              { new: true, upsert: true, useFindAndModify: false }
+            );
           flexId = updatedFlex._id;
         }
-        const existHand = await HandRepository.getInstance().findOne({ side: hand.side });
+        const existHand = await HandRepository.getInstance().findOne({
+          side: hand.side,
+        });
 
         await VariantRepository.getInstance().create({
           golf: created._id,
@@ -129,6 +163,32 @@ export default class ProductController extends Controller {
     } catch (error: any) {
       console.log(error);
       super.sendError(500, error.message);
+    }
+  }
+
+  async getAllFlex(_: Request, res: Response, __: NextFunction): Promise<any> {
+    try {
+      // const flexs = await FlexRepository.getInstance().all();
+      const flexs = await FlexRepository.getInstance().model.aggregate([
+        {
+          $group: {
+            _id: "$type",
+            flex: { $push: "$$ROOT" },
+          },
+        },
+        { $unwind: "$flex" },
+        {
+          $replaceRoot: {
+            newRoot: {
+              $mergeObjects: ["$$ROOT", "$flex"],
+            },
+          },
+        },
+        { $project: { flex: 0 } },
+      ]);
+      return super.sendSuccess(200, res, flexs);
+    } catch (error) {
+      return super.sendError(500, res);
     }
   }
 }

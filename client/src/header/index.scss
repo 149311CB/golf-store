@@ -12,6 +12,7 @@ header {
   border-bottom: 1px solid var(--border);
 
   .logo {
+    list-style: none;
     width: 30%;
     cursor: pointer;
     // color: var(--text);
@@ -24,8 +25,15 @@ header {
     ul {
       list-style: none;
       display: flex;
-      font-family: "DIN Condensed", sans-serif;
+      font-family: "Open Sans", sans-serif;
+      font-size: 0.813rem;
+      font-weight: 600;
+
       li {
+        a {
+          text-decoration: none;
+          color: var(--text-standout);
+        }
         padding: 0rem 0.9rem;
         cursor: pointer;
       }
@@ -73,7 +81,7 @@ header {
       color: var(--text);
     }
 
-    &i{
+    &i {
       font-size: 13px;
     }
 
@@ -121,5 +129,52 @@ header {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    cursor: pointer;
+    position: relative;
   }
+}
+
+.dropdown {
+  @include usingBoxShadowMixin();
+  @include usingBorderRadiusMixin();
+  font-family: "Open Sans", sans-serif;
+  position: absolute;
+  right: 0;
+  transform: translateY(100%);
+  background: var(--bg);
+  /* padding: 0.6rem; */
+  min-width: 150px;
+  font-size: 0.875rem;
+  ul {
+    list-style: none;
+    a,
+    button {
+      @include usingBorderRadiusMixin();
+      width: 100%;
+      display: inline-block;
+      padding: 0.6rem;
+      text-decoration: none;
+      color: var(--text-standout);
+      text-align: left;
+      &:hover {
+        box-shadow: none !important;
+        background: var(--focus);
+      }
+      &:active {
+        @include usingInsetBoxShadowMixin();
+      }
+    }
+  }
+}
+
+.add-to-cart-menu {
+  font-size: 0.873rem;
+  font-family: "Open Sans";
+  position: absolute;
+  width: 200px;
+  transform: translateY(80%);
+  right: 0;
+  padding: 0.6rem;
+  @include usingBoxShadowMixin();
+  @include usingBorderRadiusMixin();
 }

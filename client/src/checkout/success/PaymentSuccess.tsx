@@ -1,8 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalContext } from "../../App";
 import { client } from "../../utils/client";
 
+const YouRock = () => {
+  return React.createElement(
+    `<lottie-player
+        src="https://assets5.lottiefiles.com/packages/lf20_tzgci2yi.json"
+        background="transparent"
+        speed="1"
+        style="width: 300px; height: 300px;"
+        loop
+        controls
+        autoplay
+      ></lottie-player>`
+  );
+};
 const PaymentSuccess = () => {
   const history = useHistory();
 
@@ -32,10 +45,17 @@ const PaymentSuccess = () => {
   }, [token, history]);
 
   return (
-    <div className={"payment-success"}>
+    <div className={"payment-success box-shadow-small border-radius-all"}>
       <p>Thank you for purchasing!</p>
       <p>We had sent an email with invoice to {email}</p>
-      <Link to={{ pathname: "/account/manage/orders", state: { orderId } }}>
+      <img
+        src={
+          "https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/animation_500_ky754ms9.gif?alt=media&token=5457cb9b-f71d-42cc-8d47-9daf771a201c"
+        }
+        alt=""
+        style={{ width: "250px", height: "150px", objectFit:"cover" }}
+      />
+      <Link to={{ pathname: `/account/orders/${orderId}` }} className={"box-shadow-small border-radius-all"}>
         View your order
       </Link>
     </div>

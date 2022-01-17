@@ -1,8 +1,8 @@
 import {httpHelper} from "../../../../utils/httpHelper";
 import jwt from "jsonwebtoken";
-import {IAuthenticationStrategy} from "./AuthStrategy";
+import {IAuthenticationStrategy} from "../IAuthenticationStrategy";
 import {UserTypes} from "../../../../types/userTypes";
-import {GoogleAdapter} from "./adapter/GoogleAdapter";
+import {GoogleAdapter} from "../adapter/GoogleAdapter";
 
 export interface IUserProfile {
   aud: string | undefined;

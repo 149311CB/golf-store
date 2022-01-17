@@ -1,8 +1,8 @@
-import {IAuthenticationStrategy} from "./AuthStrategy";
+import {IAuthenticationStrategy} from "../IAuthenticationStrategy";
 import {httpHelper} from "../../../../utils/httpHelper";
 import {ITokenResults} from "./GoogleStrategy";
 import {UserTypes} from "../../../../types/userTypes";
-import {FacebookAdapter} from "./adapter/FacebookAdapter";
+import {FacebookAdapter} from "../adapter/FacebookAdapter";
 
 export interface IPublicProfile {
   id: string | undefined;
@@ -44,7 +44,6 @@ export class FacebookStrategy implements IAuthenticationStrategy {
   }
 
   async inspectToken(access_token: string) {
-    console.log(access_token);
     let userInfo: any = null;
     await httpHelper
       .get("graph.facebook.com", "/debug_token", {
@@ -64,7 +63,6 @@ export class FacebookStrategy implements IAuthenticationStrategy {
     user_id: string,
     access_token: string
   ): Promise<IPublicProfile> {
-    console.log(user_id);
     let userInfo: any = null;
     await httpHelper
       .get("graph.facebook.com", `/${user_id}`, {

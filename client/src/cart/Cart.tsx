@@ -4,6 +4,7 @@ import { GlobalContext } from "../App";
 import Button from "../components/button/Button";
 import { Golf, Variant } from "../types/Golfs";
 import { client } from "../utils/client";
+import Address from "./address/Address";
 import ProductContainer from "./product-container/ProductContainer";
 
 export class CartProduct {
@@ -19,7 +20,7 @@ export class CartProduct {
   }
 }
 
-const initialized = (products: any) => {
+export const initialized = (products: any) => {
   return products.map((item: any) => {
     const product = new Golf(item.product);
     const variant = new Variant(item.variant);
@@ -33,9 +34,11 @@ const initialized = (products: any) => {
 };
 
 const Cart = () => {
+  const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [cartMeta, setCartMeta] = useState<any>(null);
+  const [shipping, setShipping] = useState<any>(null);
   const history = useHistory();
   const { setIsOpen, token } = useContext(GlobalContext);
 
@@ -70,7 +73,18 @@ const Cart = () => {
     if (cartMeta) {
       history.push({
         pathname: `/checkout`,
-        state: { id: cartMeta._id },
+        state: {
+          cartId: cartMeta._id,
+          shipping:
+            (shipping.apt && shipping.apt + ",") +
+            shipping.street +
+            "," +
+            shipping.city +
+            ", " +
+            shipping.state +
+            ", " +
+            shipping.zip,
+        },
       });
     }
   };
@@ -115,15 +129,15 @@ const Cart = () => {
           setLoading={setLoading}
         />
         <div className={"right-col"}>
-          <div className={"shipping-address"}>
-            <div>51/4 Thanh Thai</div>
-          </div>
-          <div className={"coupons"}>$10 off</div>
-          <div className={"price-box"}>20000</div>
+          <Address
+            shipping={shipping}
+            setShipping={setShipping}
+            setDisabled={setDisabled}
+          />
           <Button
             className={"checkout-btn"}
             border={"border"}
-            disabled={cartMeta === null || loading}
+            disabled={cartMeta === null || loading || disabled}
             onClick={() => proceedToCheckout()}
           >
             Proceed to checkout <i className="fas fa-angle-double-right" />

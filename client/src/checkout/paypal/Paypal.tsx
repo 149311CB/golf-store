@@ -1,10 +1,10 @@
-import {useContext, useEffect, useState} from "react";
-import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
-import {CheckoutContext} from "../Checkout";
-import {client} from "../../utils/client";
-import {OrderInterface} from "../../types/types";
-import {useHistory} from "react-router-dom";
-import {GlobalContext} from "../../App";
+import { useContext, useEffect, useState } from "react";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { CheckoutContext } from "../Checkout";
+import { client } from "../../utils/client";
+import { OrderInterface } from "../../types/types";
+import { useHistory } from "react-router-dom";
+import { GlobalContext } from "../../App";
 
 const Paypal = () => {
   const {
@@ -16,10 +16,11 @@ const Paypal = () => {
     handleError,
     handleSuccess,
     handleCancelled,
+    shipping,
   } = useContext(CheckoutContext);
 
   const [clientId, setClientId] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState<number>(0);
   const history = useHistory();
   const { token } = useContext(GlobalContext);
 
@@ -31,6 +32,8 @@ const Paypal = () => {
       details: null,
       paidAt: null,
       cancelledAt: null,
+      shipping,
+      total: amount,
     });
   };
 
@@ -70,7 +73,7 @@ const Paypal = () => {
                 purchase_units: [
                   {
                     amount: {
-                      value: amount,
+                      value: amount.toString(),
                     },
                   },
                 ],

@@ -26,7 +26,7 @@ class ConsoleLogger extends LoggerBase<Config> {
 
   public format(value: any): string {
     if (Object.keys(value).length > 0) {
-      return `\n${inspect(value, false, 2, true)}\n`;
+      return `${inspect(value, false, 2, true)}`;
     }
 
     return String(value);

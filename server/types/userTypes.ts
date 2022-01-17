@@ -6,6 +6,7 @@ export class BasicInfo {
   firstName: string;
   lastName: string;
   email: string;
+  avatar?: string;
 
   constructor(
     firstName: string,
@@ -13,7 +14,8 @@ export class BasicInfo {
     email: string,
     password?: string,
     refreshToken?: string,
-    isActive?: boolean
+    isActive?: boolean,
+    avatar?:string
   ) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -21,6 +23,7 @@ export class BasicInfo {
     this.password = password;
     this.refreshToken = refreshToken;
     this.isActive = isActive;
+    this.avatar = avatar
   }
 }
 

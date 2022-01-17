@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "61d951276ae06b37d72dac5f"
+  },
+  "user": {
+    "$oid": "61bc8b536a281c5cff127f94"
+  },
+  "street": "sin city",
+  "city": "New York",
+  "state": "NY",
+  "zip": 18000,
+  "apt": "",
+  "isPrimary": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61dadd300964544ee565f897"
+  },
+  "user": {
+    "$oid": "61b95a3e261e177f9db11e0f"
+  },
+  "street": "sin city",
+  "city": "New York",
+  "state": "NY",
+  "zip": 18000,
+  "apt": "",
+  "isPrimary": false,
+  "__v": 0
+}]

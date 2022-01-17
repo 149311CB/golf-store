@@ -128,7 +128,7 @@ const Snackbar: React.FC<{
 
   return (
     <div
-      className={`toast border-radius-${borderRadius} box-shadow-${boxShadow}`}
+      className={`snackbar border-radius-${borderRadius} box-shadow-${boxShadow}`}
       onMouseEnter={() => {
         setDelay(true);
       }}

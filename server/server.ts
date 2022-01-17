@@ -5,16 +5,31 @@ import { connect } from "mongoose";
 import Controller from "./typings/Controller";
 
 export default class Server {
-  private _app: Application;
-  // private _database: Mongoose;
+  private readonly _app: Application;
   private readonly _port: number;
+  private controllers: Array<Controller>;
+  private middlewares: Array<RequestHandler>;
 
-  constructor(app: Application, port: number) {
+  constructor(
+    app: Application,
+    port: number,
+    controllers: Array<Controller>,
+    middlewares: Array<RequestHandler>
+  ) {
     this._app = app;
     this._port = port;
+    this.controllers = controllers;
+    this.middlewares = middlewares;
   }
 
-  public run(): https.Server {
+  public async run(): Promise<https.Server> {
+    await this.connectDatabase();
+    this.loadMiddlewares();
+    this.loadControllers();
+    return this.createServer();
+  }
+
+  private createServer(): https.Server {
     const credentials = {
       key: fs.readFileSync("./localhost-key.pem"),
       cert: fs.readFileSync("./localhost.pem"),
@@ -25,19 +40,19 @@ export default class Server {
     });
   }
 
-  public loadControllers(controllers: Array<Controller>): void {
-    controllers.forEach((controller) => {
+  private loadControllers(): void {
+    this.controllers.forEach((controller) => {
       this._app.use(controller.path, controller.setRoutes());
     });
   }
 
-  public loadMiddlewares(middlewares: Array<RequestHandler>): void {
-    middlewares.forEach((middleware) => {
+  private loadMiddlewares(): void {
+    this.middlewares.forEach((middleware) => {
       this._app.use(middleware);
     });
   }
 
-  public async connectDatabase(): Promise<void> {
+  private async connectDatabase(): Promise<void> {
     try {
       const conn = await connect(process.env.MONGO_URI!, {
         useUnifiedTopology: true,
@@ -51,4 +66,3 @@ export default class Server {
     }
   }
 }
-

@@ -62,6 +62,7 @@ export interface CheckoutInterface {
   handleError: (error: string) => void;
   handleSuccess: (order: OrderInterface) => void;
   handleCancelled: (order: OrderInterface) => void;
+  shipping: string;
 }
 
 export class OrderInterface {
@@ -71,6 +72,8 @@ export class OrderInterface {
   details: Object | null;
   paidAt: Date | null;
   cancelledAt: Date | null;
+  shipping: string | null;
+  total:number
   constructor({
     cart,
     state,
@@ -78,6 +81,8 @@ export class OrderInterface {
     details,
     paidAt,
     cancelledAt,
+    shipping,
+    total
   }: OrderInterface) {
     this.cart = cart;
     this.state = state;
@@ -85,5 +90,7 @@ export class OrderInterface {
     this.details = details;
     this.paidAt = paidAt;
     this.cancelledAt = cancelledAt;
+    this.shipping = shipping;
+    this.total = total
   }
 }

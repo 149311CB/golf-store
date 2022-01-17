@@ -1,6 +1,6 @@
 import UserRepository from "../../../../repositories/UserRepository";
 import { generateRefreshToken } from "../../../../utils/generateToken";
-import { IAuthenticationStrategy } from "./AuthStrategy";
+import { IAuthenticationStrategy } from "../IAuthenticationStrategy";
 import { UserTypes } from "../../../../types/userTypes";
 
 export class LocalValidation implements IAuthenticationStrategy {

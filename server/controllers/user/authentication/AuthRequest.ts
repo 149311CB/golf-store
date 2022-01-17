@@ -1,8 +1,8 @@
-import UserRepository from "../../../../repositories/UserRepository";
-import { generateRefreshToken } from "../../../../utils/generateToken";
-import { IAuthenticationStrategy } from "./AuthStrategy";
-import { LocalValidation } from "./LocalStrategy";
-import { UserTypes } from "../../../../types/userTypes";
+import UserRepository from "../../../repositories/UserRepository";
+import { generateRefreshToken } from "../../../utils/generateToken";
+import { IAuthenticationStrategy } from "./IAuthenticationStrategy";
+import { LocalValidation } from "./strategies/LocalStrategy";
+import { UserTypes } from "../../../types/userTypes";
 
 // context class
 export class AuthRequest {
@@ -24,12 +24,12 @@ export class AuthRequest {
         return exist;
       }
 
-      user = await AuthRequest.createUser(profile);
+      user = await this.createUser(profile);
     }
     return user;
   }
 
-  private static async createUser(user: any): Promise<UserTypes> {
+  protected async createUser(user: any): Promise<UserTypes> {
     const newUser = await UserRepository.getInstance().create(user);
     newUser.refreshToken = generateRefreshToken({ userId: newUser._id })!;
     await newUser.save();

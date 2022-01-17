@@ -26,7 +26,7 @@
   box-sizing: border-box;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -45,8 +45,8 @@ html{
 }
 
 main {
-  /* min-height: 90vh; */
-  // padding: 1.2rem;
+  min-height: 90vh;
+  padding: 1.2rem;
   // border: 1px solid red;
   font-size: 0.813rem;
   font-family: "Open Sans", sans-serif;
@@ -79,7 +79,8 @@ main {
 }
 
 @mixin transition($box-shadow: 150ms, $background: 200ms, $delay: 0s) {
-  transition: box-shadow $box-shadow ease-out $delay, background $background ease-out;
+  transition: box-shadow $box-shadow ease-out $delay,
+    background $background ease-out;
 }
 
 @keyframes disabledBrightnessFilterKeyframes {
@@ -228,5 +229,9 @@ main {
 @import "../homepage/homepage";
 
 @import "../cart/cart";
+
+@import "../user/";
+
+@import "../checkout";
 
 @import "media";

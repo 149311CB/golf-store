@@ -6,10 +6,10 @@ import {
   generateRefreshToken,
   generateToken,
 } from "../../utils/generateToken";
-import { GoogleStrategy } from "./strategies/authentication/GoogleStrategy";
-import { LocalValidation } from "./strategies/authentication/LocalStrategy";
-import { AuthRequest } from "./strategies/authentication/AuthRequest";
-import { FacebookStrategy } from "./strategies/authentication/FacebookStrategy";
+import { GoogleStrategy } from "./authentication/strategies/GoogleStrategy";
+import { LocalValidation } from "./authentication/strategies/LocalStrategy";
+import { AuthRequest } from "./authentication/AuthRequest";
+import { FacebookStrategy } from "./authentication/strategies/FacebookStrategy";
 import { IUserLogginDecorator } from "./UserLogging";
 
 class AuthController extends Controller implements IUserLogginDecorator {
@@ -68,10 +68,10 @@ class AuthController extends Controller implements IUserLogginDecorator {
         res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
       }
 
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://localhost:3001");
     } catch (error) {
       console.log(error);
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://localhost:3001");
     }
   }
 
@@ -96,9 +96,9 @@ class AuthController extends Controller implements IUserLogginDecorator {
         res.cookie("refresh_token", user.refreshToken, COOKIES_OPTIONS);
       }
 
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://localhost:3001");
     } catch (error) {
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://localhost:3001");
     }
   }
 
@@ -181,18 +181,20 @@ class AuthController extends Controller implements IUserLogginDecorator {
       select = "-password -refresh_token";
     }
 
-    if (!req.user) {
-      return res.status(401);
-    }
     const user = await UserRepository.getInstance().findById(
       req.user._id!,
       select
     );
-    try {
-      return res.status(200).json(user);
-    } catch (error: any) {
-      return res.status(500).json({ message: error.message });
-    }
+    return super.sendSuccess(200, res, user);
+  }
+
+  async logout(req: Request, res: Response, _: NextFunction): Promise<any> {
+    const user = req.user;
+    const exist = await UserRepository.getInstance().findById(user._id!);
+    exist.refreshToken = "";
+    await exist.save();
+    res.clearCookie("refresh_token", COOKIES_OPTIONS);
+    return super.sendSuccess(200, res, null);
   }
 }
 export default AuthController;

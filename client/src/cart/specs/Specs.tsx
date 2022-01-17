@@ -7,18 +7,18 @@ const Specs: React.FC<{ variant: Variant; product: Golf }> = ({
   return (
     <div className={"variant-specs"}>
       <h3 className={"product-name"}>{product.name}</h3>
-      <div>
+      <p>
         <strong>Hand:</strong> {variant.hand?.side}
-      </div>
-      <div>
+      </p>
+      <p>
         <strong>Loft:</strong> {variant.loft?.type}
-      </div>
-      <div>
+      </p>
+      <p>
         <strong>Shaft:</strong> {variant.shaft?.name}
-      </div>
-      <div>
+      </p>
+      <p>
         <strong>Flex:</strong> {variant.flex?.type}
-      </div>
+      </p>
       {/* <div> */}
       {/*   <strong>SKU:</strong> {product.sku} */}
       {/* </div> */}

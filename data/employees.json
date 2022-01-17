@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "61bc714896a60ef6d2a51a3e"
+  },
+  "email": "xstk2000@gmail.com",
+  "firstName": "Nick",
+  "lastName": "Nguyen",
+  "password": "$2a$10$cEIveLsY2nLYugzL4lX.lO5yqbxlgtr8whbAmQNB39h7rtYyz8Wva",
+  "role": {
+    "$oid": "61c039406e6eb3ec1c4daa6b"
+  },
+  "isActive": false,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNjFiYzcxNDg5NmE2MGVmNmQyYTUxYTNlIiwiaWF0IjoxNjQxNzc1NTM1LCJleHAiOjE2NDQzNjc1MzV9.fYDAf5iD2znkG686Fswq2_MEDtL-lXiuqfeuGS-_xmQ"
+}]
