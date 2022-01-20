@@ -28,9 +28,8 @@ class FileLogger extends LoggerBase<Config> {
     strings: TemplateStringsArray,
     expression: any[],
     level: ILevel,
-    location: string
   ) {
-    const result = this.getMessage(strings, expression, level, location);
+    const result = this.getMessage(strings, expression, level,"");
     this.fileStream.write(`${__dirname}/${result}\n`);
 
     return strings;

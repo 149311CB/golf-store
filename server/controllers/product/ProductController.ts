@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { requestLog } from "../../middlewares/requestLog";
+import { routeConfig } from "../../middlewares/routeConfig";
 import {
   FlexRepository,
   GolfRepository,
@@ -8,71 +10,38 @@ import {
   VariantRepository,
 } from "../../repositories/GolfRepository";
 import { IVariant } from "../../types/productTypes";
-import Controller, { Methods } from "../../typings/Controller";
+import Controller from "../../typings/Controller";
 
 export default class ProductController extends Controller {
-  public path = "/api/products";
-  public routes = [
-    {
-      path: "/golfs/:id",
-      method: Methods.GET,
-      handler: this.findGolfById,
-      localMiddlewares: [],
-    },
-    {
-      path: "/golfs",
-      method: Methods.GET,
-      handler: this.findAllGolf,
-      localMiddlewares: [],
-    },
-    {
-      path: "/golfs/create",
-      method: Methods.POST,
-      handler: this.createGolf,
-      localMiddlewares: [],
-    },
-    {
-      path: "/flex/all",
-      method: Methods.GET,
-      handler: this.getAllFlex,
-      localMiddlewares: [],
-    },
-  ];
-
-  constructor() {
-    super();
-  }
-
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/products" + "/golfs/:id" })
   async findGolfById(
     req: Request,
     res: Response,
     _: NextFunction
   ): Promise<any> {
-    try {
-      const golf = await GolfRepository.getInstance().findById(req.params.id);
-      if (!golf) {
-        return super.sendError(404, res, "not found");
-      }
-
-      const variants = await VariantRepository.getInstance().all(
-        {
-          golf: golf._id,
-        },
-        { path: "hand shaft flex loft" }
-      );
-
-      super.sendSuccess(200, res, { golf, variants });
-    } catch (error: any) {
-      console.log(error);
-      super.sendError(500, error.message);
+    const golf = await GolfRepository.getInstance().findById(req.params.id);
+    if (!golf) {
+      return super.sendError(404, res, "not found");
     }
+
+    const variants = await VariantRepository.getInstance().all(
+      {
+        golf: golf._id,
+      },
+      { path: "hand shaft flex loft" }
+    );
+
+    super.sendSuccess(200, res, { golf, variants });
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/products" + "/golfs" })
   async findAllGolf(
     req: Request,
     res: Response,
     __: NextFunction
-  ): Promise<void> {
+  ): Promise<any> {
     const { variant } = req.query;
     const populate =
       variant === "deep" ? { path: "flex shaft hand loft" } : { path: "" };
@@ -96,6 +65,8 @@ export default class ProductController extends Controller {
     super.sendSuccess(200, res, result);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/products" + "/create" })
   async createGolf(
     req: Request,
     res: Response,
@@ -166,6 +137,8 @@ export default class ProductController extends Controller {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/products" + "/golf/flex/all" })
   async getAllFlex(_: Request, res: Response, __: NextFunction): Promise<any> {
     try {
       // const flexs = await FlexRepository.getInstance().all();

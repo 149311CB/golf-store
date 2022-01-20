@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction, Router } from "express";
+import { Response, Router } from "express";
 
 export enum Methods {
   GET = "GET",
@@ -7,47 +7,8 @@ export enum Methods {
   DELETE = "DELETE",
 }
 
-export interface IRoute {
-  path: string;
-  method: string;
-  handler: (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => void | Promise<void>;
-  localMiddlewares: ((
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => void)[];
-}
-
 export default abstract class Controller {
   public  router: Router = Router();
-  public abstract path: string;
-  public abstract readonly routes: Array<IRoute>;
-
-  public setRoutes = (): Router => {
-    for (let route of this.routes) {
-      for (let mw of route.localMiddlewares) {
-        this.router.use(route.path, mw);
-      }
-      switch (route.method) {
-        case Methods.GET:
-          this.router.get(route.path, route.handler.bind(this));
-          break;
-        case Methods.POST:
-          this.router.post(route.path, route.handler.bind(this));
-          break;
-        case Methods.PUT:
-          this.router.put(route.path, route.handler.bind(this));
-          break;
-        case Methods.DELETE:
-          this.router.delete(route.path, route.handler.bind(this));
-      }
-    }
-    return this.router;
-  };
 
   protected sendSuccess(
     status: number,

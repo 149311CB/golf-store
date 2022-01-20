@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../repositories/UserRepository";
-import Controller, { IRoute } from "../../typings/Controller";
+import Controller from "../../typings/Controller";
 import {
   COOKIES_OPTIONS,
   generateRefreshToken,
@@ -10,12 +10,13 @@ import { GoogleStrategy } from "./authentication/strategies/GoogleStrategy";
 import { LocalValidation } from "./authentication/strategies/LocalStrategy";
 import { AuthRequest } from "./authentication/AuthRequest";
 import { FacebookStrategy } from "./authentication/strategies/FacebookStrategy";
-import { IUserLogginDecorator } from "./UserLogging";
+import { routeConfig } from "../../middlewares/routeConfig";
+import { refreshTokenProtected, userProtected } from "../../middlewares/authMiddleware";
+import { requestLog } from "../../middlewares/requestLog";
 
-class AuthController extends Controller implements IUserLogginDecorator {
-  public path: string = "";
-  public routes: Array<IRoute> = [];
-
+class AuthController extends Controller {
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/user/auth" + "/login" })
   async login(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const { email, password } = req.body;
@@ -37,6 +38,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/login/google" })
   async google(_: Request, res: Response, __: NextFunction): Promise<any> {
     const scope = [
       "https%3A//www.googleapis.com/auth/userinfo.email",
@@ -48,12 +51,13 @@ class AuthController extends Controller implements IUserLogginDecorator {
     res.redirect(
       `https://accounts.google.com/o/oauth2/v2/auth?scope=${scope.join(
         "+"
-      )}&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${redirect_uri}&client_id=${
-        process.env.GOOGLE_CLIENT_ID
+      )}&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${redirect_uri}&client_id=${process.env.GOOGLE_CLIENT_ID
       }`
     );
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/login/google/callback" })
   async googleCallback(
     req: Request,
     res: Response,
@@ -75,6 +79,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/login/facebook" })
   async facebook(req: Request, res: Response, __: NextFunction): Promise<any> {
     const redirect_uri = `https://localhost:5001/api/user/auth/login/facebook/callback`;
     const uri = `https://www.facebook.com/v12.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${redirect_uri}&scope=public_profile,email`;
@@ -82,6 +88,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     res.redirect(uri);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/login/facebook/callback" })
   async facebookCallback(
     req: Request,
     res: Response,
@@ -102,6 +110,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/token/refresh", middlewares: [refreshTokenProtected] })
   async refreshTokens(
     req: Request,
     res: Response,
@@ -118,6 +128,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     return super.sendSuccess(200, res, { token });
   }
 
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/user/auth" + "/register" })
   async register(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const {
@@ -170,6 +182,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/user/auth" + "/details", middlewares: [userProtected] })
   async getuserDetails(
     req: Request,
     res: Response,
@@ -188,6 +202,8 @@ class AuthController extends Controller implements IUserLogginDecorator {
     return super.sendSuccess(200, res, user);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/users/auth" + "/logout", middlewares: [userProtected] })
   async logout(req: Request, res: Response, _: NextFunction): Promise<any> {
     const user = req.user;
     const exist = await UserRepository.getInstance().findById(user._id!);

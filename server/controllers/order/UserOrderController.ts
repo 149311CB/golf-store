@@ -5,11 +5,13 @@ import { orderInterface } from "../../types/orderType";
 import { VariantRepository } from "../../repositories/GolfRepository";
 import OrderController from "./OrderController";
 import { StateManager } from "./states/StateManager";
+import { routeConfig } from "../../middlewares/routeConfig";
+import { userProtected } from "../../middlewares/authMiddleware";
+import { requestLog } from "../../middlewares/requestLog";
 
 export default class UserOrderController extends OrderController {
-  public path = "";
-  public routes = [];
-
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/order" + "/auth/create", middlewares: [userProtected] })
   async createOrder(
     req: Request,
     res: Response,
@@ -67,6 +69,8 @@ export default class UserOrderController extends OrderController {
     return res.status(201).json(createOrder);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/order" + "/auth/user/detail/:id", middlewares: [userProtected] })
   async getOrderById(
     req: Request,
     res: Response,
@@ -91,6 +95,8 @@ export default class UserOrderController extends OrderController {
     return super.sendSuccess(200, res, order);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/order" + "/auth/user/all", middlewares: [userProtected] })
   async getAllOrder(
     req: Request,
     res: Response,

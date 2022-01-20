@@ -40,6 +40,7 @@ const jellyPopup = [
     transform: `scale(1.05)`,
   },
 ];
+
 const fade = [
   {
     opacity: 0,

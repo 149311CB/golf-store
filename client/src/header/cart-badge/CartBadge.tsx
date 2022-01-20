@@ -16,7 +16,7 @@ const CartBadge = () => {
     async (display = false) => {
       if (display) addToCartMenuRef.current.style.display = "block";
       let route = "/api/carts/count";
-      if (token !== "-1") {
+      if (token && token !== "-1") {
         route = "/api/carts/auth/count";
       }
       const { data } = await client.get(route, {
@@ -44,7 +44,7 @@ const CartBadge = () => {
       className={"cart pop"}
       style={{ textDecoration: "none", position: "relative" }}
     >
-      <i className="fas fa-shopping-cart fa-sm"></i>
+      <i className="fas fa-shopping-cart fa-sm"/>
       {count > 0 && (
         <div
           className={"cart-item-count"}
@@ -63,6 +63,7 @@ const CartBadge = () => {
           border={"border"}
           style={{ width: "100%", marginTop: "0.6rem" }}
           onClick={() => {
+            addToCartMenuRef.current.style.display = "none";
             history.push("/cart");
           }}
         >

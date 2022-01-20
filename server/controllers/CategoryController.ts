@@ -1,20 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { requestLog } from "../middlewares/requestLog";
+import { routeConfig } from "../middlewares/routeConfig";
 import { CategoryRepository } from "../repositories/CategoryRepository";
-import Controller, { Methods } from "../typings/Controller";
+import Controller from "../typings/Controller";
 
 export default class CategoryController extends Controller {
-  public path = "/api/category";
-  public routes = [
-    {
-      path: "/list",
-      method: Methods.POST,
-      handler: this.getCategoryList,
-      localMiddlewares: [],
-    },
-  ];
-  constructor() {
-    super();
-  }
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/category" + "/list" })
   async getCategoryList(req: Request, res: Response, _: NextFunction) {
     try {
       const { categoryList } = req.body;

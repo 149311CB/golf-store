@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "node server",
-    "server": "tsc -w & nodemon dist/app.js"
+    "server": "tsc -w & nodemon dist/index.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

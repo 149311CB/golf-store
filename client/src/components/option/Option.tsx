@@ -25,6 +25,8 @@ const Option: React.FC<OptionProps> = ({
   // Remove v-disabled on option click
   // Set active to the current clicked ref
   const defaultOnClick = () => {
+    // This line is to fix glitch issue
+    optionRef.current?.classList.add("active")
     setActive(optionRef.current);
     runCallback(value);
 
@@ -42,9 +44,8 @@ const Option: React.FC<OptionProps> = ({
 
   return (
     <div
-      className={`option  ${
-        disabled ? "disabled" : visualDisabled ? "v-disabled" : ""
-      }`}
+      className={`option  ${disabled ? "disabled" : visualDisabled ? "v-disabled" : ""
+        }`}
       onClick={(e) => {
         if (!disabled) {
           removeActiveSibling(e);

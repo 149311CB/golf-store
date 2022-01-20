@@ -1,7 +1,7 @@
 import React from "react";
 import OptionGroup from "../../../components/option/OptionGroup";
 import Option from "../../../components/option/Option";
-import { Hand } from "../../../types/Golfs";
+import { Hand, IGolfProperty } from "../../../types/Golfs";
 import { IGolfComponentsProps } from "../Right";
 
 const Hands: React.FC<IGolfComponentsProps> = ({
@@ -19,8 +19,8 @@ const Hands: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues(
-          (value: Hand) => (
+        values.map(
+          (value: IGolfProperty) => (
             <Option
               key={`${value._id}`}
               visualDisabled={value.visualDisabled}
@@ -28,7 +28,7 @@ const Hands: React.FC<IGolfComponentsProps> = ({
               style={optionStyle}
               value={value}
             >
-              {value.side}
+              {(value as Hand).side}
             </Option>
           ),
           (a: any, b: any) => {

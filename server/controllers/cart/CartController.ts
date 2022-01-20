@@ -8,7 +8,6 @@ import {Document} from "mongoose";
 import {VariantRepository} from "../../repositories/GolfRepository";
 
 export abstract class CartController extends Controller {
-  public path= "/api/carts"
   logger: ConfigureLogging;
 
   constructor(logger: ConfigureLogging) {

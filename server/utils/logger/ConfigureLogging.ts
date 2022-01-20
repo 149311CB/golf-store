@@ -1,5 +1,4 @@
 import LoggerBase from "./LoggerBase";
-import { getLocation } from "./Location";
 import { ILevel } from "./ILevel";
 
 export class ConfigureLogging {
@@ -21,7 +20,7 @@ export class ConfigureLogging {
           return;
         }
 
-        await logger.log(strings, expressions, level, getLocation(4));
+        await logger.log(strings, expressions, level);
       }
     };
   }

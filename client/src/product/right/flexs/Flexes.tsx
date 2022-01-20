@@ -1,7 +1,7 @@
 import React from "react";
 import OptionGroup from "../../../components/option/OptionGroup";
 import Option from "../../../components/option/Option";
-import { Flex } from "../../../types/Golfs";
+import { Flex, IGolfProperty } from "../../../types/Golfs";
 import { IGolfComponentsProps } from "../Right";
 import { VariantStore } from "../../../hooks/useTransformData";
 
@@ -10,7 +10,7 @@ const Flexes: React.FC<IGolfComponentsProps> = ({
   values,
   onPropertyChange,
   groupStyle,
-  optionStyle,
+  optionStyle
 }) => {
   return (
     <OptionGroup
@@ -22,8 +22,8 @@ const Flexes: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues(
-          (value: Flex) => (
+        values.map(
+          (value: IGolfProperty) => (
             <Option
               key={`${value._id}`}
               visualDisabled={value.visualDisabled}
@@ -31,7 +31,7 @@ const Flexes: React.FC<IGolfComponentsProps> = ({
               style={optionStyle}
               value={value}
             >
-              {value.type}
+              {(value as Flex).type}
             </Option>
           ),
           (a: any, b: any) => {

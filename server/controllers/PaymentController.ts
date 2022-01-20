@@ -1,26 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import Stripe from "stripe";
-import Controller, { Methods } from "../typings/Controller";
+import Controller from "../typings/Controller";
 import { calculatePrice } from "../utils/paymentUtils";
-import {jwtValidate} from "../middlewares/authMiddleware";
+import { jwtValidate } from "../middlewares/authMiddleware";
+import { routeConfig } from "../middlewares/routeConfig";
 
 export default class PaymentController extends Controller {
-  public path = "/api/payment";
-  public routes = [
-    {
-      path: "/auth/stripe",
-      method: Methods.GET,
-      handler: this.stripe,
-      localMiddlewares: [jwtValidate, calculatePrice],
-    },
-    {
-      path: "/auth/paypal",
-      method: Methods.GET,
-      handler: this.paypal,
-      localMiddlewares: [jwtValidate, calculatePrice],
-    },
-  ];
-
+  @routeConfig({ method: "get", path: "/api/payment" + "/auth/stripe", middlewares: [jwtValidate, calculatePrice] })
   async stripe(req: Request, res: Response, _: NextFunction) {
     const stripe_secret = process.env.STRIPE_CLIENT_SECRET;
     const stripePaymentHandler = new Stripe(stripe_secret!, {
@@ -38,6 +24,7 @@ export default class PaymentController extends Controller {
     res.json({ clientSecret: paymentIntent.client_secret });
   }
 
+  @routeConfig({ method: "get", path: "/api/payment" + "/auth/paypal", middlewares: [jwtValidate, calculatePrice] })
   async paypal(req: Request, res: Response, _: NextFunction) {
     const paypal_secret = process.env.PAYPAL_CLIENT_SECRET;
 

@@ -2,6 +2,11 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import UserRepository from "../repositories/UserRepository";
 import { NextFunction, Request, Response } from "express";
+import { TokenValidateDecorator } from "../controllers/auth/AuthenticateDecorator";
+import { CookieExtraction, HeaderExtract, TokenValidateBase } from "../controllers/auth/AuthenticateBase";
+import { logger } from "../app";
+import { EmployeeTypes } from "../types/userTypes";
+import EmployeeRepository from "../repositories/employeeModel";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -44,8 +49,6 @@ export const verifyToken = (req: any) => {
   return {};
 };
 
-export { protect };
-
 export async function jwtValidate(
   req: Request,
   res: Response,
@@ -77,3 +80,134 @@ export async function jwtValidate(
   }
 }
 
+export async function userProtected(req: Request, res: Response, next: NextFunction) {
+  try {
+    const service = new TokenValidateDecorator(
+      new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
+      logger
+    );
+    const { userId } = await service.validateToken(req, res);
+    const user = await UserRepository.getInstance().findById(userId);
+    if (!user) {
+      return res.status(401).send("UnAthorized, invalid token");
+    }
+    req.user = user
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function refreshTokenProtected(req: Request, res: Response, next: NextFunction) {
+  try {
+    const cookieExtraction = new CookieExtraction("refresh_token");
+
+    const service = new TokenValidateDecorator(
+      new TokenValidateBase(
+        cookieExtraction,
+        process.env.REFRESH_TOKEN_SECRET!
+      ),
+      logger
+    );
+    // get token from request
+    const token = cookieExtraction.extract(req);
+
+    // get userId
+    const { userId } = await service.validateToken(req, res);
+    if (!userId) {
+      throw new Error("UnAthorized, token failed");
+    }
+    const user = await UserRepository.getInstance().findById(userId);
+
+    // Compare token from request with current token
+    if (!user || user.refreshToken !== token) {
+      return res.status(401).send("UnAthorized, invalid token");
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return
+  }
+}
+
+export async function publicCartProtected(req: Request, res: Response, next: NextFunction) {
+  const cookieExtraction = new CookieExtraction("cart_token");
+  const service = new TokenValidateDecorator(
+    new TokenValidateBase(
+      cookieExtraction,
+      process.env.REFRESH_TOKEN_SECRET!,
+      true
+    ),
+    logger
+  );
+  const { cartId } = await service.validateToken(req, res);
+  req.cartId = cartId
+  next()
+}
+
+export async function userCartProtected(req: Request, res: Response, next: NextFunction) {
+  try {
+    const headerExtraction = new HeaderExtract();
+    const service = new TokenValidateDecorator(
+      new TokenValidateBase(headerExtraction, process.env.JWT_SECRET!),
+      logger
+    );
+    const { userId } = await service.validateToken(req, res);
+    req.userId = userId;
+    next();
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function checkEmployeePermission(employee: EmployeeTypes, type: "write" | "read", resource: string) {
+  return employee.role.permissions.find((permission) => {
+    return (
+      (permission.resource === resource || permission.resource === "all") &&
+      permission[type] === true
+    );
+  });
+}
+
+export function checkReadOrderPermission(req: Request, _: Response, next: NextFunction) {
+  const { employee } = req
+  checkEmployeePermission(employee, "read", "order")
+  next()
+}
+
+export function checkWriteOrderPermission(req: Request, _: Response, next: NextFunction) {
+  const { employee } = req
+  checkEmployeePermission(employee, "write", "order")
+  next()
+}
+
+export async function getEmployeeInfo(req: Request, res: Response, next: NextFunction) {
+  // validate bearer token
+  const service = new TokenValidateDecorator(
+    new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
+    logger
+  );
+
+  const { employeeId } = await service.validateToken(req, res);
+
+  const employee = await EmployeeRepository.getInstance().findById(employeeId, {
+    path: "role",
+    populate: { path: "permission" },
+  });
+
+  req.employee = employee!
+  next()
+}
+
+export async function getUserInfo(req: Request, res: Response, next: NextFunction) {
+  const service = new TokenValidateDecorator(
+    new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
+    logger
+  );
+  const { userId } = await service.validateToken(req, res);
+  req.user = await UserRepository.getInstance().findById(userId);
+  next();
+}
+
+export { protect };

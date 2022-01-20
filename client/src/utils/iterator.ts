@@ -1,4 +1,4 @@
-import { Hand, IGolfProperty } from "../types/Golfs";
+import {IGolfProperty} from "../types/Golfs";
 
 export interface Iterator {
   next(): any;
@@ -18,8 +18,7 @@ export class MapIterator implements Iterator {
   }
 
   next() {
-    var result = this.collection.entries().next();
-    return result;
+    return this.collection.entries().next();
   }
 
   hasNext(): boolean {
@@ -52,5 +51,10 @@ export class MapIterator implements Iterator {
     return values.map((value, index, array) => {
       return callback(value, index, array);
     });
+  }
+
+  length(): number {
+    const values = Array.from(this.collection.entries());
+    return values.length
   }
 }

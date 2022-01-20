@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 import { ICartInterface } from "./types/cartType";
-import { BasicInfo } from "./types/userTypes";
+import { BasicInfo, EmployeeTypes } from "./types/userTypes";
 
 declare global {
   namespace Express {
@@ -11,6 +11,7 @@ declare global {
       cartId: string;
       register: Boolean;
       strategy: string;
+      employee: EmployeeTypes
     }
   }
 }

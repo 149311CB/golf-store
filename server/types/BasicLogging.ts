@@ -50,4 +50,9 @@ export class Log {
     this.info = info;
     this.payload = payload;
   }
+
+  addLocation(location: string) {
+    this.location = location
+    return this
+  }
 }

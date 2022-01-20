@@ -1,7 +1,7 @@
 import React from "react";
 import OptionGroup from "../../../components/option/OptionGroup";
 import Option from "../../../components/option/Option";
-import { Loft } from "../../../types/Golfs";
+import { IGolfProperty, Loft } from "../../../types/Golfs";
 import { IGolfComponentsProps } from "../Right";
 import { VariantStore } from "../../../hooks/useTransformData";
 
@@ -22,8 +22,8 @@ const Lofts: React.FC<IGolfComponentsProps> = ({
       }}
     >
       {values &&
-        values.mapValues(
-          (value: Loft) => (
+        values.map(
+          (value: IGolfProperty) => (
             <Option
               key={`${value._id}`}
               visualDisabled={value.visualDisabled}
@@ -31,7 +31,7 @@ const Lofts: React.FC<IGolfComponentsProps> = ({
               style={optionStyle}
               value={value}
             >
-              {value.type}
+              {(value as Loft).type}
             </Option>
           ),
           (a: any, b: any) => {

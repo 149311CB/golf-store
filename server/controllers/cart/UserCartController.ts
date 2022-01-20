@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import { userCartProtected } from "../../middlewares/authMiddleware";
+import { requestLog } from "../../middlewares/requestLog";
+import { routeConfig } from "../../middlewares/routeConfig";
 import CartRepository from "../../repositories/CatRepository";
-import { VariantRepository } from "../../repositories/GolfRepository";
 import { CartController } from "./CartController";
 
 export default class UserCartController extends CartController {
-  public routes = [];
-
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/carts" + "/auth/active", middlewares: [userCartProtected] })
   async getActiveCart(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -38,6 +40,8 @@ export default class UserCartController extends CartController {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/carts" + "/auth/add", middlewares: [userCartProtected] })
   async addToCart(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -64,6 +68,8 @@ export default class UserCartController extends CartController {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/carts" + "/auth/remove", middlewares: [userCartProtected] })
   async removeProduct(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -92,6 +98,9 @@ export default class UserCartController extends CartController {
       super.sendError(404, res, "cart-badge not found");
     }
   }
+
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/carts" + "/auth/quantity/update", middlewares: [userCartProtected] })
   async updateQty(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -110,6 +119,8 @@ export default class UserCartController extends CartController {
     return await this.updateQuantity(cart, res, lineItemId, quantity);
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/carts" + "/auth/count", middlewares: [userCartProtected] })
   async countItem(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,

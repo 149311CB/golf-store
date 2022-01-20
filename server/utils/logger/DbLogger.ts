@@ -14,7 +14,6 @@ class DbLogger extends LoggerBase {
     string: TemplateStringsArray,
     expression: any[],
     level: string,
-    location:string
   ): Promise<void> {
     const result = this.extractLog(expression);
     if (!result) {
@@ -22,7 +21,6 @@ class DbLogger extends LoggerBase {
     }
     result.level = level;
     result.message = string.toString();
-    result.location = location
 
     const log = await LogRepository.getInstance().create(result);
     LoggerEventEmit.getInstance().emitter().emit("stream", log);

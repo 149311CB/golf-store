@@ -1,24 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import AddressRepository from "../../repositories/ShippingRepository";
-import Controller, { IRoute, Methods } from "../../typings/Controller";
+import Controller from "../../typings/Controller";
+import { routeConfig } from "../../middlewares/routeConfig";
+import { userProtected } from "../../middlewares/authMiddleware";
+import { requestLog } from "../../middlewares/requestLog";
 
 export default class AddressController extends Controller {
-  public path = "/api/address";
-  public routes: IRoute[] = [
-    {
-      path: "/user/create",
-      method: Methods.POST,
-      handler: this.createAddress,
-      localMiddlewares: [],
-    },
-    {
-      path: "/user/primary",
-      method: Methods.GET,
-      handler: this.getPrimaryAddress,
-      localMiddlewares: [],
-    },
-  ];
-
+  @requestLog()
+  @routeConfig({ method: "post", path: "/api/address" + "/user/create", middlewares: [userProtected] })
   async createAddress(
     req: Request,
     res: Response,
@@ -26,6 +15,7 @@ export default class AddressController extends Controller {
   ): Promise<any> {
     try {
       const { user } = req;
+      console.log(user)
       const { city, street, state, zip, apt, isPrimary = false } = req.body;
       if (isPrimary) {
         const exist = await AddressRepository.getInstance().findOne({
@@ -52,6 +42,8 @@ export default class AddressController extends Controller {
     }
   }
 
+  @requestLog()
+  @routeConfig({ method: "get", path: "/api/address" + "/user/primary", middlewares: [userProtected] })
   async getPrimaryAddress(
     req: Request,
     res: Response,

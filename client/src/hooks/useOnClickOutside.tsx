@@ -5,11 +5,10 @@ export const useOnClickOutside = () => {
   const expandRef: MutableRefObject<HTMLDivElement> = useRef();
 
   useEffect(() => {
-    expandRef.current.style.display = "none"
+    console.log("i'm run")
     const handler = (e: any) => {
       if (!expandRef.current.contains(e.target)) {
         expandRef.current.style.display = 'none'
-        // .classList.remove("expand");
       }
     };
     document.addEventListener("mousedown", handler);
@@ -17,5 +16,11 @@ export const useOnClickOutside = () => {
       document.removeEventListener("mousedown", handler);
     };
   });
+
+  // Hide ref element on the first render
+  useEffect(() => {
+    expandRef.current.style.display = "none"
+  }, [])
+
   return expandRef;
 };

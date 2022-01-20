@@ -27,9 +27,6 @@
     width: 80%;
     margin: 4rem auto;
     border-radius: 1rem;
-    /* border: 1px solid var(--border); */
-    /* background: var(--standout); */
-    /* box-shadow: var(--medium-box-shadow); */
     @include usingInsetBoxShadowMixin();
   }
 

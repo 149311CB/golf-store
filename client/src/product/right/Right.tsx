@@ -2,7 +2,6 @@ import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import { transformData, VariantStore } from "../../hooks/useTransformData";
 import { Hand, IGolfProperty, Variant } from "../../types/Golfs";
 import { filterActive, filterDisabled } from "../../hooks/useFilterData";
-import { Iterator, MapIterator } from "../../utils/iterator";
 import Button from "../../components/button/Button";
 import Hands from "./hands/Hands";
 import Lofts from "./lofts/Lofts";
@@ -20,10 +19,10 @@ interface IProps {
 }
 
 export interface IGolfComponentsProps {
-  values: Iterator | undefined;
+  values: IGolfProperty[] | undefined;
   onPropertyChange: Function;
-  groupStyle: CSSProperties;
-  optionStyle: CSSProperties;
+  groupStyle?:CSSProperties;
+  optionStyle?:CSSProperties;
 }
 
 const groupStyle: CSSProperties = {
@@ -80,10 +79,10 @@ const createChosenProduct = (
 let instance = VariantStore.getInstance();
 const Right: React.FC<IProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
-  const [hands, setHands] = useState<Iterator>();
-  const [lofts, setLofts] = useState<Iterator>();
-  const [flexes, setFlexes] = useState<Iterator>();
-  const [shafts, setShafts] = useState<Iterator>();
+  const [hands, setHands] = useState<IGolfProperty[]>();
+  const [lofts, setLofts] = useState<IGolfProperty[]>();
+  const [flexes, setFlexes] = useState<IGolfProperty[]>();
+  const [shafts, setShafts] = useState<IGolfProperty[]>();
   const [render, setRender] = useState(false);
   const [chosenProduct, setChosenProduct] = useState(null);
   const [disabled, setDisabled] = useState(true);
@@ -102,10 +101,10 @@ const Right: React.FC<IProps> = ({ data }) => {
       shafts: transformedShafts,
     } = instance.transformedData;
 
-    setHands(new MapIterator(transformedHands));
-    setLofts(new MapIterator(transformedLofts));
-    setFlexes(new MapIterator(transformedFlexes));
-    setShafts(new MapIterator(transformedShafts));
+    setHands(Array.from(transformedHands.values()));
+    setLofts(Array.from(transformedLofts.values()));
+    setFlexes(Array.from(transformedFlexes.values()));
+    setShafts(Array.from(transformedShafts.values()));
     setRender((r) => !r);
   };
 
@@ -140,12 +139,13 @@ const Right: React.FC<IProps> = ({ data }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(status)
         if (status === 400) {
           setOpen(true);
         } else {
           fetchCount(true);
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 
@@ -212,8 +212,6 @@ const Right: React.FC<IProps> = ({ data }) => {
         <Shafts
           values={shafts}
           onPropertyChange={onPropertyChange}
-          groupStyle={groupStyle}
-          optionStyle={optionStyle}
         />
         <GroupControls borderStyle={"round"} style={{ marginTop: "1.2rem" }}>
           <Select

@@ -47,9 +47,8 @@ class ConsoleLogger extends LoggerBase<Config> {
     strings: TemplateStringsArray,
     expression: any,
     level: ILevel,
-    location: string
   ) {
-    let msg = this.getMessage(strings, expression, level, location);
+    let msg = this.getMessage(strings, expression, level, "");
 
     const logToConsole = this.getConsoleMethod(this.config.level!);
 
