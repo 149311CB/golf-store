@@ -25,6 +25,21 @@ function createLog(
   ).addLocation(location || "")}`;
 }
 
+const getErrorLocation = (e: any) => {
+  try {
+    const err: Error = e;
+    console.log(err)
+    const stackLocations = err.stack!
+      .split("\n")
+      .map((m) => m.trim())
+      .filter((m) => m.startsWith("at"));
+
+    return String(stackLocations[3]).slice(3);
+  } catch (e) {
+    return "";
+  }
+};
+
 export function requestLog(): MethodDecorator {
   return function(_: Object, __: string | symbol, descriptor: PropertyDescriptor) {
     const original = descriptor.value
@@ -47,17 +62,3 @@ export function requestLog(): MethodDecorator {
   }
 }
 
-const getErrorLocation = (e: any) => {
-  try {
-    const err: Error = e;
-    console.log(err)
-    const stackLocations = err.stack!
-      .split("\n")
-      .map((m) => m.trim())
-      .filter((m) => m.startsWith("at"));
-
-    return String(stackLocations[3]).slice(3);
-  } catch (e) {
-    return "";
-  }
-};

@@ -18,7 +18,7 @@ export default class AddressController extends Controller {
       console.log(user)
       const { city, street, state, zip, apt, isPrimary = false } = req.body;
       if (isPrimary) {
-        const exist = await AddressRepository.getInstance().findOne({
+        const exist = await AddressRepository.findOne({
           isPrimary: true,
         });
         if (exist) {
@@ -26,7 +26,7 @@ export default class AddressController extends Controller {
           await exist.save();
         }
       }
-      const address = await AddressRepository.getInstance().create({
+      const address = await AddressRepository.create({
         user: user._id,
         street,
         city,
@@ -51,7 +51,7 @@ export default class AddressController extends Controller {
   ): Promise<any> {
     try {
       const { user } = req;
-      const exist = await AddressRepository.getInstance().findOne({
+      const exist = await AddressRepository.findOne({
         user: user._id,
       });
       return super.sendSuccess(200, res, exist);

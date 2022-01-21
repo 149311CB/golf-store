@@ -14,9 +14,8 @@ export class LocalValidation implements IAuthenticationStrategy {
 
   // Check if user exist
   async authenticate(): Promise<UserTypes | null> {
-    const user = await UserRepository.getInstance().findOne({ email: this.email });
+    const user = await UserRepository.findOne({ email: this.email });
 
-    // @ts-ignore
     if (!user || !(await user.matchPassword(this.password))) {
       return null;
     }

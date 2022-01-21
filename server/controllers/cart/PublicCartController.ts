@@ -16,10 +16,12 @@ export default class PublicCartController extends CartController {
     _: NextFunction
   ): Promise<any> {
     const { cartId } = req;
-    const exist = await CartRepository.getInstance().findById(cartId, {
-      path: "products.variant products.product",
-      populate: { path: "hand loft flex shaft" },
-    });
+    const exist = await CartRepository.findById(cartId).populate(
+      {
+        path: "products.variant products.product",
+        populate: { path: "hand loft flex shaft" },
+      }
+    );
 
     if (!exist) {
       super.sendSuccess(200, res, null, "not found");
@@ -39,7 +41,7 @@ export default class PublicCartController extends CartController {
   async addToCart(req: Request, res: Response, _: NextFunction): Promise<any> {
     const { cartId } = req;
 
-    const cart = await CartRepository.getInstance().findOne({
+    const cart = await CartRepository.findOne({
       _id: cartId,
       isActive: true,
     });
@@ -48,7 +50,7 @@ export default class PublicCartController extends CartController {
     if (cart) {
       return await this.add(cart, product, res);
     } else {
-      const cart = await CartRepository.getInstance().create({
+      const cart = await CartRepository.create({
         user: null,
         products: [product],
         isActive: true,
@@ -68,7 +70,7 @@ export default class PublicCartController extends CartController {
   ): Promise<any> {
     const { cartId } = req;
     const { productId } = req.body;
-    const exist = await CartRepository.getInstance().findById(cartId, {
+    const exist = await CartRepository.findById(cartId, {
       path: "products.variant products.product",
     });
 
@@ -92,15 +94,18 @@ export default class PublicCartController extends CartController {
     if (!lineItemId || !quantity) {
       return super.sendError(400, res, "required line item id and quantity");
     }
-    const cart = await CartRepository.getInstance().findById(cartId);
-    return await this.updateQuantity(cart, res, lineItemId, quantity);
+    const cart = await CartRepository.findById(cartId);
+    if (cart) {
+      return await this.updateQuantity(cart, res, lineItemId, quantity);
+    }
+    return super.sendError(404, res, "not found");
   }
 
   @requestLog()
   @routeConfig({ method: "post", path: "/api/carts" + "/count", middlewares: [publicCartProtected] })
   async countItem(req: Request, res: Response, _: NextFunction): Promise<any> {
     const { cartId } = req;
-    const cart = await CartRepository.getInstance().findById(cartId);
+    const cart = await CartRepository.findById(cartId);
     if (!cart) {
       return super.sendSuccess(200, res, { count: 0 });
     }

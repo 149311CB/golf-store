@@ -118,12 +118,12 @@ class AuthController extends Controller {
     _: NextFunction
   ): Promise<any> {
     const { user } = req;
-    const exist = await UserRepository.getInstance().findById(user._id!);
+    const exist = await UserRepository.findById(user._id!);
 
     const token = generateToken({ userId: exist._id });
     const newRefreshToken = generateRefreshToken({ userId: exist._id });
     exist.refreshToken = newRefreshToken!;
-    await UserRepository.getInstance().updateInfo(exist);
+    await exist.save();
     res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
     return super.sendSuccess(200, res, { token });
   }
@@ -151,7 +151,7 @@ class AuthController extends Controller {
           .json({ message: "password not match confirmation" });
       }
 
-      const userExists = await UserRepository.getInstance().findOne({ email });
+      const userExists = await UserRepository.findOne({ email });
 
       if (userExists) {
         res.status(400).json({ message: "user already exist" });
@@ -169,7 +169,7 @@ class AuthController extends Controller {
         emailVerification: false,
       };
 
-      const newUser = await UserRepository.getInstance().create(user);
+      const newUser = await UserRepository.create(user);
       req.register = true;
       req.user = newUser;
 
@@ -195,10 +195,9 @@ class AuthController extends Controller {
       select = "-password -refresh_token";
     }
 
-    const user = await UserRepository.getInstance().findById(
-      req.user._id!,
-      select
-    );
+    const user = await UserRepository.findById(
+      req.user._id!
+    ).select(select);
     return super.sendSuccess(200, res, user);
   }
 
@@ -206,7 +205,7 @@ class AuthController extends Controller {
   @routeConfig({ method: "get", path: "/api/users/auth" + "/logout", middlewares: [userProtected] })
   async logout(req: Request, res: Response, _: NextFunction): Promise<any> {
     const user = req.user;
-    const exist = await UserRepository.getInstance().findById(user._id!);
+    const exist = await UserRepository.findById(user._id!);
     exist.refreshToken = "";
     await exist.save();
     res.clearCookie("refresh_token", COOKIES_OPTIONS);

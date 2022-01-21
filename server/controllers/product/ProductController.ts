@@ -20,17 +20,16 @@ export default class ProductController extends Controller {
     res: Response,
     _: NextFunction
   ): Promise<any> {
-    const golf = await GolfRepository.getInstance().findById(req.params.id);
+    const golf = await GolfRepository.findById(req.params.id);
     if (!golf) {
       return super.sendError(404, res, "not found");
     }
 
-    const variants = await VariantRepository.getInstance().all(
+    const variants = await VariantRepository.find(
       {
         golf: golf._id,
       },
-      { path: "hand shaft flex loft" }
-    );
+    ).populate({ path: "hand shaft flex loft" });
 
     super.sendSuccess(200, res, { golf, variants });
   }
@@ -45,13 +44,13 @@ export default class ProductController extends Controller {
     const { variant } = req.query;
     const populate =
       variant === "deep" ? { path: "flex shaft hand loft" } : { path: "" };
-    const golfs = await GolfRepository.getInstance().all();
-    const variants = await VariantRepository.getInstance().all(
+    const golfs = await GolfRepository.find({});
+    // @ts-ignore
+    const variants = await VariantRepository.find(
       {
         golf: { $in: golfs },
       },
-      populate
-    );
+    ).populate(populate);
 
     const result = golfs.map((golf) => {
       const v: IVariant[] = [];
@@ -76,7 +75,7 @@ export default class ProductController extends Controller {
 
       const { variants, golf } = req.body;
 
-      const created = await GolfRepository.getInstance().create(golf);
+      const created = await GolfRepository.create(golf);
 
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -88,7 +87,7 @@ export default class ProductController extends Controller {
 
         if (loft) {
           const updatedLoft =
-            await LoftRepository.getInstance().findOneAndUpdate(
+            await LoftRepository.findOneAndUpdate(
               { type: loft.type },
               { ...loft },
               { new: true, upsert: true, useFindAndModify: false }
@@ -98,7 +97,7 @@ export default class ProductController extends Controller {
 
         if (shaft) {
           const updatedShaft =
-            await ShaftRepository.getInstance().findOneAndUpdate(
+            await ShaftRepository.findOneAndUpdate(
               {
                 name: shaft.name,
               },
@@ -110,18 +109,18 @@ export default class ProductController extends Controller {
 
         if (flex) {
           const updatedFlex =
-            await FlexRepository.getInstance().findOneAndUpdate(
+            await FlexRepository.findOneAndUpdate(
               { type: flex.type },
               { ...shaft },
               { new: true, upsert: true, useFindAndModify: false }
             );
           flexId = updatedFlex._id;
         }
-        const existHand = await HandRepository.getInstance().findOne({
+        const existHand = await HandRepository.findOne({
           side: hand.side,
         });
 
-        await VariantRepository.getInstance().create({
+        await VariantRepository.create({
           golf: created._id,
           loft: loftId,
           shaft: shaftId,
@@ -141,8 +140,8 @@ export default class ProductController extends Controller {
   @routeConfig({ method: "get", path: "/api/products" + "/golf/flex/all" })
   async getAllFlex(_: Request, res: Response, __: NextFunction): Promise<any> {
     try {
-      // const flexs = await FlexRepository.getInstance().all();
-      const flexs = await FlexRepository.getInstance().model.aggregate([
+      // const flexs = await FlexRepository.all();
+      const flexs = await FlexRepository.aggregate([
         {
           $group: {
             _id: "$type",

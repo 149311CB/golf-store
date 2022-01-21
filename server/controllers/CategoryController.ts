@@ -11,12 +11,9 @@ export default class CategoryController extends Controller {
     try {
       const { categoryList } = req.body;
 
-      const categories = await CategoryRepository.getInstance().all(
-        {
-          name: { $in: categoryList },
-        },
-        { path: "products" }
-      );
+      const categories = await CategoryRepository.find({
+        name: { $in: categoryList }
+      }).populate({ path: "products" });
 
       if (!categories) {
         super.sendError(404, res, "not found");

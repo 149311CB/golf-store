@@ -7,6 +7,7 @@ import {
   generateRefreshToken,
   generateToken,
 } from "../../utils/generateToken";
+import { routeConfig } from "../../middlewares/routeConfig";
 
 export class EmployeeAuth extends Controller {
   public path = "/api/employee/";
@@ -25,13 +26,14 @@ export class EmployeeAuth extends Controller {
     },
   ];
 
+  @routeConfig({ method: "post", path: "/api/employee" + "/auth/login" })
   async login(req: Request, res: Response, _: NextFunction): Promise<any> {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
         return super.sendError(400, res, "required email and password");
       }
-      const exist = await EmployeeRepository.getInstance().findByEmail(email);
+      const exist = await EmployeeRepository.findOne({ email: email });
 
       // @ts-ignore
       if (!exist || !(await exist.matchPassword(password))) {
@@ -40,7 +42,7 @@ export class EmployeeAuth extends Controller {
 
       const refreshToken = generateRefreshToken({ employeeId: exist._id });
       exist.refreshToken = refreshToken!;
-      await EmployeeRepository.getInstance().updateInfo(exist);
+      await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
 
       return super.sendSuccess(200, res, null);
@@ -50,6 +52,7 @@ export class EmployeeAuth extends Controller {
     }
   }
 
+  @routeConfig({ method: "get", path: "/api/employee" + "/auth/token/refresh" })
   async refreshToken(
     req: Request,
     res: Response,
@@ -72,7 +75,7 @@ export class EmployeeAuth extends Controller {
       }
 
       const { employeeId } = payload;
-      const exist = await EmployeeRepository.getInstance().findById(employeeId);
+      const exist = await EmployeeRepository.findById(employeeId);
 
       if (!exist || exist.refreshToken !== refreshToken) {
         return super.sendError(401, res, "UnAuthorized, invalid refresh token");
@@ -83,7 +86,7 @@ export class EmployeeAuth extends Controller {
         employeeId: exist._id,
       });
       exist.refreshToken = newRefreshToken!;
-      await EmployeeRepository.getInstance().updateInfo(exist);
+      await exist.save();
       res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
       return super.sendSuccess(200, res, { token });
     } catch (error) {

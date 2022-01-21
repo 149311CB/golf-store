@@ -16,16 +16,13 @@ export default class UserCartController extends CartController {
     _: NextFunction
   ): Promise<any> {
     const { userId } = req;
-    const exist = await CartRepository.getInstance().findOne(
-      {
-        user: userId,
-        isActive: true,
-      },
-      {
-        path: "products.variant products.product",
-        populate: { path: "hand loft flex shaft" },
-      }
-    );
+    const exist = await CartRepository.findOne({
+      user: userId,
+      isActive: true,
+    }).populate({
+      path: "products.variant products.product",
+      populate: { path: "hand loft flex shaft" },
+    });
 
     if (!exist) {
       super.sendSuccess(200, res, null, "not found");
@@ -50,7 +47,7 @@ export default class UserCartController extends CartController {
     const { userId } = req;
     const { product } = req.body;
     // find cart
-    const exist = await CartRepository.getInstance().findOne({
+    const exist = await CartRepository.findOne({
       user: userId,
       isActive: true,
     });
@@ -58,7 +55,7 @@ export default class UserCartController extends CartController {
     if (exist) {
       return await super.add(exist, product, res);
     } else {
-      const cart = await CartRepository.getInstance().create({
+      const cart = await CartRepository.create({
         user: userId,
         products: [product],
         isActive: true,
@@ -77,15 +74,14 @@ export default class UserCartController extends CartController {
   ): Promise<any> {
     const { userId } = req;
     const { productId } = req.body;
-    const exist = await CartRepository.getInstance().findOne(
+    const exist = await CartRepository.findOne(
       {
         user: userId,
         isActive: true,
       },
-      {
-        path: "products.variant products.product",
-      }
-    );
+    ).populate({
+      path: "products.variant products.product",
+    });
 
     if (exist) {
       exist.products = exist.products.filter((product) => {
@@ -100,7 +96,7 @@ export default class UserCartController extends CartController {
   }
 
   @requestLog()
-  @routeConfig({ method: "get", path: "/api/carts" + "/auth/quantity/update", middlewares: [userCartProtected] })
+  @routeConfig({ method: "post", path: "/api/carts" + "/auth/quantity/update", middlewares: [userCartProtected] })
   async updateQty(
     req: Request<ParamsDictionary, any, any, ParsedQs>,
     res: Response,
@@ -111,12 +107,14 @@ export default class UserCartController extends CartController {
     if (!lineItemId || !quantity) {
       return super.sendError(400, res, "required line item id and quantity");
     }
-    const cart = await CartRepository.getInstance().findOne({
+    const cart = await CartRepository.findOne({
       user: userId,
       isActive: true,
     });
-
-    return await this.updateQuantity(cart, res, lineItemId, quantity);
+    if (cart) {
+      return await super.updateQuantity(cart, res, lineItemId, quantity);
+    }
+    return super.sendError(404, res, 'not found')
   }
 
   @requestLog()
@@ -127,7 +125,7 @@ export default class UserCartController extends CartController {
     _: NextFunction
   ): Promise<any> {
     const { userId } = req;
-    const cart = await CartRepository.getInstance().findOne({
+    const cart = await CartRepository.findOne({
       user: userId,
       isActive: true,
     });

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { logger } from "../../app";
 import { Log } from "../../types/BasicLogging";
-import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import { TokenValidateBase } from "./AuthenticateBase";
 
 export interface ITokenValidateDecorator {
@@ -10,10 +10,8 @@ export interface ITokenValidateDecorator {
 
 export class TokenValidateDecorator implements ITokenValidateDecorator {
   tokenValidateBase: TokenValidateBase;
-  logger: ConfigureLogging;
-  constructor(tokenValidateBase: TokenValidateBase, logger: ConfigureLogging) {
+  constructor(tokenValidateBase: TokenValidateBase) {
     this.tokenValidateBase = tokenValidateBase;
-    this.logger = logger;
   }
 
   async createLog(
@@ -24,7 +22,7 @@ export class TokenValidateDecorator implements ITokenValidateDecorator {
     payload: jwt.JwtPayload,
     error: any
   ) {
-    await this.logger.error`${new Log(
+    await logger.error`${new Log(
       req.method,
       req.originalUrl,
       new Date(),

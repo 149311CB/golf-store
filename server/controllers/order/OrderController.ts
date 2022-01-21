@@ -2,16 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import EmployeeRepository from "../../repositories/employeeModel";
 import { EmployeeTypes } from "../../types/userTypes";
 import Controller from "../../typings/Controller";
-import ConfigureLogging from "../../utils/logger/ConfigureLogging";
 import { HeaderExtract, TokenValidateBase } from "../auth/AuthenticateBase";
 
 export default abstract class OrderController extends Controller {
-  logger: ConfigureLogging;
-  constructor(logger: ConfigureLogging) {
-    super();
-    this.logger = logger;
-  }
-
   async getEmployeeInfo(
     req: Request,
     res: Response
@@ -24,7 +17,7 @@ export default abstract class OrderController extends Controller {
 
     const { employeeId } = service.validateToken(req, res);
 
-    return await EmployeeRepository.getInstance().findById(employeeId, {
+    return await EmployeeRepository.findById(employeeId).populate({
       path: "role",
       populate: { path: "permission" },
     });

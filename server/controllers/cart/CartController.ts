@@ -1,20 +1,12 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import Controller from "../../typings/Controller";
-import {CookieExtraction, HeaderExtract, TokenValidateBase,} from "../auth/AuthenticateBase";
-import {TokenValidateDecorator} from "../auth/AuthenticateDecorator";
-import ConfigureLogging from "../../utils/logger/ConfigureLogging";
-import {ICartInterface} from "../../types/cartType";
-import {Document} from "mongoose";
-import {VariantRepository} from "../../repositories/GolfRepository";
+import { CookieExtraction, HeaderExtract, TokenValidateBase, } from "../auth/AuthenticateBase";
+import { TokenValidateDecorator } from "../auth/AuthenticateDecorator";
+import { ICartInterface } from "../../types/cartType";
+import { Document } from "mongoose";
+import { VariantRepository } from "../../repositories/GolfRepository";
 
 export abstract class CartController extends Controller {
-  logger: ConfigureLogging;
-
-  constructor(logger: ConfigureLogging) {
-    super();
-    this.logger = logger;
-  }
-
   async getCartInfoFromCookie(req: Request, res: Response): Promise<any> {
     const cookieExtraction = new CookieExtraction("cart_token");
     const service = new TokenValidateDecorator(
@@ -23,7 +15,6 @@ export abstract class CartController extends Controller {
         process.env.REFRESH_TOKEN_SECRET!,
         true
       ),
-      this.logger
     );
     const { cartId } = await service.validateToken(req, res);
     return cartId;
@@ -33,7 +24,6 @@ export abstract class CartController extends Controller {
     const headerExtraction = new HeaderExtract();
     const service = new TokenValidateDecorator(
       new TokenValidateBase(headerExtraction, process.env.JWT_SECRET!),
-      this.logger
     );
     const { userId } = await service.validateToken(req, res);
     return userId;
@@ -73,9 +63,12 @@ export abstract class CartController extends Controller {
     const existItem = cart.products.find((item: any) => {
       return item.variant == product.variant;
     });
-    const variant = await VariantRepository.getInstance().findById(
-        product.variant
+    const variant = await VariantRepository.findById(
+      product.variant
     );
+    if (!variant || !variant.stock) {
+      return super.sendError(500, res)
+    }
     if (existItem) {
       if (variant.stock < existItem.quantity + product.quantity) {
         return super.sendError(400, res, "quantity exceeded");
@@ -85,7 +78,7 @@ export abstract class CartController extends Controller {
       if (variant.stock < product.quantity) {
         return super.sendError(400, res, "quantity exceeded");
       }
-      cart.products.push({...product});
+      cart.products.push({ ...product });
     }
 
     await cart.save();

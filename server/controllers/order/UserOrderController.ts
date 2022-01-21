@@ -45,11 +45,11 @@ export default class UserOrderController extends OrderController {
       total
     };
 
-    const createOrder = await OrderRepository.getInstance().create(
+    const createOrder = await OrderRepository.create(
       newOrder as orderInterface
     );
 
-    const exist = await CartRepository.getInstance().findById(cart);
+    const exist = await CartRepository.findById(cart);
     if (exist) {
       exist.isActive = false;
       await exist.save();
@@ -57,11 +57,13 @@ export default class UserOrderController extends OrderController {
         // reduce stock by subtract stock for product's quantity
         for (let index = 0; index < exist.products.length; index++) {
           const product = exist.products[index];
-          const variant = await VariantRepository.getInstance().findById(
+          const variant = await VariantRepository.findById(
             product.variant
           );
-          variant.stock -= product.quantity;
-          await VariantRepository.getInstance().updateInfo(variant);
+          if (variant) {
+            variant.stock -= product.quantity;
+            await variant.save();
+          }
         }
       }
     }
@@ -80,7 +82,7 @@ export default class UserOrderController extends OrderController {
     if (!id) {
       return super.sendError(400, res, "id is required");
     }
-    const order = await OrderRepository.getInstance().findById(id as string, {
+    const order = await OrderRepository.findById(id as string, {
       path: "cart",
       select: "products",
       populate: {
@@ -103,24 +105,21 @@ export default class UserOrderController extends OrderController {
     __: NextFunction
   ): Promise<any> {
     try {
-      const carts = await CartRepository.getInstance().all({
+      const carts = await CartRepository.find({
         user: req.user._id,
       });
       const cartIds = carts.map((cart) => {
         return cart._id;
       });
-      const orders = await OrderRepository.getInstance().all(
-        { cart: { $in: cartIds } },
-        {
-          path: "cart",
-          select: "products",
-          populate: { path: "products.product" },
-        },
-        {
-          $natural: -1,
-        },
-        10
-      );
+      const orders = await OrderRepository.find({
+        cart: { $in: cartIds }
+      }).populate({
+        path: "cart",
+        select: "products",
+        populate: { path: "products.product" },
+      }).sort({
+        $natural: -1,
+      }).limit(10);
 
       return super.sendSuccess(200, res, orders);
     } catch (error) {
@@ -136,7 +135,7 @@ export default class UserOrderController extends OrderController {
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const exist = await OrderRepository.getInstance().findById(id);
+      const exist = await OrderRepository.findById(id);
 
       if (!exist) {
         return super.sendError(401, res, "order not found");

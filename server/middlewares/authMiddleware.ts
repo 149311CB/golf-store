@@ -4,7 +4,6 @@ import UserRepository from "../repositories/UserRepository";
 import { NextFunction, Request, Response } from "express";
 import { TokenValidateDecorator } from "../controllers/auth/AuthenticateDecorator";
 import { CookieExtraction, HeaderExtract, TokenValidateBase } from "../controllers/auth/AuthenticateBase";
-import { logger } from "../app";
 import { EmployeeTypes } from "../types/userTypes";
 import EmployeeRepository from "../repositories/employeeModel";
 
@@ -17,7 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const { userId, ...rest } = result;
       // if the user exist in token, use user
       if (userId) {
-        const user = await UserRepository.getInstance().findById(userId, "-password");
+        const user = await UserRepository.findById(userId).select("-password");
         req.body = { ...req.body, rest, user };
         return next();
       }
@@ -67,7 +66,7 @@ export async function jwtValidate(
         return res.status(400).json({ message: "invalid token" });
       }
 
-      const user = await UserRepository.getInstance().findById(decoded.userId);
+      const user = await UserRepository.findById(decoded.userId);
       if (!user) {
         return res.status(401).json({ message: "UnAuthorized" });
       }
@@ -83,11 +82,10 @@ export async function jwtValidate(
 export async function userProtected(req: Request, res: Response, next: NextFunction) {
   try {
     const service = new TokenValidateDecorator(
-      new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
-      logger
+      new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!)
     );
     const { userId } = await service.validateToken(req, res);
-    const user = await UserRepository.getInstance().findById(userId);
+    const user = await UserRepository.findById(userId);
     if (!user) {
       return res.status(401).send("UnAthorized, invalid token");
     }
@@ -107,7 +105,6 @@ export async function refreshTokenProtected(req: Request, res: Response, next: N
         cookieExtraction,
         process.env.REFRESH_TOKEN_SECRET!
       ),
-      logger
     );
     // get token from request
     const token = cookieExtraction.extract(req);
@@ -115,9 +112,9 @@ export async function refreshTokenProtected(req: Request, res: Response, next: N
     // get userId
     const { userId } = await service.validateToken(req, res);
     if (!userId) {
-      throw new Error("UnAthorized, token failed");
+      throw new Error("UnAuthorized, token failed");
     }
-    const user = await UserRepository.getInstance().findById(userId);
+    const user = await UserRepository.findById(userId);
 
     // Compare token from request with current token
     if (!user || user.refreshToken !== token) {
@@ -139,7 +136,6 @@ export async function publicCartProtected(req: Request, res: Response, next: Nex
       process.env.REFRESH_TOKEN_SECRET!,
       true
     ),
-    logger
   );
   const { cartId } = await service.validateToken(req, res);
   req.cartId = cartId
@@ -151,7 +147,6 @@ export async function userCartProtected(req: Request, res: Response, next: NextF
     const headerExtraction = new HeaderExtract();
     const service = new TokenValidateDecorator(
       new TokenValidateBase(headerExtraction, process.env.JWT_SECRET!),
-      logger
     );
     const { userId } = await service.validateToken(req, res);
     req.userId = userId;
@@ -186,12 +181,11 @@ export async function getEmployeeInfo(req: Request, res: Response, next: NextFun
   // validate bearer token
   const service = new TokenValidateDecorator(
     new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
-    logger
   );
 
   const { employeeId } = await service.validateToken(req, res);
 
-  const employee = await EmployeeRepository.getInstance().findById(employeeId, {
+  const employee = await EmployeeRepository.findById(employeeId).populate({
     path: "role",
     populate: { path: "permission" },
   });
@@ -203,10 +197,9 @@ export async function getEmployeeInfo(req: Request, res: Response, next: NextFun
 export async function getUserInfo(req: Request, res: Response, next: NextFunction) {
   const service = new TokenValidateDecorator(
     new TokenValidateBase(new HeaderExtract(), process.env.JWT_SECRET!),
-    logger
   );
   const { userId } = await service.validateToken(req, res);
-  req.user = await UserRepository.getInstance().findById(userId);
+  req.user = await UserRepository.findById(userId);
   next();
 }
 

@@ -1,4 +1,4 @@
-import { logger, server } from "./app";
+import { server } from "./app";
 server.loadMiddlewares();
 
 import CategoryController from "./controllers/CategoryController";
@@ -12,10 +12,10 @@ import UserCartController from "./controllers/cart/UserCartController";
 
 new ProductController();
 new CategoryController();
-new PublicCartController(logger);
-new UserCartController(logger);
+new PublicCartController();
+new UserCartController();
 new AuthController();
 new PaymentController();
 new AddressController();
-new UserOrderController(logger);
+new UserOrderController();
 server.run()

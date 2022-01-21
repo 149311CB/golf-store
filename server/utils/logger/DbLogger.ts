@@ -22,7 +22,7 @@ class DbLogger extends LoggerBase {
     result.level = level;
     result.message = string.toString();
 
-    const log = await LogRepository.getInstance().create(result);
+    const log = await LogRepository.create(result);
     LoggerEventEmit.getInstance().emitter().emit("stream", log);
   }
 }
