@@ -83,25 +83,25 @@ const Paypal = () => {
               });
             }}
             onApprove={async (_, actions) => {
-              const payload = await actions.order.capture();
+              const payload = await actions.order?.capture();
               const order = generateOrder();
               order.details = {
-                email: payload.payer.email_address,
-                name: payload.payer.name,
+                email: payload?.payer.email_address,
+                name: payload?.payer.name,
               };
-              order.paidAt = new Date(payload.create_time);
+              order.paidAt = new Date(payload?.create_time || "");
               order.state = "succeeded";
               handleSuccess(order);
             }}
             onError={async (error) => {
               handleError(`payment failed: ${error.toString()}`);
             }}
-            onCancel={async () => {
-              const order = generateOrder();
-              order.state = "cancelled";
-              order.cancelledAt = new Date(Date.now());
-              handleCancelled(order);
-            }}
+            // onCancel={async () => {
+            //   const order = generateOrder();
+            //   order.state = "cancelled";
+            //   order.cancelledAt = new Date(Date.now());
+            //   handleCancelled(order);
+            // }}
             disabled={processing && !clientId}
           />
         </PayPalScriptProvider>
