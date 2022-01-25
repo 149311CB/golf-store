@@ -48,7 +48,7 @@ export default class PublicCartController extends CartController {
 
     const { product } = req.body;
     if (cart) {
-      return await this.add(cart, product, res);
+      return await super.add(cart, product, res);
     } else {
       const cart = await CartRepository.create({
         user: null,
@@ -70,7 +70,7 @@ export default class PublicCartController extends CartController {
   ): Promise<any> {
     const { cartId } = req;
     const { productId } = req.body;
-    const exist = await CartRepository.findById(cartId, {
+    const exist = await CartRepository.findById(cartId).populate({
       path: "products.variant products.product",
     });
 
@@ -96,7 +96,7 @@ export default class PublicCartController extends CartController {
     }
     const cart = await CartRepository.findById(cartId);
     if (cart) {
-      return await this.updateQuantity(cart, res, lineItemId, quantity);
+      return await super.updateQuantity(cart, res, lineItemId, quantity);
     }
     return super.sendError(404, res, "not found");
   }

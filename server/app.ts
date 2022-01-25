@@ -19,7 +19,12 @@ const app: Application = express();
 const globalMiddlewares: Array<RequestHandler> = [
   json(),
   cors({
-    origin: ["https://localhost:3000", "https://localhost:3001", "http://localhost:3000", "http://localhost:3001"],
+    origin: ["http://localhost:3000",
+      "https://localhost:3000",
+      "http://localhost:3001",
+      "https://localhost:3001",
+      "http://golf-store.149311cb.tech",
+      "https://golf-store.149311cb.tech"],
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
   }),
@@ -52,6 +57,10 @@ const logger = new ConfigureLogging([
 ]);
 
 // initialized new instance of Server
-const server: Server = new Server(app, 5001, globalMiddlewares);
+let port = 5002
+if (process.env.PORT) {
+  port = parseInt(process.env.PORT);
+}
+const server: Server = new Server(app, port, globalMiddlewares);
 
 export { logger, server }

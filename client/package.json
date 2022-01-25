@@ -2,7 +2,7 @@
   "name": "golf-company",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:5001",
+  "proxy": "https://golf-company.herokuapp.com",
   "dependencies": {
     "@paypal/react-paypal-js": "^7.3.3",
     "@stripe/react-stripe-js": "^1.4.1",

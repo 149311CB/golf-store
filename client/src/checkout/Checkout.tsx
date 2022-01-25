@@ -12,8 +12,8 @@ export const CheckoutContext = createContext<CheckoutInterface>({
   cartId: "",
   processing: false,
   error: "",
-  success: false,
-  cancelled: false,
+  // success: false,
+  // cancelled: false,
   handleProcessing: () => {
     return "Unknown processing states";
   },
@@ -34,8 +34,6 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
 
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [cancelled, setCancelled] = useState(false);
   const { token } = useContext(GlobalContext);
 
   const createOrder = async (order: OrderInterface) => {
@@ -88,8 +86,6 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
     cartId,
     processing,
     error,
-    success,
-    cancelled,
     handleProcessing,
     handleError,
     handleSuccess,
@@ -173,7 +169,7 @@ const Checkout: React.FC<RouterProps> = ({ history }) => {
           </div>
         </Modal>
         {error && <div>{error}</div>}
-        {success && <div>Payment success</div>}
+        {/* {success && <div>Payment success</div>} */}
         <CartSummary />
         <div
           className={

@@ -21,8 +21,8 @@ interface IProps {
 export interface IGolfComponentsProps {
   values: IGolfProperty[] | undefined;
   onPropertyChange: Function;
-  groupStyle?:CSSProperties;
-  optionStyle?:CSSProperties;
+  groupStyle?: CSSProperties;
+  optionStyle?: CSSProperties;
 }
 
 const groupStyle: CSSProperties = {
@@ -84,12 +84,12 @@ const Right: React.FC<IProps> = ({ data }) => {
   const [flexes, setFlexes] = useState<IGolfProperty[]>();
   const [shafts, setShafts] = useState<IGolfProperty[]>();
   const [render, setRender] = useState(false);
-  const [chosenProduct, setChosenProduct] = useState(null);
+  // const [chosenProduct, setChosenProduct] = useState(null);
   const [disabled, setDisabled] = useState(true);
   const [stock, setStock] = useState(0);
   const [qty, setQty] = useState(1);
   const [options, setOptions] = useState<number[]>([]);
-  const [toast, setToast] = useState(false);
+  // const [toast, setToast] = useState(false);
   const { token, fetchCount } = useContext(GlobalContext);
 
   // manages states
@@ -108,14 +108,14 @@ const Right: React.FC<IProps> = ({ data }) => {
     setRender((r) => !r);
   };
 
-  const onPropertyChange = (property: IGolfProperty) => {
-    const propertyName = property.constructor.name.toLowerCase();
+  const onPropertyChange = (property: IGolfProperty, type: "hand" | "loft" | "flex" | "shaft") => {
+    // const propertyName = property.constructor.name.toLowerCase();
     property?.visualDisabled
-      ? filterDisabled(property)
-      : filterActive(property);
+      ? filterDisabled(property, type)
+      : filterActive(property, type);
 
     // @ts-ignore
-    instance.choosenVariant[propertyName] = property;
+    instance.choosenVariant[type] = property;
     const choosen = verifyChoosenProduct(instance);
     if (choosen) {
       setDisabled(false);
@@ -152,25 +152,27 @@ const Right: React.FC<IProps> = ({ data }) => {
   // Only run whenever data changed to initialized states
   useEffect(() => {
     if (!data.variants) return;
+    try {
+      // Transform data and initialized states
+      transformData(data.variants);
+      const instance = VariantStore.getInstance();
+      const variants: Variant[] = instance.variants;
+      setProperties();
 
-    // Transform data and initialized states
-    transformData(data.variants);
-    const instance = VariantStore.getInstance();
-    const variants: Variant[] = instance.variants;
-    setProperties();
+      // Set the first selected property using filterActive
+      const availableVariant: Variant | undefined = variants.find(
+        (variant: Variant) => {
+          return variant.stock > 0;
+        }
+      );
 
-    // Set the first selected property using filterActive
-    const availableVariant: Variant | undefined = variants.find(
-      (variant: Variant) => {
-        return variant.stock > 0;
+      if (availableVariant !== undefined && availableVariant.hand) {
+        filterActive(new Hand(availableVariant.hand), "hand");
+      } else {
+        filterActive(null, "hand");
       }
-    );
-
-    if (availableVariant !== undefined) {
-      // @ts-ignore
-      filterActive(new Hand(availableVariant.hand));
-    } else {
-      filterActive(null);
+    } catch (error) {
+      console.log(error);
     }
   }, [data]);
 
@@ -242,7 +244,7 @@ const Right: React.FC<IProps> = ({ data }) => {
             disabled={disabled}
             onClick={() => {
               const chosen = createChosenProduct(data.golf, instance, qty);
-              setChosenProduct(chosen);
+              // setChosenProduct(chosen);
               addToCart(chosen);
             }}
           >

@@ -10,12 +10,11 @@ const Paypal = () => {
   const {
     cartId,
     processing,
-    success,
-    cancelled,
+    // success,
+    // cancelled,
     handleProcessing,
     handleError,
     handleSuccess,
-    handleCancelled,
     shipping,
   } = useContext(CheckoutContext);
 
@@ -59,7 +58,7 @@ const Paypal = () => {
       }
     };
     fetchData();
-  }, [cartId, success, cancelled, history, token]);
+  }, [cartId, history, token]);
 
   return (
     <div className={"paypal"}>

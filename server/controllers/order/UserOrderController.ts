@@ -82,13 +82,13 @@ export default class UserOrderController extends OrderController {
     if (!id) {
       return super.sendError(400, res, "id is required");
     }
-    const order = await OrderRepository.findById(id as string, {
+    const order = await OrderRepository.findById(id as string).populate({
       path: "cart",
       select: "products",
       populate: {
         path: "products.product products.variant",
         populate: { path: "flex hand loft shaft" },
-      },
+      }
     });
 
     if (!order) {

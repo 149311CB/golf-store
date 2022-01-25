@@ -27,8 +27,8 @@ const CheckoutForm = () => {
     cartId,
     processing,
     error,
-    success,
-    cancelled,
+    // success,
+    // cancelled,
     handleProcessing,
     handleError,
     handleSuccess,
@@ -59,7 +59,7 @@ const CheckoutForm = () => {
       }
     };
     fetchData();
-  }, [cartId, error, success, cancelled, token]);
+  }, [cartId, error, token]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();

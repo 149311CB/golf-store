@@ -1,21 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalContext } from "../../App";
 import { client } from "../../utils/client";
 
-const YouRock = () => {
-  return React.createElement(
-    `<lottie-player
-        src="https://assets5.lottiefiles.com/packages/lf20_tzgci2yi.json"
-        background="transparent"
-        speed="1"
-        style="width: 300px; height: 300px;"
-        loop
-        controls
-        autoplay
-      ></lottie-player>`
-  );
-};
 const PaymentSuccess = () => {
   const history = useHistory();
 

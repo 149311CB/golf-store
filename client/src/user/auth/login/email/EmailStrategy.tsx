@@ -7,13 +7,6 @@ const EmailStrategy = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const clearForm = () => {
-    const form = document.getElementById("login-form");
-    if (form instanceof HTMLFormElement) {
-      form.reset();
-    }
-  };
-
   const login = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -30,7 +23,6 @@ const EmailStrategy = () => {
         },
       }
     );
-    console.log(status)
     if (status === 200) {
       window.location.href = "/";
     }

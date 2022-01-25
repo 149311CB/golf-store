@@ -1,13 +1,14 @@
+import { CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 
-const COOKIES_OPTIONS = {
+const COOKIES_OPTIONS: CookieOptions = {
   path: "/",
-  domain: "localhost",
+  domain: process.env.NODE_ENV === "development" ? "localhost" : "golf-company.herokuapp.com",
   httpOnly: true,
-  secure: false,
+  secure: true,
   signed: true,
   maxAge: 1296000000,
-  samesite: "none",
+  sameSite: "none",
 };
 
 const generateToken = (payload: Object) => {

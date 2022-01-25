@@ -56,8 +56,8 @@ export interface CheckoutInterface {
   cartId: string;
   processing: boolean;
   error: string;
-  success: boolean;
-  cancelled: boolean;
+  // success: boolean;
+  // cancelled: boolean;
   handleProcessing: (state: boolean) => void;
   handleError: (error: string) => void;
   handleSuccess: (order: OrderInterface) => void;

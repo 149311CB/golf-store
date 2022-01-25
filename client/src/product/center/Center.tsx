@@ -16,8 +16,11 @@ const Center: React.FC<Props> = ({ data }) => {
         <img
           src={golf.images[bigImage]}
           alt="big"
-          style={{ backgroundColor: "black" }}
         />
+        <div className={"fading-panel-bottom"} />
+        <div className={"fading-panel-left"} />
+        <div className={"fading-panel-right"} />
+        <div className={"fading-panel-top"} />
       </div>
       <Preview images={golf.images} setBigImage={setBigImage} />
     </div>

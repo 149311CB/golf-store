@@ -18,7 +18,7 @@ const Lofts: React.FC<IGolfComponentsProps> = ({
       style={groupStyle}
       name={"Loft"}
       onChange={(value: any) => {
-        onPropertyChange(new Loft(value));
+        onPropertyChange(new Loft(value), "loft");
       }}
     >
       {values &&

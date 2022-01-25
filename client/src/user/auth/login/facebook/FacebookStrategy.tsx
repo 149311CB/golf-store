@@ -1,12 +1,15 @@
 import React from "react";
 import Button from "../../../../components/button/Button";
 import { ReactComponent as FacebookIcon } from "../../../../assets/facebook-rounded-logo.svg";
+import pkg from "../../../../../package.json";
 
 const FacebookStrategy: React.FC<{ isRegister?: boolean }> = ({
   isRegister = false,
 }) => {
   const login = () => {
-    window.open("https://localhost:5001/api/user/auth/login/facebook");
+    if(pkg.proxy){
+      window.open(`${pkg.proxy}/api/user/auth/login/facebook`);
+    }
   };
   return (
     <Button

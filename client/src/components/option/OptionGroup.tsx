@@ -15,6 +15,7 @@ interface OptionGroupProps {
   onMouseLeave?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseOut?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseEnter?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  className?: string
 }
 
 export const OptionGroupContext = createContext<any>(null);
@@ -28,7 +29,8 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
   onMouseOver,
   onMouseLeave,
   onMouseOut,
-  onMouseEnter
+  onMouseEnter,
+  className
 }) => {
   const optionGroupRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<any>(null);
@@ -94,7 +96,7 @@ const OptionGroup: React.FC<OptionGroupProps> = ({
 
   return (
     <OptionGroupContext.Provider value={value}>
-      <div className={"option-group"}
+      <div className={`option-group ${className ? className : ""}`}
         ref={optionGroupRef}
         onMouseOver={onMouseOver}
         onMouseLeave={onMouseLeave}

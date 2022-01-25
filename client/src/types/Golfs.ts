@@ -70,10 +70,10 @@ export class Shaft implements IGolfProperty {
 
 export class Variant {
   _id: string;
-  hand: Hand | null;
-  loft: Loft | null;
-  flex: Flex | null;
-  shaft: Shaft | null;
+  hand: Hand;
+  loft: Loft;
+  flex: Flex;
+  shaft: Shaft;
   stock: number;
 
   constructor({ _id, hand, loft, flex, shaft, stock }: Variant | any) {

@@ -1,12 +1,15 @@
 import React from "react";
 import Button from "../../../../components/button/Button";
 import { ReactComponent as GoogleIcon } from "../.././../../assets/google.svg";
+import pkg from "../../../../../package.json";
 
 const GoogleStrategy: React.FC<{ isRegister?: boolean }> = ({
   isRegister = false,
 }) => {
   const login = async () => {
-    window.open("https://localhost:5001/api/user/auth/login/google");
+    if (pkg.proxy) {
+      window.open(`${pkg.proxy}/api/user/auth/login/google`);
+    }
   };
   return (
     <Button
@@ -16,7 +19,7 @@ const GoogleStrategy: React.FC<{ isRegister?: boolean }> = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap:"0.6rem"
+        gap: "0.6rem"
       }}
     >
       <span

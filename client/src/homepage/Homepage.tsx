@@ -3,17 +3,7 @@ import { client } from "../utils/client";
 import Category from "./Category";
 
 const Home = () => {
-  // const [isExecute, setIsExecute] = useState(true);
   const [data, setData] = useState<any>(null);
-
-  // const { data, loading, error } = useFetch(
-  //   "/api/category/list",
-  //   {
-  //     categoryList: ["top sale"],
-  //   },
-  //   Method.POST,
-  //   isExecute
-  // );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,10 +14,6 @@ const Home = () => {
     };
     fetchData();
   }, []);
-
-  // if (error) {
-  //   return <div className={"homepage"}>Uh oh! Something went wrong!</div>;
-  // }
 
   return (
     <div className={"homepage"}>

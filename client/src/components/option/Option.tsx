@@ -8,6 +8,7 @@ interface OptionProps {
   disabled?: boolean;
   style?: React.CSSProperties;
   value?: any;
+  className?: string;
 }
 
 const Option: React.FC<OptionProps> = ({
@@ -17,6 +18,7 @@ const Option: React.FC<OptionProps> = ({
   disabled,
   style,
   value,
+  className
 }) => {
   const context = useContext(OptionGroupContext);
   const optionRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ const Option: React.FC<OptionProps> = ({
   return (
     <div
       className={`option  ${disabled ? "disabled" : visualDisabled ? "v-disabled" : ""
-        }`}
+        } ${className ? className : ""}`}
       onClick={(e) => {
         if (!disabled) {
           removeActiveSibling(e);

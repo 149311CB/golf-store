@@ -1,5 +1,6 @@
 import { Application, RequestHandler } from "express";
 import https from "https";
+import http from "http";
 import fs from "fs";
 import { connect } from "mongoose";
 
@@ -22,20 +23,25 @@ export default class Server {
     this.middlewares = middlewares;
   }
 
-  public async run(): Promise<https.Server> {
+  public async run(): Promise<https.Server | http.Server> {
     await this.connectDatabase();
     return this.createServer();
   }
 
-  private createServer(): https.Server {
-    const credentials = {
-      key: fs.readFileSync("./localhost-key.pem"),
-      cert: fs.readFileSync("./localhost.pem"),
-    };
-    const httpsServer = https.createServer(credentials, this._app);
-    return httpsServer.listen(this._port, () => {
+  private createServer(): https.Server | http.Server {
+    if (process.env.NODE_ENV === "development") {
+      const credentials = {
+        key: fs.readFileSync("./localhost-key.pem"),
+        cert: fs.readFileSync("./localhost.pem"),
+      };
+      const httpsServer = https.createServer(credentials, this._app);
+      return httpsServer.listen(this._port, () => {
+        console.log(`server is running on port ${this._port} `);
+      });
+    }
+    return this.app.listen(this._port, () => {
       console.log(`server is running on port ${this._port} `);
-    });
+    })
   }
 
   public loadMiddlewares(): void {

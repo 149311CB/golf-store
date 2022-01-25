@@ -18,7 +18,7 @@ const Flexes: React.FC<IGolfComponentsProps> = ({
       style={groupStyle}
       name={"Flex"}
       onChange={(value: any) => {
-        onPropertyChange(new Flex(value));
+        onPropertyChange(new Flex(value), "flex");
       }}
     >
       {values &&

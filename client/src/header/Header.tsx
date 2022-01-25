@@ -7,7 +7,7 @@ import AuthModal from "../user/auth/AuthModal";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../App";
 import { client } from "../utils/client";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../components/button/Button";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 

@@ -23,7 +23,7 @@ export class VariantStore {
 
   public transformedData: TransformedData = new TransformedData();
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(reset: boolean = false): VariantStore {
     if (!this.instance || reset) {
@@ -33,17 +33,10 @@ export class VariantStore {
   }
 }
 
-const transform = (value: IGolfProperty | any) => {
-  let propertyName = value.constructor.name.toLowerCase() + "s";
-  if(propertyName === "flexs"){
-    propertyName = "flexes"
-  }
+const transform = (value: IGolfProperty | any, type: "hands" | "flexes" | "shafts" | "lofts") => {
   var instance = VariantStore.getInstance();
-  // Check if transformed data already have current property
-  //@ts-ignore
-  if (!instance.transformedData[propertyName].get(value._id)) {
-    //@ts-ignore
-    instance.transformedData[propertyName].set(value._id, {
+  if (!instance.transformedData[type] || !instance.transformedData[type].get(value._id)) {
+    instance.transformedData[type].set(value._id, {
       ...value,
       disabled: false,
     });
@@ -53,10 +46,10 @@ const transform = (value: IGolfProperty | any) => {
 const transformCaller = () => {
   var instance = VariantStore.getInstance();
   instance.variants?.forEach((variant: Variant) => {
-    transform(variant.hand);
-    transform(variant.loft);
-    transform(variant.flex);
-    transform(variant.shaft);
+    transform(variant.hand, "hands");
+    transform(variant.loft, "lofts");
+    transform(variant.flex, "flexes");
+    transform(variant.shaft, "shafts");
   });
 };
 
@@ -65,8 +58,8 @@ export const transformData = (data: any): TransformedData => {
 
   instance.variants = [];
   instance.disabledVariants = []
-  instance.transformedData =new TransformedData()
-  instance.choosenVariant =new Variant({
+  instance.transformedData = new TransformedData()
+  instance.choosenVariant = new Variant({
     hand: null,
     loft: null,
     flex: null,

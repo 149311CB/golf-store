@@ -3,28 +3,24 @@ import { VariantStore } from "../hooks/useTransformData";
 
 const instance = VariantStore.getInstance();
 
-export const filterActive = (choosenPropety: IGolfProperty | null) => {
+export const filterActive = (choosenPropety: IGolfProperty | null, type: "hand" | "loft" | "shaft" | "flex") => {
   if (!choosenPropety) return;
-  const propertyName = choosenPropety.constructor.name.toLowerCase();
   instance.activeVariants = instance.activeVariants?.filter((variant: Variant) => {
-    if (
-      choosenPropety !== null &&
-      // @ts-ignore
-      variant[propertyName]._id === choosenPropety._id
+    if (choosenPropety !== null &&
+      variant[type]._id === choosenPropety._id
     ) {
       return true;
     }
     instance.disabledVariants.push(variant);
     return false;
   });
-  // @ts-ignore
   changeActive();
 };
 
-export const filterDisabled = (choosenPropety: IGolfProperty | null) => {
+export const filterDisabled = (choosenPropety: IGolfProperty | null, type: "hand" | "loft" | "flex" | "shaft") => {
   instance.activeVariants = instance.variants;
   instance.disabledVariants = [];
-  filterActive(choosenPropety);
+  filterActive(choosenPropety, type);
 };
 
 const changeActive = () => {
@@ -52,7 +48,6 @@ const changeActive = () => {
   });
 
   instance.activeVariants?.forEach((variant: Variant) => {
-    //@ts-ignore
     const hand = instance.transformedData.hands.get(variant.hand?._id);
     //@ts-ignore
     const loft = instance.transformedData.lofts.get(variant.loft?._id);

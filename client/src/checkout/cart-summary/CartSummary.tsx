@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../App";
 import { CartProduct, initialized } from "../../cart/Cart";
 import ProductContainer from "../../cart/product-container/ProductContainer";
 import { client } from "../../utils/client";
 
 const CartSummary = () => {
-  const [cartMeta, setCartMeta] = useState<any>(null);
   const [products, setProducts] = useState<CartProduct[]>([]);
   const { token } = useContext(GlobalContext);
   useEffect(() => {
@@ -23,14 +22,8 @@ const CartSummary = () => {
       });
 
       if (data.data) {
-        const { products: fetchProducts, _id, user, isActive } = data.data;
+        const { products: fetchProducts } = data.data;
         if (!fetchProducts) return;
-        if (user) {
-          setCartMeta({ _id, user, isActive });
-        } else {
-          setCartMeta({ _id, isActive });
-        }
-
         const fetchedData: CartProduct[] = initialized(fetchProducts);
 
         setProducts(fetchedData);

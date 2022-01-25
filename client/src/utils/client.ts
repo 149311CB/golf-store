@@ -16,7 +16,9 @@ export async function client(
 ): Promise<IResponsePayload> {
   const headers = { "Content-Type": "application/json" };
 
-  if (pkg.proxy && !endpoint.includes(pkg.proxy)) {
+  if (pkg.proxy
+    && !endpoint.includes(pkg.proxy)
+    && !endpoint.includes("http")) {
     endpoint = `${pkg.proxy}${endpoint}`;
   }
 
@@ -54,10 +56,10 @@ export async function client(
   return Promise.resolve(result);
 }
 
-client.get = function (endpoint: string, customConfig: RequestInit = {}) {
+client.get = function(endpoint: string, customConfig: RequestInit = {}) {
   return client(endpoint, { ...customConfig, method: "GET" });
 };
 
-client.post = function (endpoint: string, body: any, customConfig:RequestInit = {}) {
+client.post = function(endpoint: string, body: any, customConfig: RequestInit = {}) {
   return client(endpoint, { ...{ body: body }, ...customConfig });
 };

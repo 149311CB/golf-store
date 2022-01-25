@@ -15,7 +15,7 @@ const Hands: React.FC<IGolfComponentsProps> = ({
       style={groupStyle}
       name={"Hand"}
       onChange={(value: any) => {
-        onPropertyChange(new Hand(value));
+        onPropertyChange(new Hand(value), "hand");
       }}
     >
       {values &&
